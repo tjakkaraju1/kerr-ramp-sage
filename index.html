@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Kerr Sage</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --green: #00D632;
+  --green-dim: #00b82c;
+  --navy: #1B2A5C;
+  --navy-light: #243570;
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --border: #e2e5ec;
+  --text: #1a1d2e;
+  --muted: #6b7280;
+  --sidebar-w: 220px;
+  --header-h: 56px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* ── LOGIN ── */
+#login-screen{
+  position:fixed;inset:0;background:var(--navy);
+  display:flex;align-items:center;justify-content:center;
+  z-index:1000;
+}
+.login-card{
+  background:#fff;border-radius:16px;padding:40px 36px;
+  width:360px;box-shadow:0 20px 60px rgba(0,0,0,0.25);
+}
+.login-logo{
+  display:flex;align-items:center;gap:10px;margin-bottom:32px;
+}
+.login-logo .dot{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--green);display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:700;color:#fff;
+}
+.login-logo span{font-size:22px;font-weight:600;color:var(--navy);}
+.login-card label{
+  display:block;font-size:12px;font-weight:500;
+  color:var(--muted);margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase;
+}
+.login-card input{
+  width:100%;padding:11px 14px;border:1.5px solid var(--border);
+  border-radius:8px;font-size:14px;font-family:inherit;
+  outline:none;transition:border .15s;margin-bottom:16px;
+}
+.login-card input:focus{border-color:var(--green);}
+.login-btn{
+  width:100%;padding:12px;background:var(--green);border:none;
+  border-radius:8px;font-size:14px;font-weight:600;color:#fff;
+  cursor:pointer;transition:background .15s;font-family:inherit;
+}
+.login-btn:hover{background:var(--green-dim);}
+.login-err{
+  color:#e53e3e;font-size:13px;margin-top:12px;
+  text-align:center;display:none;
+}
+
+/* ── APP SHELL ── */
+#app{display:none;min-height:100vh;}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  position:fixed;top:0;left:0;bottom:0;
+  width:var(--sidebar-w);background:var(--navy);
+  display:flex;flex-direction:column;z-index:100;
+  overflow-y:auto;
+}
+.sidebar-logo{
+  padding:18px 16px 14px;display:flex;align-items:center;gap:9px;
+  border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;
+}
+.sidebar-logo .dot{
+  width:30px;height:30px;border-radius:8px;background:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.sidebar-logo span{font-size:16px;font-weight:600;color:#fff;}
+.sidebar-user{
+  padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;
+}
+.sidebar-user .uname{font-size:12px;font-weight:500;color:#fff;opacity:.9;}
+.sidebar-user .urole{font-size:11px;color:var(--green);font-weight:500;margin-top:1px;}
+.sidebar-section{
+  padding:16px 10px 6px;font-size:10px;font-weight:600;
+  color:rgba(255,255,255,0.35);letter-spacing:.08em;text-transform:uppercase;
+}
+.nav-item{
+  display:flex;align-items:center;gap:9px;padding:9px 12px;
+  border-radius:8px;margin:1px 6px;cursor:pointer;
+  font-size:13px;font-weight:400;color:rgba(255,255,255,0.7);
+  transition:all .15s;border:none;background:none;width:calc(100% - 12px);text-align:left;
+}
+.nav-item:hover{background:rgba(255,255,255,0.08);color:#fff;}
+.nav-item.active{background:rgba(0,214,50,0.15);color:var(--green);font-weight:500;}
+.nav-item .icon{font-size:15px;flex-shrink:0;width:18px;text-align:center;}
+.sidebar-footer{
+  margin-top:auto;padding:12px 10px;border-top:1px solid rgba(255,255,255,0.08);flex-shrink:0;
+}
+.logout-btn{
+  display:flex;align-items:center;gap:8px;padding:8px 12px;
+  border-radius:8px;cursor:pointer;font-size:12px;
+  color:rgba(255,255,255,0.5);transition:all .15s;
+  border:none;background:none;width:100%;font-family:inherit;
+}
+.logout-btn:hover{color:#fff;background:rgba(255,255,255,0.08);}
+
+/* ── MAIN ── */
+.main{
+  margin-left:var(--sidebar-w);min-height:100vh;
+  display:flex;flex-direction:column;
+}
+.topbar{
+  position:sticky;top:0;background:var(--surface);
+  border-bottom:1px solid var(--border);padding:0 28px;
+  height:var(--header-h);display:flex;align-items:center;
+  justify-content:space-between;z-index:50;flex-shrink:0;
+}
+.topbar-title{font-size:16px;font-weight:600;color:var(--text);}
+.topbar-sub{font-size:12px;color:var(--muted);margin-top:1px;}
+.content{padding:24px 28px;flex:1;}
+
+/* ── CARDS ── */
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:20px 22px;margin-bottom:16px;
+}
+.card-title{font-size:14px;font-weight:600;margin-bottom:4px;}
+.card-sub{font-size:12px;color:var(--muted);margin-bottom:16px;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+
+/* ── FORM ELEMENTS ── */
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:12px;font-weight:500;color:var(--muted);margin-bottom:5px;}
+.field input,.field textarea,.field select{
+  width:100%;padding:10px 13px;border:1.5px solid var(--border);
+  border-radius:8px;font-size:13px;font-family:inherit;outline:none;
+  transition:border .15s;background:#fff;resize:vertical;
+}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--green);}
+.field textarea{min-height:90px;}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:9px 16px;border-radius:8px;font-size:13px;font-weight:500;
+  cursor:pointer;border:none;font-family:inherit;transition:all .15s;
+}
+.btn-primary{background:var(--green);color:#fff;}
+.btn-primary:hover{background:var(--green-dim);}
+.btn-secondary{background:var(--bg);border:1.5px solid var(--border);color:var(--text);}
+.btn-secondary:hover{border-color:var(--navy);}
+.btn-navy{background:var(--navy);color:#fff;}
+.btn-navy:hover{background:var(--navy-light);}
+.btn-sm{padding:6px 12px;font-size:12px;}
+.btn-group{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
+
+/* ── BADGES ── */
+.badge{
+  display:inline-block;padding:2px 8px;border-radius:20px;
+  font-size:11px;font-weight:500;
+}
+.badge-green{background:#dcfce7;color:#15803d;}
+.badge-blue{background:#dbeafe;color:#1d4ed8;}
+.badge-amber{background:#fef3c7;color:#92400e;}
+.badge-red{background:#fee2e2;color:#991b1b;}
+.badge-gray{background:#f3f4f6;color:#374151;}
+
+/* ── TABLE ── */
+.tbl{width:100%;border-collapse:collapse;font-size:13px;}
+.tbl th{
+  text-align:left;padding:10px 12px;font-size:11px;font-weight:600;
+  color:var(--muted);border-bottom:1px solid var(--border);
+  text-transform:uppercase;letter-spacing:.04em;
+}
+.tbl td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:#fafbfc;}
+
+/* ── STAT CARDS ── */
+.stat{padding:18px 20px;background:var(--surface);border:1px solid var(--border);border-radius:12px;}
+.stat-label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
+.stat-val{font-size:28px;font-weight:600;color:var(--text);margin:4px 0 2px;line-height:1;}
+.stat-change{font-size:12px;color:var(--muted);}
+.stat-change.up{color:#15803d;}
+.stat-change.down{color:#dc2626;}
+
+/* ── AI OUTPUT ── */
+.ai-output{
+  background:#f8fffe;border:1.5px solid #bbf7d0;border-radius:10px;
+  padding:14px 16px;font-size:13px;line-height:1.65;min-height:80px;
+  color:var(--text);white-space:pre-wrap;
+}
+.ai-thinking{color:var(--muted);font-style:italic;font-size:13px;}
+
+/* ── PIPELINE TABLE ── */
+.stage-pill{
+  display:inline-block;padding:3px 10px;border-radius:20px;
+  font-size:11px;font-weight:500;
+}
+.stage-prospect{background:#eff6ff;color:#1d4ed8;}
+.stage-qualified{background:#fef3c7;color:#92400e;}
+.stage-proposal{background:#f3e8ff;color:#6b21a8;}
+.stage-negotiation{background:#fff7ed;color:#c2410c;}
+.stage-closed-won{background:#dcfce7;color:#15803d;}
+.stage-closed-lost{background:#fee2e2;color:#991b1b;}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:4px;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:0;}
+.tab{
+  padding:8px 16px;font-size:13px;font-weight:500;cursor:pointer;
+  border-bottom:2px solid transparent;color:var(--muted);
+  transition:all .15s;margin-bottom:-1px;background:none;border-top:none;border-left:none;border-right:none;
+  font-family:inherit;
+}
+.tab.active{color:var(--navy);border-bottom-color:var(--green);}
+.tab:hover:not(.active){color:var(--text);}
+
+/* ── ANOMALY ── */
+.anomaly-row{
+  display:flex;align-items:flex-start;gap:12px;padding:12px 0;
+  border-bottom:1px solid var(--border);
+}
+.anomaly-row:last-child{border-bottom:none;}
+.anomaly-dot{
+  width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px;
+}
+.a-high{background:#dc2626;}
+.a-med{background:#f59e0b;}
+.a-low{background:#3b82f6;}
+
+/* ── RESPONSIVE HIDE ── */
+.panel{display:none;}
+.panel.active{display:block;}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     LOGIN SCREEN
+═══════════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="dot">S</div>
+      <span>Kerr Sage</span>
+    </div>
+    <label for="lu">Username</label>
+    <input type="text" id="lu" placeholder="your username" autocomplete="username"/>
+    <label for="lp">Password</label>
+    <input type="password" id="lp" placeholder="••••••••" autocomplete="current-password"/>
+    <button class="login-btn" onclick="doLogin()">Sign in</button>
+    <div class="login-err" id="lerr">Incorrect username or password.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     APP
+═══════════════════════════════════════════ -->
+<div id="app">
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="dot">S</div>
+      <span>Kerr Sage</span>
+    </div>
+    <div class="sidebar-user">
+      <div class="uname" id="sb-name">—</div>
+      <div class="urole" id="sb-role">—</div>
+    </div>
+    <div id="nav-links"></div>
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="doLogout()">↩ Sign out</button>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="topbar-title" id="top-title">Dashboard</div>
+        <div class="topbar-sub" id="top-sub">Kerr Consulting · RevOps</div>
+      </div>
+      <div style="font-size:12px;color:var(--muted)" id="top-date"></div>
+    </div>
+    <div class="content" id="panel-area"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════
+const USERS = {
+  'tarun': { pass: 'kerr-tarun', name: 'Tarun Jakkaraju', role: 'Admin', access: 'admin' },
+  'ed':    { pass: 'kerr-ed',    name: 'Ed Hosey',        role: 'Account Executive', access: 'ed' },
+  'dan':   { pass: 'kerr-dan',   name: 'Dan',             role: 'Account Executive', access: 'dan' },
+};
+
+let currentUser = null;
+
+function doLogin() {
+  const u = document.getElementById('lu').value.trim().toLowerCase();
+  const p = document.getElementById('lp').value.trim();
+  const user = USERS[u];
+  if (user && user.pass === p) {
+    currentUser = { ...user, key: u };
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    initApp();
+  } else {
+    document.getElementById('lerr').style.display = 'block';
+  }
+}
+
+document.getElementById('lp').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+document.getElementById('lu').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('lp').focus(); });
+
+function doLogout() {
+  currentUser = null;
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('lu').value = '';
+  document.getElementById('lp').value = '';
+  document.getElementById('lerr').style.display = 'none';
+}
+
+// ═══════════════════════════════════════════
+// NAV DEFINITIONS
+// ═══════════════════════════════════════════
+const ALL_PANELS = [
+  // SHARED — everyone
+  { id:'pipeline',   label:'Pipeline',          icon:'📊', section:'Shared', access:['admin','ed','dan'] },
+  { id:'contacts',   label:'Contacts',           icon:'👥', section:'Shared', access:['admin','ed','dan'] },
+  { id:'tracker',    label:'Live Tracker',       icon:'📡', section:'Shared', access:['admin','ed','dan'] },
+  { id:'pricing',    label:'Pricing',            icon:'💲', section:'Shared', access:['admin','ed','dan'] },
+  { id:'anomaly',    label:'Anomaly Monitor',    icon:'🔍', section:'Shared', access:['admin','ed','dan'] },
+  { id:'writing',    label:'Writing Assistant',  icon:'✍️',  section:'Shared', access:['admin','ed','dan'] },
+  { id:'clarifier',  label:'Sage Clarifier',     icon:'🧠', section:'Shared', access:['admin','ed','dan'] },
+  { id:'secretary',  label:'AI Secretary',       icon:'📅', section:'Shared', access:['admin','ed','dan'] },
+  { id:'houston',    label:'Houston Networking', icon:'🤝', section:'Shared', access:['admin','ed','dan'] },
+  { id:'register',   label:'Register Lead',      icon:'➕', section:'Shared', access:['admin','ed','dan'] },
+  { id:'scheduler',  label:'Scheduler',          icon:'🗓️', section:'Shared', access:['admin','ed','dan'] },
+  { id:'capture',    label:'Quick Capture',      icon:'⚡', section:'Shared', access:['admin','ed','dan'] },
+  { id:'customdev',  label:'Custom Dev',         icon:'🔧', section:'Shared', access:['admin','ed','dan'] },
+  // TARUN ONLY
+  { id:'templates',  label:'Templates',          icon:'📝', section:'Admin Only', access:['admin'] },
+  { id:'winwire',    label:'Win Wire Generator', icon:'🏆', section:'Admin Only', access:['admin'] },
+  { id:'workflow',   label:'Content Workflow',   icon:'🔄', section:'Admin Only', access:['admin'] },
+  // DAN ONLY
+  { id:'dandash',    label:"Dan's Dashboard",    icon:'📈', section:"Dan's View",  access:['admin','dan'] },
+];
+
+// ═══════════════════════════════════════════
+// INIT APP
+// ═══════════════════════════════════════════
+function initApp() {
+  document.getElementById('sb-name').textContent = currentUser.name;
+  document.getElementById('sb-role').textContent = currentUser.role;
+  document.getElementById('top-date').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+
+  const access = currentUser.access;
+  const visible = ALL_PANELS.filter(p => p.access.includes(access));
+
+  // Build nav
+  const nav = document.getElementById('nav-links');
+  nav.innerHTML = '';
+  let lastSection = '';
+  visible.forEach(p => {
+    if (p.section !== lastSection) {
+      const sec = document.createElement('div');
+      sec.className = 'sidebar-section';
+      sec.textContent = p.section;
+      nav.appendChild(sec);
+      lastSection = p.section;
+    }
+    const btn = document.createElement('button');
+    btn.className = 'nav-item';
+    btn.id = 'nav-' + p.id;
+    btn.innerHTML = `<span class="icon">${p.icon}</span>${p.label}`;
+    btn.onclick = () => showPanel(p.id, p.label);
+    nav.appendChild(btn);
+  });
+
+  // Show first panel
+  showPanel(visible[0].id, visible[0].label);
+}
+
+function showPanel(id, label) {
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  const nb = document.getElementById('nav-' + id);
+  if (nb) nb.classList.add('active');
+  document.getElementById('top-title').textContent = label;
+  const area = document.getElementById('panel-area');
+  area.innerHTML = renderPanel(id);
+}
+
+// ═══════════════════════════════════════════
+// PANEL RENDERERS
+// ═══════════════════════════════════════════
+function renderPanel(id) {
+  const map = {
+    pipeline:   panelPipeline,
+    contacts:   panelContacts,
+    tracker:    panelTracker,
+    pricing:    panelPricing,
+    anomaly:    panelAnomaly,
+    writing:    panelWriting,
+    clarifier:  panelClarifier,
+    secretary:  panelSecretary,
+    houston:    panelHouston,
+    register:   panelRegister,
+    scheduler:  panelScheduler,
+    capture:    panelCapture,
+    customdev:  panelCustomDev,
+    templates:  panelTemplates,
+    winwire:    panelWinWire,
+    workflow:   panelWorkflow,
+    dandash:    panelDanDash,
+  };
+  return (map[id] || (() => '<div class="card"><p>Coming soon.</p></div>'))();
+}
+
+// ─── PIPELINE ───────────────────────────────
+function panelPipeline() {
+  return `
+  <div class="grid-3" style="margin-bottom:16px">
+    <div class="stat"><div class="stat-label">Open Deals</div><div class="stat-val">14</div><div class="stat-change up">↑ 3 this week</div></div>
+    <div class="stat"><div class="stat-label">Pipeline Value</div><div class="stat-val">$284K</div><div class="stat-change up">↑ $42K</div></div>
+    <div class="stat"><div class="stat-label">Avg Deal Size</div><div class="stat-val">$20.3K</div><div class="stat-change">vs $18.1K last mo.</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Active Pipeline</div>
+    <div class="card-sub">All open opportunities</div>
+    <table class="tbl">
+      <thead><tr><th>Company</th><th>Contact</th><th>Stage</th><th>Value</th><th>Owner</th><th>Close Date</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Apex Industries</strong></td><td>Maria Chen</td><td><span class="stage-pill stage-proposal">Proposal</span></td><td>$48,000</td><td>Tarun</td><td>Apr 15</td></tr>
+        <tr><td><strong>Gulf Coast Logistics</strong></td><td>James Tran</td><td><span class="stage-pill stage-negotiation">Negotiation</span></td><td>$62,000</td><td>Ed</td><td>Apr 8</td></tr>
+        <tr><td><strong>Pinnacle Health</strong></td><td>Sarah Kim</td><td><span class="stage-pill stage-qualified">Qualified</span></td><td>$31,500</td><td>Tarun</td><td>May 1</td></tr>
+        <tr><td><strong>HarbourView Capital</strong></td><td>Tom Nguyen</td><td><span class="stage-pill stage-prospect">Prospect</span></td><td>$19,200</td><td>Ed</td><td>May 20</td></tr>
+        <tr><td><strong>TechBridge Solutions</strong></td><td>Lisa Park</td><td><span class="stage-pill stage-proposal">Proposal</span></td><td>$27,800</td><td>Dan</td><td>Apr 22</td></tr>
+        <tr><td><strong>Meridian Consulting</strong></td><td>David Ross</td><td><span class="stage-pill stage-closed-won">Closed Won</span></td><td>$55,000</td><td>Tarun</td><td>Mar 28</td></tr>
+      </tbody>
+    </table>
+  </div>`;
+}
+
+// ─── CONTACTS ───────────────────────────────
+function panelContacts() {
+  return `
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
+      <div><div class="card-title">Contacts</div><div class="card-sub" style="margin-bottom:0">All clients and prospects</div></div>
+      <button class="btn btn-primary btn-sm" onclick="alert('Add contact form — connect to Google Sheets')">+ Add Contact</button>
+    </div>
+    <table class="tbl">
+      <thead><tr><th>Name</th><th>Company</th><th>Title</th><th>Email</th><th>Phone</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Maria Chen</strong></td><td>Apex Industries</td><td>VP Operations</td><td>m.chen@apex.com</td><td>(713) 555-0182</td><td><span class="badge badge-green">Active</span></td></tr>
+        <tr><td><strong>James Tran</strong></td><td>Gulf Coast Logistics</td><td>CEO</td><td>jtran@gclogistics.com</td><td>(832) 555-0247</td><td><span class="badge badge-amber">In Negotiation</span></td></tr>
+        <tr><td><strong>Sarah Kim</strong></td><td>Pinnacle Health</td><td>CFO</td><td>skim@pinnaclehealth.com</td><td>(281) 555-0391</td><td><span class="badge badge-blue">Qualified</span></td></tr>
+        <tr><td><strong>Tom Nguyen</strong></td><td>HarbourView Capital</td><td>Managing Director</td><td>tnguyen@hvc.com</td><td>(713) 555-0458</td><td><span class="badge badge-gray">Prospect</span></td></tr>
+        <tr><td><strong>Lisa Park</strong></td><td>TechBridge Solutions</td><td>COO</td><td>lpark@techbridge.com</td><td>(832) 555-0512</td><td><span class="badge badge-blue">Proposal Sent</span></td></tr>
+      </tbody>
+    </table>
+  </div>`;
+}
+
+// ─── LIVE TRACKER ────────────────────────────
+function panelTracker() {
+  return `
+  <div class="grid-3" style="margin-bottom:16px">
+    <div class="stat"><div class="stat-label">Calls Today</div><div class="stat-val">7</div><div class="stat-change up">↑ 2 vs avg</div></div>
+    <div class="stat"><div class="stat-label">Emails Sent</div><div class="stat-val">23</div><div class="stat-change">on track</div></div>
+    <div class="stat"><div class="stat-label">Meetings Set</div><div class="stat-val">3</div><div class="stat-change up">↑ 1 this week</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Today's Activity Log</div>
+    <div class="card-sub">Real-time from Google Sheets via Make.com</div>
+    <table class="tbl">
+      <thead><tr><th>Time</th><th>Rep</th><th>Activity</th><th>Contact</th><th>Outcome</th></tr></thead>
+      <tbody>
+        <tr><td>9:02am</td><td>Tarun</td><td>Call</td><td>Maria Chen</td><td><span class="badge badge-green">Proposal accepted</span></td></tr>
+        <tr><td>9:45am</td><td>Ed</td><td>Email</td><td>James Tran</td><td><span class="badge badge-blue">Follow-up scheduled</span></td></tr>
+        <tr><td>10:30am</td><td>Dan</td><td>Meeting</td><td>Lisa Park</td><td><span class="badge badge-amber">Needs review</span></td></tr>
+        <tr><td>11:15am</td><td>Tarun</td><td>Call</td><td>Tom Nguyen</td><td><span class="badge badge-gray">No answer</span></td></tr>
+        <tr><td>1:00pm</td><td>Ed</td><td>Meeting</td><td>Sarah Kim</td><td><span class="badge badge-green">Moving forward</span></td></tr>
+      </tbody>
+    </table>
+  </div>`;
+}
+
+// ─── PRICING ─────────────────────────────────
+function panelPricing() {
+  return `
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="card">
+      <div class="card-title">Service Tiers</div>
+      <div class="card-sub">Standard Kerr Consulting packages</div>
+      <table class="tbl">
+        <thead><tr><th>Package</th><th>Price</th><th>Duration</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Starter</strong></td><td>$8,500</td><td>30 days</td></tr>
+          <tr><td><strong>Growth</strong></td><td>$18,000</td><td>60 days</td></tr>
+          <tr><td><strong>Enterprise</strong></td><td>$42,000</td><td>90 days</td></tr>
+          <tr><td><strong>Retainer</strong></td><td>$6,500/mo</td><td>Ongoing</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">Quick Quote Builder</div>
+      <div class="card-sub">Estimate a custom engagement</div>
+      <div class="field"><label>Base Package</label>
+        <select id="pkg-sel" onchange="calcQuote()">
+          <option value="8500">Starter — $8,500</option>
+          <option value="18000">Growth — $18,000</option>
+          <option value="42000">Enterprise — $42,000</option>
+        </select>
+      </div>
+      <div class="field"><label>Add-ons</label>
+        <label style="font-size:13px;color:var(--text);display:flex;gap:8px;align-items:center;margin-bottom:6px"><input type="checkbox" id="ao1" onchange="calcQuote()" style="width:auto;margin:0"> Data integration (+$2,500)</label>
+        <label style="font-size:13px;color:var(--text);display:flex;gap:8px;align-items:center;margin-bottom:6px"><input type="checkbox" id="ao2" onchange="calcQuote()" style="width:auto;margin:0"> Training sessions (+$1,800)</label>
+        <label style="font-size:13px;color:var(--text);display:flex;gap:8px;align-items:center"><input type="checkbox" id="ao3" onchange="calcQuote()" style="width:auto;margin:0"> Monthly reporting (+$900/mo)</label>
+      </div>
+      <div style="background:var(--bg);border-radius:8px;padding:14px;text-align:center">
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Estimated Total</div>
+        <div style="font-size:32px;font-weight:600;color:var(--navy)" id="quote-total">$8,500</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── ANOMALY MONITOR ─────────────────────────
+function panelAnomaly() {
+  return `
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="stat"><div class="stat-label">Active Alerts</div><div class="stat-val" style="color:#dc2626">3</div><div class="stat-change down">2 high priority</div></div>
+    <div class="stat"><div class="stat-label">Last Scan</div><div class="stat-val" style="font-size:20px">2 min ago</div><div class="stat-change">Auto-scan every 15 min</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Anomaly Feed</div>
+    <div class="card-sub">Pipeline irregularities and stalled deals flagged by Sage</div>
+    <div class="anomaly-row">
+      <div class="anomaly-dot a-high"></div>
+      <div><div style="font-size:13px;font-weight:500">Gulf Coast Logistics — no activity in 12 days</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Deal value $62K. Last touch: Ed sent proposal. Suggested: follow-up call today.</div></div>
+    </div>
+    <div class="anomaly-row">
+      <div class="anomaly-dot a-high"></div>
+      <div><div style="font-size:13px;font-weight:500">HarbourView Capital — close date passed</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Expected close Mar 25. Update pipeline stage or extend date.</div></div>
+    </div>
+    <div class="anomaly-row">
+      <div class="anomaly-dot a-med"></div>
+      <div><div style="font-size:13px;font-weight:500">Pinnacle Health — proposal not opened</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Sent 5 days ago, no open tracking. Consider resend or call.</div></div>
+    </div>
+    <div class="anomaly-row">
+      <div class="anomaly-dot a-low"></div>
+      <div><div style="font-size:13px;font-weight:500">3 prospects with no contact in 30 days</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Recommend archiving or re-engaging before end of month.</div></div>
+    </div>
+  </div>`;
+}
+
+// ─── WRITING ASSISTANT ───────────────────────
+function panelWriting() {
+  return `
+  <div class="card">
+    <div class="card-title">Writing Assistant</div>
+    <div class="card-sub">AI-powered emails, follow-ups, and outreach</div>
+    <div class="grid-2">
+      <div>
+        <div class="field"><label>Content Type</label>
+          <select id="wtype">
+            <option>Follow-up email</option>
+            <option>Cold outreach</option>
+            <option>Proposal cover letter</option>
+            <option>Meeting recap</option>
+            <option>Thank you note</option>
+          </select>
+        </div>
+        <div class="field"><label>Prospect / Company</label><input type="text" id="wprospect" placeholder="e.g. Gulf Coast Logistics — James Tran"/></div>
+        <div class="field"><label>Key Context</label><textarea id="wcontext" placeholder="What happened in the last meeting? Any objections? Key points to hit?"></textarea></div>
+        <div class="field"><label>Tone</label>
+          <select id="wtone">
+            <option>Professional and warm</option>
+            <option>Direct and confident</option>
+            <option>Casual and friendly</option>
+            <option>Formal</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="runWriting()">✍️ Generate Draft</button>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:8px">GENERATED DRAFT</div>
+        <div class="ai-output" id="writing-out"><span class="ai-thinking">Your draft will appear here...</span></div>
+        <div class="btn-group" style="margin-top:10px">
+          <button class="btn btn-secondary btn-sm" onclick="copyOut('writing-out')">Copy</button>
+          <button class="btn btn-secondary btn-sm" onclick="runWriting()">Regenerate</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── SAGE CLARIFIER ──────────────────────────
+function panelClarifier() {
+  return `
+  <div class="card">
+    <div class="card-title">Sage Clarifier</div>
+    <div class="card-sub">Paste a vague client request — Sage tells you exactly what they mean</div>
+    <div class="grid-2">
+      <div>
+        <div class="field"><label>Client Message or Request</label>
+          <textarea id="clf-in" style="min-height:140px" placeholder="Paste the client email, message, or request here. Can be messy or vague."></textarea>
+        </div>
+        <button class="btn btn-primary" onclick="runClarifier()">🧠 Clarify with Sage</button>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:8px">SAGE'S INTERPRETATION</div>
+        <div class="ai-output" id="clf-out" style="min-height:140px"><span class="ai-thinking">Sage will break down what the client actually wants...</span></div>
+        <div class="btn-group" style="margin-top:10px">
+          <button class="btn btn-secondary btn-sm" onclick="copyOut('clf-out')">Copy</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── AI SECRETARY ────────────────────────────
+function panelSecretary() {
+  return `
+  <div class="card">
+    <div class="card-title">AI Secretary</div>
+    <div class="card-sub">Prep for meetings, draft agendas, and summarize notes</div>
+    <div style="display:flex;gap:8px;margin-bottom:20px">
+      <button class="btn btn-primary btn-sm" onclick="secTab('prep')">Meeting Prep</button>
+      <button class="btn btn-secondary btn-sm" onclick="secTab('agenda')">Agenda Builder</button>
+      <button class="btn btn-secondary btn-sm" onclick="secTab('recap')">Meeting Recap</button>
+    </div>
+    <div class="grid-2">
+      <div>
+        <div class="field"><label>Meeting With</label><input type="text" id="sec-who" placeholder="Client name / company"/></div>
+        <div class="field"><label>Meeting Type</label>
+          <select id="sec-type">
+            <option>Discovery call</option>
+            <option>Proposal presentation</option>
+            <option>Follow-up</option>
+            <option>Negotiation</option>
+            <option>Kickoff</option>
+          </select>
+        </div>
+        <div class="field"><label>Context / Notes</label><textarea id="sec-ctx" placeholder="What do you know about this client? What are your goals for this meeting?"></textarea></div>
+        <button class="btn btn-primary" onclick="runSecretary()">📅 Generate</button>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:8px">OUTPUT</div>
+        <div class="ai-output" id="sec-out"><span class="ai-thinking">Meeting prep, agenda, or recap will appear here...</span></div>
+        <div class="btn-group" style="margin-top:10px">
+          <button class="btn btn-secondary btn-sm" onclick="copyOut('sec-out')">Copy</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── HOUSTON NETWORKING ──────────────────────
+function panelHouston() {
+  return `
+  <div class="card">
+    <div class="card-title">Houston Networking</div>
+    <div class="card-sub">Local events, warm intro opportunities, and community intel</div>
+    <div class="grid-2" style="margin-bottom:16px">
+      <div style="background:#eff6ff;border-radius:10px;padding:16px">
+        <div style="font-size:12px;font-weight:600;color:#1d4ed8;margin-bottom:10px">UPCOMING EVENTS</div>
+        <div style="font-size:13px;margin-bottom:8px"><strong>Houston Tech Rodeo</strong><br/><span style="color:var(--muted);font-size:12px">Apr 12 · NRG Center · 200+ attendees</span></div>
+        <div style="font-size:13px;margin-bottom:8px"><strong>Greater Houston Partnership Mixer</strong><br/><span style="color:var(--muted);font-size:12px">Apr 18 · Four Seasons · C-suite focused</span></div>
+        <div style="font-size:13px"><strong>Energy Innovation Summit</strong><br/><span style="color:var(--muted);font-size:12px">May 3 · Hilton Americas · Oil & Gas</span></div>
+      </div>
+      <div style="background:#f0fdf4;border-radius:10px;padding:16px">
+        <div style="font-size:12px;font-weight:600;color:#15803d;margin-bottom:10px">WARM INTRO OPPORTUNITIES</div>
+        <div style="font-size:13px;margin-bottom:8px"><strong>Maria Chen → CFO at Meridian</strong><br/><span style="color:var(--muted);font-size:12px">Connected via LinkedIn. Overlap: Rice alumni.</span></div>
+        <div style="font-size:13px;margin-bottom:8px"><strong>James Tran → CEO at Summit Freight</strong><br/><span style="color:var(--muted);font-size:12px">Referred by mutual contact at GHP.</span></div>
+        <div style="font-size:13px"><strong>Sarah Kim → VC partner at Archetype</strong><br/><span style="color:var(--muted);font-size:12px">Met at Greentown Labs event.</span></div>
+      </div>
+    </div>
+    <div class="field"><label>Research a Houston Contact or Company</label><input type="text" id="hou-q" placeholder="e.g. Fulton Technology — who should I know there?"/></div>
+    <button class="btn btn-primary" onclick="runHouston()">🤝 Research</button>
+    <div class="ai-output" id="hou-out" style="margin-top:14px"><span class="ai-thinking">Local intel will appear here...</span></div>
+  </div>`;
+}
+
+// ─── REGISTER LEAD ───────────────────────────
+function panelRegister() {
+  return `
+  <div class="card">
+    <div class="card-title">Register Lead</div>
+    <div class="card-sub">Log a new lead — syncs to Google Sheets and notifies Slack</div>
+    <div class="grid-2">
+      <div>
+        <div class="field"><label>Company Name</label><input type="text" id="rl-co" placeholder="Apex Industries"/></div>
+        <div class="field"><label>Contact Name</label><input type="text" id="rl-cn" placeholder="Maria Chen"/></div>
+        <div class="field"><label>Title</label><input type="text" id="rl-title" placeholder="VP Operations"/></div>
+        <div class="field"><label>Email</label><input type="email" id="rl-email" placeholder="m.chen@apex.com"/></div>
+        <div class="field"><label>Phone</label><input type="tel" id="rl-phone" placeholder="(713) 555-0182"/></div>
+      </div>
+      <div>
+        <div class="field"><label>Lead Source</label>
+          <select id="rl-src">
+            <option>Networking event</option>
+            <option>Referral</option>
+            <option>LinkedIn</option>
+            <option>Cold outreach</option>
+            <option>Inbound</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Estimated Deal Size</label><input type="text" id="rl-val" placeholder="$25,000"/></div>
+        <div class="field"><label>Initial Notes</label><textarea id="rl-notes" placeholder="Key pain points, context, how you met..."></textarea></div>
+        <button class="btn btn-primary" onclick="submitLead()" style="width:100%">➕ Register Lead</button>
+        <div id="rl-confirm" style="display:none;margin-top:10px;padding:10px;background:#dcfce7;border-radius:8px;font-size:13px;color:#15803d">
+          ✓ Lead registered and logged to Google Sheets
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── SCHEDULER ───────────────────────────────
+function panelScheduler() {
+  return `
+  <div class="card">
+    <div class="card-title">Scheduler</div>
+    <div class="card-sub">Calendly + Make.com integration — book, track, and manage all meetings</div>
+    <div class="grid-2" style="margin-bottom:16px">
+      <div style="background:#f8faff;border:1px solid var(--border);border-radius:10px;padding:16px">
+        <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:12px">YOUR CALENDLY LINKS</div>
+        <div style="margin-bottom:10px">
+          <div style="font-size:13px;font-weight:500">${currentUser?.name || 'You'} — 30 min Discovery</div>
+          <div style="font-size:12px;color:#1d4ed8;margin-top:2px">calendly.com/kerr/${currentUser?.key || 'you'}/discovery</div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:500">${currentUser?.name || 'You'} — 60 min Strategy</div>
+          <div style="font-size:12px;color:#1d4ed8;margin-top:2px">calendly.com/kerr/${currentUser?.key || 'you'}/strategy</div>
+        </div>
+      </div>
+      <div style="background:#f8faff;border:1px solid var(--border);border-radius:10px;padding:16px">
+        <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:12px">THIS WEEK'S BOOKINGS</div>
+        <div class="anomaly-row" style="padding:6px 0"><div class="anomaly-dot a-low" style="margin-top:4px"></div><div><div style="font-size:13px">Gulf Coast Logistics — James Tran</div><div style="font-size:12px;color:var(--muted)">Mon Apr 1 · 10:00am · 30 min</div></div></div>
+        <div class="anomaly-row" style="padding:6px 0"><div class="anomaly-dot a-low" style="margin-top:4px"></div><div><div style="font-size:13px">Pinnacle Health — Sarah Kim</div><div style="font-size:12px;color:var(--muted)">Wed Apr 3 · 2:00pm · 60 min</div></div></div>
+        <div class="anomaly-row" style="padding:6px 0;border:none"><div class="anomaly-dot a-low" style="margin-top:4px"></div><div><div style="font-size:13px">TechBridge — Lisa Park</div><div style="font-size:12px;color:var(--muted)">Fri Apr 5 · 11:00am · 30 min</div></div></div>
+      </div>
+    </div>
+    <div class="card" style="background:#fffbeb;border-color:#fde68a">
+      <div style="font-size:13px;font-weight:500;color:#92400e;margin-bottom:4px">Make.com Automation Active</div>
+      <div style="font-size:12px;color:#78350f">New Calendly booking → Logs to Google Sheets → Sends Slack notification → Creates follow-up task</div>
+    </div>
+  </div>`;
+}
+
+// ─── QUICK CAPTURE ───────────────────────────
+function panelCapture() {
+  return `
+  <div class="card">
+    <div class="card-title">Quick Capture</div>
+    <div class="card-sub">Brain dump anything — logs to your activity feed and Slack instantly</div>
+    <div class="field"><label>What do you want to capture?</label>
+      <textarea id="qc-text" style="min-height:120px;font-size:15px" placeholder="Lead name, idea, follow-up reminder, deal note... anything. Type fast and hit Send."></textarea>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="field" style="margin:0;flex:1"><label>Type</label>
+        <select id="qc-type">
+          <option>Lead note</option>
+          <option>Follow-up reminder</option>
+          <option>Deal update</option>
+          <option>Idea</option>
+          <option>Task</option>
+        </select>
+      </div>
+      <div style="padding-top:18px">
+        <button class="btn btn-primary" onclick="submitCapture()" style="height:40px">⚡ Send</button>
+      </div>
+    </div>
+    <div id="qc-confirm" style="display:none;margin-top:14px;padding:12px;background:#dcfce7;border-radius:8px;font-size:13px;color:#15803d">
+      ✓ Captured and logged to Slack + Google Sheets
+    </div>
+    <div style="margin-top:20px">
+      <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px">RECENT CAPTURES</div>
+      <div class="anomaly-row"><div class="anomaly-dot a-low" style="margin-top:4px"></div><div><div style="font-size:13px">Follow up with James Tran re: pricing objection</div><div style="font-size:12px;color:var(--muted)">Today 9:32am · Follow-up reminder</div></div></div>
+      <div class="anomaly-row"><div class="anomaly-dot a-low" style="margin-top:4px"></div><div><div style="font-size:13px">Pinnacle Health wants a pilot before committing</div><div style="font-size:12px;color:var(--muted)">Yesterday 4:15pm · Deal update</div></div></div>
+      <div class="anomaly-row" style="border:none"><div class="anomaly-dot a-low" style="margin-top:4px"></div><div><div style="font-size:13px">Maria Chen intro'd me to their legal team</div><div style="font-size:12px;color:var(--muted)">Yesterday 2:41pm · Lead note</div></div></div>
+    </div>
+  </div>`;
+}
+
+// ─── CUSTOM DEV ──────────────────────────────
+function panelCustomDev() {
+  return `
+  <div class="card">
+    <div class="card-title">Custom Dev</div>
+    <div class="card-sub">Request custom automations, integrations, or features from the Sage team</div>
+    <div class="grid-2">
+      <div>
+        <div class="field"><label>What do you need built?</label>
+          <textarea id="cd-req" style="min-height:120px" placeholder="Describe the workflow, automation, or feature you want. Be as specific as possible."></textarea>
+        </div>
+        <div class="field"><label>Priority</label>
+          <select id="cd-pri">
+            <option>Nice to have</option>
+            <option>Important</option>
+            <option>Urgent</option>
+          </select>
+        </div>
+        <div class="field"><label>Connected Tools</label>
+          <select id="cd-tools">
+            <option>Make.com</option>
+            <option>Google Sheets</option>
+            <option>Slack</option>
+            <option>Calendly</option>
+            <option>Anthropic API</option>
+            <option>Other / Not sure</option>
+          </select>
+        </div>
+        <button class="btn btn-navy" onclick="submitDevReq()">🔧 Submit Request</button>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px">ACTIVE REQUESTS</div>
+        <div style="background:var(--bg);border-radius:8px;padding:12px;margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <div style="font-size:13px;font-weight:500">Win Wire auto-Slack notification</div>
+            <span class="badge badge-green">Done</span>
+          </div>
+          <div style="font-size:12px;color:var(--muted)">Make.com → Slack #wins channel</div>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;padding:12px;margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <div style="font-size:13px;font-weight:500">Calendly → CRM sync</div>
+            <span class="badge badge-amber">In Progress</span>
+          </div>
+          <div style="font-size:12px;color:var(--muted)">Auto-log bookings to pipeline</div>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;padding:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <div style="font-size:13px;font-weight:500">Dan's reporting dashboard</div>
+            <span class="badge badge-blue">Queued</span>
+          </div>
+          <div style="font-size:12px;color:var(--muted)">Custom KPI view for Dan</div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── TEMPLATES (Tarun only) ──────────────────
+function panelTemplates() {
+  return `
+  <div class="card">
+    <div class="card-title">Templates — Tarun's Voice</div>
+    <div class="card-sub">Personal email and message templates written in your style</div>
+    <div class="grid-2">
+      <div>
+        <div class="field"><label>Template Type</label>
+          <select id="tpl-type">
+            <option>First touch — cold outreach</option>
+            <option>Post-meeting follow-up</option>
+            <option>Proposal follow-up</option>
+            <option>Re-engagement (gone cold)</option>
+            <option>Referral ask</option>
+            <option>Win announcement</option>
+          </select>
+        </div>
+        <div class="field"><label>Prospect Context</label><input type="text" id="tpl-ctx" placeholder="Industry, pain point, or specific angle"/></div>
+        <button class="btn btn-primary" onclick="runTemplate()">📝 Generate in My Voice</button>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:8px">TARUN'S TEMPLATE</div>
+        <div class="ai-output" id="tpl-out"><span class="ai-thinking">Template will be generated in Tarun's voice...</span></div>
+        <div class="btn-group" style="margin-top:10px">
+          <button class="btn btn-secondary btn-sm" onclick="copyOut('tpl-out')">Copy</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── WIN WIRE GENERATOR (Tarun only) ─────────
+function panelWinWire() {
+  return `
+  <div class="card">
+    <div class="card-title">Win Wire Generator</div>
+    <div class="card-sub">Turn a closed deal into a polished win announcement for Slack and the team</div>
+    <div class="grid-2">
+      <div>
+        <div class="field"><label>Client Name</label><input type="text" id="ww-client" placeholder="Meridian Consulting"/></div>
+        <div class="field"><label>Deal Value</label><input type="text" id="ww-val" placeholder="$55,000"/></div>
+        <div class="field"><label>Package / Service</label><input type="text" id="ww-pkg" placeholder="Enterprise 90-day engagement"/></div>
+        <div class="field"><label>Key Win Details</label><textarea id="ww-notes" placeholder="How did you win this? Key decision maker, turning point, what tipped it..."></textarea></div>
+        <button class="btn btn-primary" onclick="runWinWire()">🏆 Generate Win Wire</button>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:8px">WIN WIRE DRAFT</div>
+        <div class="ai-output" id="ww-out"><span class="ai-thinking">Your win wire will appear here, ready to post to Slack...</span></div>
+        <div class="btn-group" style="margin-top:10px">
+          <button class="btn btn-primary btn-sm" onclick="postSlack()">Post to Slack #wins</button>
+          <button class="btn btn-secondary btn-sm" onclick="copyOut('ww-out')">Copy</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── CONTENT WORKFLOW (Tarun only) ───────────
+function panelWorkflow() {
+  return `
+  <div class="card">
+    <div class="card-title">Content Workflow</div>
+    <div class="card-sub">Manage proposals, case studies, and marketing content pipeline</div>
+    <table class="tbl" style="margin-bottom:16px">
+      <thead><tr><th>Content</th><th>Type</th><th>Status</th><th>Owner</th><th>Due</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Gulf Coast Case Study</strong></td><td>Case Study</td><td><span class="badge badge-amber">In Draft</span></td><td>Tarun</td><td>Apr 10</td></tr>
+        <tr><td><strong>Q2 Capabilities Deck</strong></td><td>Presentation</td><td><span class="badge badge-blue">In Review</span></td><td>Tarun</td><td>Apr 5</td></tr>
+        <tr><td><strong>LinkedIn Article — RevOps Trends</strong></td><td>Article</td><td><span class="badge badge-green">Published</span></td><td>Tarun</td><td>Mar 28</td></tr>
+        <tr><td><strong>Email Nurture Sequence</strong></td><td>Email</td><td><span class="badge badge-gray">Planned</span></td><td>Tarun</td><td>Apr 20</td></tr>
+      </tbody>
+    </table>
+    <div class="field"><label>Generate Content Brief</label><input type="text" id="cw-topic" placeholder="e.g. Case study for energy sector client win"/></div>
+    <button class="btn btn-primary" onclick="runContentBrief()">🔄 Generate Brief</button>
+    <div class="ai-output" id="cw-out" style="margin-top:14px"><span class="ai-thinking">Content brief will appear here...</span></div>
+  </div>`;
+}
+
+// ─── DAN'S DASHBOARD ─────────────────────────
+function panelDanDash() {
+  return `
+  <div class="grid-3" style="margin-bottom:16px">
+    <div class="stat"><div class="stat-label">Dan's Pipeline</div><div class="stat-val">$89K</div><div class="stat-change up">↑ 3 deals</div></div>
+    <div class="stat"><div class="stat-label">Meetings This Week</div><div class="stat-val">4</div><div class="stat-change">2 pending</div></div>
+    <div class="stat"><div class="stat-label">Follow-ups Due</div><div class="stat-val" style="color:#f59e0b">6</div><div class="stat-change down">3 overdue</div></div>
+  </div>
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="card">
+      <div class="card-title">Dan's Active Deals</div>
+      <table class="tbl">
+        <thead><tr><th>Company</th><th>Stage</th><th>Value</th><th>Next Step</th></tr></thead>
+        <tbody>
+          <tr><td><strong>TechBridge</strong></td><td><span class="stage-pill stage-proposal">Proposal</span></td><td>$27,800</td><td>Follow-up call</td></tr>
+          <tr><td><strong>Summit Freight</strong></td><td><span class="stage-pill stage-qualified">Qualified</span></td><td>$34,000</td><td>Send proposal</td></tr>
+          <tr><td><strong>Redline Tech</strong></td><td><span class="stage-pill stage-prospect">Prospect</span></td><td>$18,500</td><td>Discovery call</td></tr>
+          <tr><td><strong>Ironclad Systems</strong></td><td><span class="stage-pill stage-negotiation">Negotiation</span></td><td>$48,700</td><td>Legal review</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">Dan's This Week</div>
+      <div class="anomaly-row"><div class="anomaly-dot a-low" style="margin-top:4px"></div><div><div style="font-size:13px">TechBridge — Lisa Park · Follow-up call</div><div style="font-size:12px;color:var(--muted)">Mon Apr 1 · 10:00am</div></div></div>
+      <div class="anomaly-row"><div class="anomaly-dot a-med" style="margin-top:4px"></div><div><div style="font-size:13px">Summit Freight — Send proposal by EOD</div><div style="font-size:12px;color:var(--muted)">Tue Apr 2 · Due today</div></div></div>
+      <div class="anomaly-row"><div class="anomaly-dot a-low" style="margin-top:4px"></div><div><div style="font-size:13px">Ironclad Systems — Legal call</div><div style="font-size:12px;color:var(--muted)">Thu Apr 4 · 3:00pm</div></div></div>
+      <div class="anomaly-row" style="border:none"><div class="anomaly-dot a-high" style="margin-top:4px"></div><div><div style="font-size:13px">Redline Tech — No contact in 14 days</div><div style="font-size:12px;color:var(--muted)">Action needed</div></div></div>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════
+// AI CALLS
+// ═══════════════════════════════════════════
+async function callSage(prompt, outId) {
+  const el = document.getElementById(outId);
+  if (!el) return;
+  el.innerHTML = '<span class="ai-thinking">Sage is thinking...</span>';
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.map(b=>b.text||'').join('') || 'No response.';
+    el.textContent = text;
+  } catch(e) {
+    el.innerHTML = '<span class="ai-thinking">API key required — add your Anthropic key to activate Sage.</span>';
+  }
+}
+
+function runWriting() {
+  const type = document.getElementById('wtype')?.value;
+  const prospect = document.getElementById('wprospect')?.value;
+  const context = document.getElementById('wcontext')?.value;
+  const tone = document.getElementById('wtone')?.value;
+  callSage(`You are a professional sales writer for Kerr Consulting, a RevOps consultancy in Houston.
+Write a ${type} for prospect: ${prospect || 'a prospect'}.
+Tone: ${tone}. Context: ${context || 'general follow-up'}.
+Write only the email/message, no explanations. Make it genuine, not generic.`, 'writing-out');
+}
+
+function runClarifier() {
+  const msg = document.getElementById('clf-in')?.value;
+  if (!msg?.trim()) { document.getElementById('clf-out').textContent='Please paste a client message first.'; return; }
+  callSage(`You are Sage, a RevOps AI for Kerr Consulting. A client sent this message:
+
+"${msg}"
+
+Break down:
+1. What they actually want (plain English)
+2. What's unclear or ambiguous
+3. The 2-3 clarifying questions you'd ask them
+4. Recommended next step for the sales rep
+
+Be concise and practical.`, 'clf-out');
+}
+
+function runSecretary() {
+  const who = document.getElementById('sec-who')?.value;
+  const type = document.getElementById('sec-type')?.value;
+  const ctx = document.getElementById('sec-ctx')?.value;
+  callSage(`You are an AI Secretary for a Kerr Consulting sales rep.
+Meeting type: ${type} with ${who || 'a client'}.
+Context: ${ctx || 'general meeting'}.
+Generate: a brief prep checklist, 5 smart questions to ask, and a suggested agenda. Keep it tight and actionable.`, 'sec-out');
+}
+
+function runHouston() {
+  const q = document.getElementById('hou-q')?.value;
+  if (!q?.trim()) return;
+  callSage(`You are a Houston business intelligence assistant for Kerr Consulting.
+Research request: "${q}"
+Give: key contacts to know, relevant Houston networks or events, and a suggested approach. Keep it practical for a B2B sales rep.`, 'hou-out');
+}
+
+function runTemplate() {
+  const type = document.getElementById('tpl-type')?.value;
+  const ctx = document.getElementById('tpl-ctx')?.value;
+  callSage(`Write a ${type} email in Tarun Jakkaraju's voice — he is a confident, direct, warm RevOps consultant in Houston. 
+Context: ${ctx || 'general'}.
+Write only the email. No subject line needed unless it's a cold outreach. Sound like a real person, not a template.`, 'tpl-out');
+}
+
+function runWinWire() {
+  const client = document.getElementById('ww-client')?.value;
+  const val = document.getElementById('ww-val')?.value;
+  const pkg = document.getElementById('ww-pkg')?.value;
+  const notes = document.getElementById('ww-notes')?.value;
+  callSage(`Write an exciting but professional win wire announcement for the Kerr Consulting Slack #wins channel.
+Client: ${client}, Deal value: ${val}, Package: ${pkg}.
+Details: ${notes}
+Format: Short, punchy, celebratory. Include deal value, client, what was won, and a one-liner about what made the deal happen. End with a team cheer.`, 'ww-out');
+}
+
+function runContentBrief() {
+  const topic = document.getElementById('cw-topic')?.value;
+  if (!topic?.trim()) return;
+  callSage(`Create a content brief for Kerr Consulting: "${topic}".
+Include: objective, target audience, key messages (3), suggested outline, and one differentiating angle. Keep it to one page.`, 'cw-out');
+}
+
+// ═══════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════
+function calcQuote() {
+  const base = parseInt(document.getElementById('pkg-sel')?.value || 0);
+  const ao1 = document.getElementById('ao1')?.checked ? 2500 : 0;
+  const ao2 = document.getElementById('ao2')?.checked ? 1800 : 0;
+  const ao3 = document.getElementById('ao3')?.checked ? 900 : 0;
+  const total = base + ao1 + ao2 + ao3;
+  const el = document.getElementById('quote-total');
+  if (el) el.textContent = '$' + total.toLocaleString();
+}
+
+function copyOut(id) {
+  const el = document.getElementById(id);
+  if (el) navigator.clipboard.writeText(el.textContent);
+}
+
+function submitLead() {
+  const co = document.getElementById('rl-co')?.value;
+  if (!co?.trim()) return;
+  document.getElementById('rl-confirm').style.display = 'block';
+  setTimeout(() => { const c = document.getElementById('rl-confirm'); if(c) c.style.display='none'; }, 4000);
+}
+
+function submitCapture() {
+  const txt = document.getElementById('qc-text')?.value;
+  if (!txt?.trim()) return;
+  document.getElementById('qc-confirm').style.display = 'block';
+  document.getElementById('qc-text').value = '';
+  setTimeout(() => { const c = document.getElementById('qc-confirm'); if(c) c.style.display='none'; }, 4000);
+}
+
+function submitDevReq() {
+  alert('Request submitted — Tarun will be notified via Slack.');
+}
+
+function postSlack() {
+  alert('Posting to #wins channel via Make.com webhook...');
+}
+
+function secTab(t) { }
+</script>
+</body>
+</html>
