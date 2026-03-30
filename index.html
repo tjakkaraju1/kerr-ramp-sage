@@ -4,60 +4,68 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kerr Consulting — Ramp·Sage RevOps</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#f7f6f2;--bg2:#efede8;--bg3:#e6e3db;--bg4:#dcd9d0;
-  --ink:#111009;--ink2:#252218;--ink3:#4a4638;--ink4:#807a6e;
-  --line:#d4d0c8;--line2:#c0bbb0;
-  --teal:#006d5b;--teal2:#008a72;--teal3:#e0f2ee;--teal4:#b8e5dc;
-  --navy:#0d2d4a;--navy2:#1a4a72;--navy3:#e0eaf2;--navy4:#b8d0e8;
-  --amber:#7a4800;--amber2:#a05f00;--amber3:#fef3e0;--amber4:#fde0a8;
-  --red:#8c1a0f;--red2:#b52210;--red3:#fce8e6;--red4:#f8c4be;
-  --green:#1a5c2a;--green2:#237a38;--green3:#e4f2e8;--green4:#b8dfc0;
-  --violet:#3d1a6e;--violet2:#5c2a9e;--violet3:#ede8f8;--violet4:#d0c0f0;
-  --orange:#8a3a00;--orange2:#b84e00;--orange3:#fef0e0;--orange4:#fdd0a0;
-  --mono:'JetBrains Mono',monospace;--sans:'Plus Jakarta Sans',sans-serif;
+  /* AnyWare Apps + Ramp brand palette */
+  --bg:#ffffff;--bg2:#f8f9fa;--bg3:#f0f2f5;--bg4:#e8ebef;
+  --ink:#0a0a0a;--ink2:#1a1a2e;--ink3:#374151;--ink4:#6b7280;
+  --line:#e5e7eb;--line2:#d1d5db;
+  /* Ramp green — primary accent (matches ramp.anywareapps.com CTAs) */
+  --teal:#00c22b;--teal2:#00d632;--teal3:#e6faea;--teal4:#b3f0c0;
+  /* AnyWare navy — sidebar, headers */
+  --navy:#1b2a5c;--navy2:#243580;--navy3:#eef1fb;--navy4:#c7d0f0;
+  /* Amber/warning */
+  --amber:#92400e;--amber2:#b45309;--amber3:#fffbeb;--amber4:#fde68a;
+  /* Red/error */
+  --red:#991b1b;--red2:#dc2626;--red3:#fef2f2;--red4:#fecaca;
+  /* Green/success */
+  --green:#065f46;--green2:#059669;--green3:#ecfdf5;--green4:#a7f3d0;
+  /* Violet */
+  --violet:#4c1d95;--violet2:#7c3aed;--violet3:#f5f3ff;--violet4:#ddd6fe;
+  /* Orange */
+  --orange:#92400e;--orange2:#d97706;--orange3:#fffbeb;--orange4:#fcd34d;
+  --mono:'JetBrains Mono',monospace;--sans:'Inter',system-ui,-apple-system,sans-serif;
 }
 html,body{height:100%;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:13px;line-height:1.5;overflow:hidden}
 .app{display:grid;grid-template-rows:54px 1fr;grid-template-columns:248px 1fr;height:100vh;overflow:hidden}
-/* TOPBAR */
-.topbar{grid-column:1/-1;background:var(--ink);display:flex;align-items:center;padding:0 16px;gap:12px;z-index:30}
-.logo-text{font-size:14px;font-weight:800;color:#f7f6f2;letter-spacing:-.02em;white-space:nowrap}
-.logo-text span{color:var(--teal2)}
+/* TOPBAR — AnyWare navy */
+.topbar{grid-column:1/-1;background:var(--navy);display:flex;align-items:center;padding:0 16px;gap:12px;z-index:30}
+.logo-text{font-size:14px;font-weight:800;color:#ffffff;letter-spacing:-.02em;white-space:nowrap}
+.logo-text span{color:var(--teal2);font-weight:900}
 .logo-sep{width:1px;height:18px;background:rgba(255,255,255,.15);flex-shrink:0}
 .logo-sub{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.28);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
 .user-sw{display:flex;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden;flex-shrink:0}
-.us-btn{font-family:var(--mono);font-size:10px;font-weight:600;padding:6px 13px;border:none;background:none;color:rgba(255,255,255,.35);cursor:pointer;transition:.15s}
+.us-btn{font-family:var(--sans);font-size:11px;font-weight:600;padding:6px 11px;border:none;background:none;color:rgba(255,255,255,.38);cursor:pointer;transition:.15s;white-space:nowrap}
 .us-btn:hover{color:rgba(255,255,255,.7)}
-.us-btn.active{background:var(--teal);color:#fff}
+.us-btn.active{background:var(--teal2);color:#000;font-weight:700}
 .tb-right{margin-left:auto;display:flex;gap:6px;align-items:center}
 .tb-btn{font-family:var(--mono);font-size:10px;font-weight:600;padding:5px 11px;border-radius:4px;border:1px solid rgba(255,255,255,.15);background:none;color:rgba(255,255,255,.4);cursor:pointer;transition:.15s;white-space:nowrap}
 .tb-btn:hover{border-color:rgba(255,255,255,.4);color:#fff}
-.tb-btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}
+.tb-btn.primary{background:var(--teal2);border-color:var(--teal2);color:#000;font-weight:700}
 .eap-badge{font-family:var(--mono);font-size:9px;font-weight:700;padding:3px 8px;border-radius:3px;background:rgba(250,204,21,.12);border:1px solid rgba(250,204,21,.28);color:#fbbf24;white-space:nowrap}
-/* SIDEBAR */
-.sidebar{background:var(--ink2);overflow-y:auto;display:flex;flex-direction:column}
+/* SIDEBAR — AnyWare navy */
+.sidebar{background:var(--navy);overflow-y:auto;display:flex;flex-direction:column}
 .sidebar::-webkit-scrollbar{width:0}
-.ns{padding:11px 15px 3px;font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:rgba(255,255,255,.18);text-transform:uppercase;font-weight:600}
-.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;cursor:pointer;color:rgba(255,255,255,.33);font-size:12px;font-weight:500;border-left:2px solid transparent;transition:.12s;user-select:none}
-.ni:hover{background:rgba(255,255,255,.04);color:rgba(255,255,255,.65)}
-.ni.on{border-left-color:var(--teal2);background:rgba(0,138,114,.1);color:#fff}
+.ns{padding:11px 15px 3px;font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:rgba(255,255,255,.22);text-transform:uppercase;font-weight:600}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;cursor:pointer;color:rgba(255,255,255,.38);font-size:12px;font-weight:500;border-left:2px solid transparent;transition:.12s;user-select:none}
+.ni:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.75)}
+.ni.on{border-left-color:var(--teal2);background:rgba(0,214,50,.08);color:#fff}
 .ni .ic{width:16px;text-align:center;font-size:13px;flex-shrink:0}
 .nbadge{margin-left:auto;font-size:9px;font-family:var(--mono);padding:2px 6px;border-radius:5px;font-weight:700}
 .nb-r{background:var(--red2);color:#fff}
-.nb-g{background:var(--teal);color:#fff}
+.nb-g{background:var(--teal2);color:#000}
 .nb-y{background:var(--amber2);color:#fff}
 .nb-d{background:rgba(255,255,255,.08);color:rgba(255,255,255,.33)}
-.ndiv{margin:5px 12px;height:1px;background:rgba(255,255,255,.05)}
+.ndiv{margin:5px 12px;height:1px;background:rgba(255,255,255,.06)}
 /* TEAM CARD */
-.team-card{margin:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:7px;padding:11px}
-.tc-label{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px}
-.tc-member{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.team-card{margin:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:7px;padding:11px}
+.tc-label{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.22);letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px}
+.tc-member{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05)}
 .tc-member:last-child{border-bottom:none}
 .tc-av{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;color:#fff}
-.tc-nm{font-size:11px;font-weight:600;color:rgba(255,255,255,.75);flex:1}
+.tc-nm{font-size:11px;font-weight:600;color:rgba(255,255,255,.78);flex:1}
 .tc-you{font-family:var(--mono);font-size:8px;color:var(--teal2);font-weight:700}
 /* MAIN + PANELS */
 .main{overflow:hidden;display:flex;flex-direction:column;background:var(--bg);min-height:0}
@@ -74,7 +82,7 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:var(--sa
 /* BUTTONS */
 .btn{font-family:var(--sans);font-size:11px;font-weight:700;padding:6px 13px;border-radius:5px;border:1px solid var(--line2);background:none;color:var(--ink3);cursor:pointer;transition:.15s;white-space:nowrap}
 .btn:hover{border-color:var(--teal);color:var(--teal)}
-.btn.go{background:var(--teal);border-color:var(--teal);color:#fff}
+.btn.go{background:var(--teal2);border-color:var(--teal2);color:#000;font-weight:700}
 .btn.go:hover{background:var(--teal2)}
 .btn.navy{background:var(--navy);border-color:var(--navy);color:#fff}
 .btn.red{background:var(--red2);border-color:var(--red2);color:#fff}
@@ -290,14 +298,16 @@ textarea.inp{resize:vertical;min-height:80px;line-height:1.6}
   <div class="logo-sep"></div>
   <div class="logo-sub">AnyWare Apps · CBH · Ramp Partner</div>
   <div class="user-sw">
-    <button class="us-btn active" id="usr-t" onclick="switchUser('tarun')">T · Tarun</button>
-    <button class="us-btn" id="usr-e" onclick="switchUser('ed')">E · Ed</button>
+    <button class="us-btn active" id="usr-t" onclick="switchUser('tarun')">Tarun Jakkaraju</button>
+    <button class="us-btn" id="usr-e" onclick="switchUser('ed')">Ed Hosey</button>
+    <button class="us-btn" id="usr-d" onclick="switchUser('dan')">Dan Krishman</button>
   </div>
   <div class="eap-badge">100C · 300 CRE · Intacct → Early Adopter</div>
   <div class="tb-right">
-    <button class="tb-btn" onclick="goPanel('writing','nav-writing')">✍ Writing Check</button>
-    <button class="tb-btn" onclick="goPanel('register','nav-register')">📋 Register Lead</button>
-    <button class="tb-btn primary" onclick="goPanel('clarifier','nav-clarify')">🔍 Sage Clarifier</button>
+    <button class="tb-btn ae-only" onclick="goPanel('writing','nav-writing')">✍ Writing Check</button>
+    <button class="tb-btn ae-only" onclick="goPanel('register','nav-register')">📋 Register Lead</button>
+    <button class="tb-btn primary ae-only" onclick="goPanel('clarifier','nav-clarify')">🔍 Sage Clarifier</button>
+    <button class="tb-btn dan-only" style="display:none" onclick="goPanel('dan','nav-dan')">💰 Commission Tracker</button>
   </div>
 </header>
 
@@ -315,25 +325,45 @@ textarea.inp{resize:vertical;min-height:80px;line-height:1.6}
       <div class="tc-nm">Ed Hosey</div>
       <div class="tc-you" id="you-e" style="display:none">YOU</div>
     </div>
+    <div class="tc-member">
+      <div class="tc-av" style="background:var(--violet2)">DK</div>
+      <div class="tc-nm">Dan Krishman</div>
+      <div class="tc-you" id="you-d" style="display:none">YOU</div>
+    </div>
   </div>
-  <div class="ns">Pipeline</div>
-  <div class="ni on" id="nav-pipe" onclick="goPanel('pipeline','nav-pipe')"><span class="ic">⚡</span>Pipeline <span class="nbadge nb-d" id="badge-pipe">1</span></div>
-  <div class="ni" id="nav-register" onclick="goPanel('register','nav-register')"><span class="ic">📋</span>Register Lead <span class="nbadge nb-r">!</span></div>
-  <div class="ni" id="nav-tmpl" onclick="goPanel('templates','nav-tmpl')"><span class="ic">✉</span>Templates <span class="nbadge nb-d">24</span></div>
-  <div class="ni" id="nav-sched" onclick="goPanel('scheduler','nav-sched')"><span class="ic">📅</span>Scheduler</div>
-  <div class="ndiv"></div>
-  <div class="ns">Intelligence</div>
-  <div class="ni" id="nav-clarify" onclick="goPanel('clarifier','nav-clarify')"><span class="ic">🔍</span>Sage Clarifier</div>
-  <div class="ni" id="nav-pricing" onclick="goPanel('pricing','nav-pricing')"><span class="ic">💰</span>Pricing + Syncs</div>
-  <div class="ni" id="nav-custom" onclick="goPanel('custom','nav-custom')"><span class="ic">⚙</span>Custom Dev Flow</div>
-  <div class="ni" id="nav-writing" onclick="goPanel('writing','nav-writing')"><span class="ic">✍</span>Writing Assistant</div>
-  <div class="ndiv"></div>
-  <div class="ns">Content</div>
-  <div class="ni" id="nav-content" onclick="goPanel('content','nav-content')"><span class="ic">📤</span>Win Wire + Blog <span class="nbadge nb-y">DUE</span></div>
-  <div class="ni" id="nav-contacts" onclick="goPanel('contacts','nav-contacts')"><span class="ic">👥</span>All Contacts</div>
-  <div class="ndiv"></div>
-  <div class="ns">AI Monitor</div>
-  <div class="ni" id="nav-monitor" onclick="goPanel('monitor','nav-monitor')"><span class="ic">🔴</span>Anomaly Monitor <span class="nbadge nb-r" id="monitor-badge">0</span></div>
+  <!-- AE-ONLY NAV (hidden for Dan) -->
+  <div class="ns ae-only">Pipeline</div>
+  <div class="ni on ae-only" id="nav-pipe" onclick="goPanel('pipeline','nav-pipe')"><span class="ic">⚡</span>Pipeline <span class="nbadge nb-d" id="badge-pipe">1</span></div>
+  <div class="ni ae-only" id="nav-register" onclick="goPanel('register','nav-register')"><span class="ic">📋</span>Register Lead <span class="nbadge nb-r">!</span></div>
+  <div class="ni ae-only" id="nav-tmpl" onclick="goPanel('templates','nav-tmpl')"><span class="ic">✉</span>Templates <span class="nbadge nb-d" id="tmpl-count">24</span></div>
+  <div class="ni ae-only" id="nav-sched" onclick="goPanel('scheduler','nav-sched')"><span class="ic">📅</span>Scheduler</div>
+  <div class="ndiv ae-only"></div>
+  <div class="ns ae-only">Intelligence</div>
+  <div class="ni ae-only" id="nav-clarify" onclick="goPanel('clarifier','nav-clarify')"><span class="ic">🔍</span>Sage Clarifier</div>
+  <div class="ni ae-only" id="nav-pricing" onclick="goPanel('pricing','nav-pricing')"><span class="ic">💰</span>Pricing + Syncs</div>
+  <div class="ni ae-only" id="nav-custom" onclick="goPanel('custom','nav-custom')"><span class="ic">⚙</span>Custom Dev Flow</div>
+  <div class="ni ae-only" id="nav-writing" onclick="goPanel('writing','nav-writing')"><span class="ic">✍</span>Writing Assistant</div>
+  <div class="ndiv ae-only"></div>
+  <div class="ns ae-only">Content</div>
+  <div class="ni ae-only" id="nav-winwire" onclick="goPanel('winwire','nav-winwire')"><span class="ic">🏆</span>Win Wire Generator<span class="nbadge nb-g" id="ww-badge" style="display:none">NEW</span></div>
+  <div class="ni ae-only" id="nav-content" onclick="goPanel('content','nav-content')"><span class="ic">📤</span>Content Workflow</div>
+  <div class="ni ae-only" id="nav-contacts" onclick="goPanel('contacts','nav-contacts')"><span class="ic">👥</span>All Contacts</div>
+  <div class="ni ae-only" id="nav-capture" onclick="goPanel('capture','nav-capture')"><span class="ic">📱</span>Quick Capture<span class="nbadge nb-g" id="capture-badge" style="display:none">NEW</span></div>
+  <div class="ndiv ae-only"></div>
+  <div class="ns ae-only">AI Monitor</div>
+  <div class="ni ae-only" id="nav-monitor" onclick="goPanel('monitor','nav-monitor')"><span class="ic">🔴</span>Anomaly Monitor <span class="nbadge nb-r" id="monitor-badge">0</span></div>
+  <div class="ni ae-only" id="nav-tracker" onclick="goPanel('tracker','nav-tracker')"><span class="ic">📊</span>Live Tracker</div>
+  <div class="ndiv ae-only"></div>
+  <div class="ns ae-only">AI Secretary</div>
+  <div class="ni ae-only" id="nav-secretary" onclick="goPanel('secretary','nav-secretary')"><span class="ic">🤖</span>AI Secretary<span class="nbadge nb-r" id="sec-badge">0</span></div>
+  <div class="ni ae-only" id="nav-network" onclick="goPanel('network','nav-network')"><span class="ic">🤝</span>Houston Networking</div>
+  <!-- DAN-ONLY NAV -->
+  <div class="ns dan-only" style="display:none">Commission</div>
+  <div class="ni dan-only" id="nav-dan" style="display:none" onclick="goPanel('dan','nav-dan')"><span class="ic">💰</span>Commission Tracker</div>
+  <div class="ns dan-only" style="display:none">Pipeline</div>
+  <div class="ni dan-only" id="nav-dan-pipe" style="display:none" onclick="goPanel('dan','nav-dan');setTimeout(()=>{const el=document.getElementById('dan-comm-table');if(el)el.scrollIntoView({behavior:'smooth'});},200)"><span class="ic">📊</span>Deal Overview</div>
+  <div class="ni dan-only" id="nav-dan-wires" style="display:none" onclick="goPanel('dan','nav-dan');setTimeout(()=>{const el=document.getElementById('dan-wirelist');if(el)el.scrollIntoView({behavior:'smooth'});},200)"><span class="ic">🏆</span>Win Wires</div>
+  <div class="ni dan-only" id="nav-dan-signoff" style="display:none" onclick="goPanel('dan','nav-dan');setTimeout(()=>{const el=document.getElementById('dan-signoff');if(el)el.scrollIntoView({behavior:'smooth'});},200)"><span class="ic">✅</span>Sign-Off Queue</div>
 </aside>
 
 <!-- MAIN -->
@@ -365,7 +395,7 @@ textarea.inp{resize:vertical;min-height:80px;line-height:1.6}
   </div>
   <div class="scroll">
     <table class="tbl"><thead><tr>
-      <th>Company</th><th>ERP</th><th>Type</th><th>Source</th><th>Owner</th>
+      <th>Company</th><th>ERP</th><th>Type</th><th>Source</th><th>Referred By</th><th>Owner</th>
       <th>Contact</th><th>Tier</th><th>Status</th><th>Next Step</th>
     </tr></thead><tbody id="pipe-body"></tbody></table>
   </div>
@@ -415,6 +445,18 @@ textarea.inp{resize:vertical;min-height:80px;line-height:1.6}
         <div id="erp-flag" style="display:none;margin-top:6px"></div>
       </div>
       <div class="reg-field"><div class="reg-lbl">Est. Annual Spend</div><input class="inp" id="r-spend" placeholder="e.g. $2M or unknown" oninput="updateRegPrev()"></div>
+      <div class="reg-field"><div class="reg-lbl" style="display:flex;align-items:center;gap:5px">Referred By <span style="font-family:var(--mono);font-size:9px;background:var(--red3);color:var(--red2);padding:1px 5px;border-radius:3px;font-weight:700">COMMISSION RULE</span></div>
+        <select class="inp" id="r-referredby" onchange="checkRefSource(this.value)">
+          <option value="">Select referral source...</option>
+          <option value="cbh">CBH (Cherry Bekaert Hamilton) — commission owed to AE</option>
+          <option value="kerr">Kerr self-sourced — commission owed to AE</option>
+          <option value="ramp">Ramp AE (Jamie/Eric) — NO commission to Tarun or Ed</option>
+          <option value="ed">Ed Hosey — internal referral</option>
+          <option value="tarun">Tarun Jakkaraju — internal referral</option>
+          <option value="other">Other / Unknown — Dan reviews</option>
+        </select>
+        <div id="ref-flag" style="display:none;margin-top:6px"></div>
+      </div>
     </div>
     <div class="sh">Step 3 — Conflict check</div>
     <div style="background:var(--bg2);border:1px solid var(--line);border-radius:7px;padding:13px;margin-bottom:14px">
@@ -458,14 +500,82 @@ textarea.inp{resize:vertical;min-height:80px;line-height:1.6}
       <button class="btn go" onclick="copyText(document.getElementById('wa-result').textContent)">📋 Copy cleaned text</button>
     </div>
     <div style="margin-top:18px">
-      <div class="sh">Expert frameworks baked in</div>
+      <div class="sh">Tarun's expert framework library — 12 frameworks</div>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--teal);font-weight:700;letter-spacing:.06em;margin-bottom:9px;padding:5px 9px;background:var(--teal3);border-radius:4px;border:1px solid var(--teal4);display:inline-block">TARUN ONLY — not applied to Ed or Dan</div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:11px"><div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:4px">Chris Voss</div><div style="font-size:11px;color:var(--ink4)">Mirror · Label emotions · Calibrated questions · No = start</div></div>
-        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:11px"><div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:4px">Jeb Blount</div><div style="font-size:11px;color:var(--ink4)">Pattern interrupt · 30-sec value · One CTA only</div></div>
-        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:11px"><div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:4px">Justin Welsh</div><div style="font-size:11px;color:var(--ink4)">Hook first line · Specificity beats vague · Curiosity gap</div></div>
-        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:11px"><div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:4px">Alex Hormozi</div><div style="font-size:11px;color:var(--ink4)">Numbers over adjectives · Remove friction · No-brainer offer</div></div>
-        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:11px"><div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:4px">Aaron Ross</div><div style="font-size:11px;color:var(--ink4)">3-4 sentences cold · Sell the meeting · Personalize over volume</div></div>
-        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:11px"><div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:4px">David Ogilvy</div><div style="font-size:11px;color:var(--ink4)">First sentence = 80% · Specifics sell · Every sentence earns its place</div></div>
+        <!-- Original 6 -->
+        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:11px;border-top:2px solid var(--navy2)">
+          <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:2px">Chris Voss</div>
+          <div style="font-family:var(--mono);font-size:8px;color:var(--ink4);margin-bottom:5px">Never Split the Difference</div>
+          <div style="font-size:11px;color:var(--ink3);line-height:1.5">Mirror prospect's last 3 words · Label emotions ("It seems like…") · Calibrated questions ("How am I supposed to…?") · No = start of conversation</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:11px;border-top:2px solid var(--navy2)">
+          <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:2px">Jeb Blount</div>
+          <div style="font-family:var(--mono);font-size:8px;color:var(--ink4);margin-bottom:5px">Fanatical Prospecting</div>
+          <div style="font-size:11px;color:var(--ink3);line-height:1.5">Pattern interrupt opener · Bridge pain to solution in 30 sec · One CTA only · Phone > email for breakthrough</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:11px;border-top:2px solid var(--navy2)">
+          <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:2px">Justin Welsh</div>
+          <div style="font-family:var(--mono);font-size:8px;color:var(--ink4);margin-bottom:5px">LinkedIn Content System</div>
+          <div style="font-size:11px;color:var(--ink3);line-height:1.5">Hook in first line or lose them · Specificity beats vague every time · Curiosity gap drives clicks · Short sentences win</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:11px;border-top:2px solid var(--navy2)">
+          <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:2px">Alex Hormozi</div>
+          <div style="font-family:var(--mono);font-size:8px;color:var(--ink4);margin-bottom:5px">$100M Offers</div>
+          <div style="font-size:11px;color:var(--ink3);line-height:1.5">Numbers over adjectives · "20–40 hours saved" not "saves time" · Remove all friction · Make it a no-brainer</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:11px;border-top:2px solid var(--navy2)">
+          <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:2px">Aaron Ross</div>
+          <div style="font-family:var(--mono);font-size:8px;color:var(--ink4);margin-bottom:5px">Predictable Revenue</div>
+          <div style="font-size:11px;color:var(--ink3);line-height:1.5">3–4 sentences cold max · Sell the meeting not the product · Personalization over volume · One ask only</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:11px;border-top:2px solid var(--navy2)">
+          <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:2px">David Ogilvy</div>
+          <div style="font-family:var(--mono);font-size:8px;color:var(--ink4);margin-bottom:5px">Ogilvy on Advertising</div>
+          <div style="font-size:11px;color:var(--ink3);line-height:1.5">First sentence does 80% of the work · Specifics sell · Every sentence earns its place or gets cut</div>
+        </div>
+        <!-- New 6 — Tarun-exclusive -->
+        <div style="background:var(--teal3);border:1px solid var(--teal4);border-radius:6px;padding:11px;border-top:2px solid var(--teal)">
+          <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:2px">Vanessa Van Edwards</div>
+          <div style="font-family:var(--mono);font-size:8px;color:var(--teal);margin-bottom:5px">Captivate · Cues · Science of People</div>
+          <div style="font-size:11px;color:var(--ink3);line-height:1.5">Lead with warmth cues before competence · Power of the eyebrow flash in first meeting · Name + interest = instant liking · Ask "What's your biggest challenge with X?" not "Do you have a problem with X?"</div>
+        </div>
+        <div style="background:var(--teal3);border:1px solid var(--teal4);border-radius:6px;padding:11px;border-top:2px solid var(--teal)">
+          <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:2px">Robert Cialdini</div>
+          <div style="font-family:var(--mono);font-size:8px;color:var(--teal);margin-bottom:5px">Influence · Pre-Suasion</div>
+          <div style="font-size:11px;color:var(--ink3);line-height:1.5">Reciprocity: give value first · Social proof: "Others in your industry..." · Authority: mention CBH + Platinum Partner · Scarcity: "only a few EAP slots" · Liking: find genuine common ground · Unity: "we" language</div>
+        </div>
+        <div style="background:var(--teal3);border:1px solid var(--teal4);border-radius:6px;padding:11px;border-top:2px solid var(--teal)">
+          <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:2px">Dale Carnegie</div>
+          <div style="font-family:var(--mono);font-size:8px;color:var(--teal);margin-bottom:5px">How to Win Friends & Influence People</div>
+          <div style="font-size:11px;color:var(--ink3);line-height:1.5">Use their name · Be genuinely interested in THEM · Let them do most of the talking · Make them feel important and heard · Never criticize — ask questions instead</div>
+        </div>
+        <div style="background:var(--teal3);border:1px solid var(--teal4);border-radius:6px;padding:11px;border-top:2px solid var(--teal)">
+          <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:2px">Daniel Kahneman</div>
+          <div style="font-family:var(--mono);font-size:8px;color:var(--teal);margin-bottom:5px">Thinking Fast and Slow</div>
+          <div style="font-size:11px;color:var(--ink3);line-height:1.5">Loss aversion: "stop losing 30 hrs/mo" hits harder than "save 30 hrs" · Anchor high first · Frame as avoiding pain not gaining benefit · System 1 decides — make it feel obvious</div>
+        </div>
+        <div style="background:var(--teal3);border:1px solid var(--teal4);border-radius:6px;padding:11px;border-top:2px solid var(--teal)">
+          <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:2px">Daniel Pink</div>
+          <div style="font-family:var(--mono);font-size:8px;color:var(--teal);margin-bottom:5px">To Sell Is Human</div>
+          <div style="font-size:11px;color:var(--ink3);line-height:1.5">Attunement: see from their perspective first · Problem finding > problem solving · Clarity: help them see what they can't see · Buoyancy: positive realism, not toxic positivity</div>
+        </div>
+        <div style="background:var(--teal3);border:1px solid var(--teal4);border-radius:6px;padding:11px;border-top:2px solid var(--teal)">
+          <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:2px">Joe Navarro</div>
+          <div style="font-family:var(--mono);font-size:8px;color:var(--teal);margin-bottom:5px">What Every BODY Is Saying · FBI</div>
+          <div style="font-size:11px;color:var(--ink3);line-height:1.5">Read comfort vs discomfort signals · Feet point toward interest · Pacifying behavior = stress signal · Open palms build trust · Match their energy level to build rapport</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;padding:10px 12px;background:var(--bg2);border:1px solid var(--line);border-radius:6px">
+        <div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px">How these frameworks apply to your emails</div>
+        <div style="font-size:11px;color:var(--ink3);line-height:1.7">
+          <b>Subject line →</b> Welsh (hook) + Ogilvy (specific)<br>
+          <b>Opening sentence →</b> Van Edwards (warmth first) + Carnegie (their name + genuine interest)<br>
+          <b>Pain statement →</b> Kahneman (loss frame: "stop losing 30 hrs/mo") + Hormozi (specific numbers)<br>
+          <b>Social proof →</b> Cialdini (others in their industry + authority signals)<br>
+          <b>CTA →</b> Blount (one ask) + Aaron Ross (sell the meeting, not the product)<br>
+          <b>Tone throughout →</b> Voss (calibrated questions) + Pink (attunement — see from their view)
+        </div>
       </div>
     </div>
   </div></div>
@@ -606,6 +716,139 @@ textarea.inp{resize:vertical;min-height:80px;line-height:1.6}
   </div></div>
 </div>
 
+<!-- WIN WIRE GENERATOR -->
+<div class="panel" id="panel-winwire">
+  <div class="ph">
+    <div class="ph-l">
+      <h1>Win Wire Generator</h1>
+      <p>Load a deal or paste a transcript → fills automatically → one click to email Maddie</p>
+    </div>
+    <div class="ph-r">
+      <select id="ww-deal-select" class="inp" style="min-width:200px;padding:5px 10px;font-size:11px" onchange="loadWWDeal(this.value)">
+        <option value="">← Load from pipeline deal...</option>
+      </select>
+      <button class="btn go" onclick="generateWW()">⚡ Generate</button>
+    </div>
+  </div>
+  <div class="scroll"><div style="padding:16px 20px;display:grid;grid-template-columns:1fr 1fr;gap:16px;min-height:0">
+
+    <!-- LEFT: INPUT FORM -->
+    <div>
+      <!-- TRANSCRIPT UPLOAD -->
+      <div style="background:var(--navy3);border:1px solid var(--navy4);border-radius:8px;padding:14px;margin-bottom:14px">
+        <div class="sh" style="color:var(--navy2);margin-bottom:8px">Option A — Upload Teams transcript or call notes</div>
+        <div style="font-size:11px;color:var(--navy2);margin-bottom:9px;line-height:1.6">Export transcript from Teams after your close call (⋯ → Download → .docx or .txt). Upload below and Claude extracts Problem, Solution, Result automatically.</div>
+        <div id="ww-upload-zone" style="border:2px dashed var(--navy4);border-radius:6px;padding:20px;text-align:center;cursor:pointer;transition:.15s;background:#fff" onclick="document.getElementById('ww-file-input').click()" ondragover="event.preventDefault();this.style.borderColor='var(--teal)'" ondragleave="this.style.borderColor='var(--navy4)'" ondrop="handleWWDrop(event)">
+          <div style="font-size:20px;margin-bottom:6px">📄</div>
+          <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:3px">Drop transcript or call notes here</div>
+          <div style="font-size:11px;color:var(--ink4)">.txt · .docx · .pdf · or paste text below</div>
+          <input type="file" id="ww-file-input" accept=".txt,.docx,.pdf,.doc" style="display:none" onchange="handleWWFile(this)">
+        </div>
+        <div id="ww-file-status" style="display:none;margin-top:8px;padding:8px 10px;background:var(--teal3);border:1px solid var(--teal4);border-radius:5px;font-size:11px;color:var(--teal);font-weight:600"></div>
+        <textarea id="ww-transcript" class="inp" style="margin-top:9px;min-height:80px;font-size:11px;resize:vertical" placeholder="Or paste transcript text / call notes here..."></textarea>
+        <button class="btn go" style="margin-top:7px;width:100%;font-size:11px" onclick="extractFromTranscript()">⚡ Extract from transcript</button>
+      </div>
+
+      <!-- MANUAL FIELDS -->
+      <div style="background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:14px">
+        <div class="sh" style="margin-bottom:10px">Option B — Fill fields manually</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:9px">
+          <div>
+            <div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px">Company Name <span style="color:var(--red2)">*</span></div>
+            <input class="inp" id="ww-co" placeholder="Company name" oninput="updateWWPreview()">
+          </div>
+          <div>
+            <div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px">ERP / Product <span style="color:var(--red2)">*</span></div>
+            <select class="inp" id="ww-erp" onchange="updateWWPreview()">
+              <option value="">Select...</option>
+              <option>Sage 100</option><option>Sage 300</option>
+              <option>Sage 100 Contractor</option><option>Sage 300 CRE</option>
+              <option>Sage Intacct Construction</option><option>Sage Intacct Standard</option>
+              <option>QBO (QuickBooks Online)</option><option>Sage X3</option>
+            </select>
+          </div>
+          <div>
+            <div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px">Industry</div>
+            <input class="inp" id="ww-industry" placeholder="e.g. Construction, Manufacturing" oninput="updateWWPreview()">
+          </div>
+          <div>
+            <div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px">Company Size (FTE)</div>
+            <input class="inp" id="ww-fte" placeholder="e.g. 150 employees" oninput="updateWWPreview()">
+          </div>
+          <div>
+            <div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px">Pricing Tier <span style="color:var(--red2)">*</span></div>
+            <select class="inp" id="ww-tier" onchange="updateWWPreview()">
+              <option value="">Select tier...</option>
+              <option value="Tier 1 — $6,000/year">Tier 1 — $6,000/year</option>
+              <option value="Tier 2 — $8,500/year">Tier 2 — $8,500/year</option>
+              <option value="Tier 3 — $11,000/year">Tier 3 — $11,000/year</option>
+              <option value="Custom — volume-based">Custom — volume-based</option>
+            </select>
+          </div>
+          <div>
+            <div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px">Ramp AE</div>
+            <select class="inp" id="ww-ae" onchange="updateWWPreview()">
+              <option value="Jamie Kraus">Jamie Kraus (jamie.kraus@ramp.com)</option>
+              <option value="Eric Lengerich">Eric Lengerich (elengerich@ramp.com)</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-bottom:9px">
+          <div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px">Problem — what were they doing manually? <span style="color:var(--red2)">*</span></div>
+          <textarea class="inp" id="ww-problem" style="min-height:60px;resize:vertical" placeholder="e.g. The AP team at [Company] was manually exporting transactions from Sage 100 and reconciling against corporate card spend every month-end — a process taking 30+ hours per month..." oninput="updateWWPreview()"></textarea>
+        </div>
+        <div style="margin-bottom:9px">
+          <div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px">Solution — what does Ramp + Sage do for them? <span style="color:var(--red2)">*</span></div>
+          <textarea class="inp" id="ww-solution" style="min-height:60px;resize:vertical" placeholder="e.g. With the AnyWare Apps connector, AP invoices, payments, vendors, and GL accounts now sync automatically between Sage 100 and Ramp on an hourly schedule..." oninput="updateWWPreview()"></textarea>
+        </div>
+        <div>
+          <div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px">Result — quantify if possible <span style="color:var(--red2)">*</span></div>
+          <textarea class="inp" id="ww-result" style="min-height:60px;resize:vertical" placeholder="e.g. Reduced month-end reconciliation from 30 hours to under 2 hours. Eliminated manual data entry errors. AP team can now close books 5 days faster..." oninput="updateWWPreview()"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: PREVIEW + OUTPUT -->
+    <div style="display:flex;flex-direction:column;gap:12px">
+
+      <!-- WIN WIRE PREVIEW -->
+      <div style="background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:14px;flex:1;display:flex;flex-direction:column">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div class="sh" style="margin-bottom:0;flex:1">Win Wire preview</div>
+          <button class="btn" style="font-size:10px;padding:4px 9px;margin-left:8px" onclick="editWW()">✏ Edit</button>
+        </div>
+        <div id="ww-preview" contenteditable="false" style="background:#fff;border:1px solid var(--line);border-radius:6px;padding:13px;font-size:12px;color:var(--ink2);line-height:1.85;white-space:pre-wrap;font-family:var(--sans);flex:1;min-height:200px;outline:none">Fill in the fields on the left to preview the win wire →</div>
+        <div style="display:flex;gap:6px;margin-top:9px;flex-wrap:wrap">
+          <button class="btn go" onclick="copyWWContent()" style="flex:1">📋 Copy win wire</button>
+          <button class="btn" onclick="clearWW()" style="flex-shrink:0">✕ Clear</button>
+        </div>
+      </div>
+
+      <!-- EMAIL TO MADDIE -->
+      <div style="background:var(--amber3);border:1px solid var(--amber4);border-radius:8px;padding:14px">
+        <div class="sh" style="color:var(--amber);margin-bottom:9px">Email to Maddie — ready to send</div>
+        <div style="background:#fff;border:1px solid var(--amber4);border-radius:5px;padding:11px;font-size:11px;color:var(--ink2);line-height:1.85;white-space:pre-wrap;font-family:var(--sans);max-height:200px;overflow-y:auto" id="ww-maddie-email">Generate win wire first →</div>
+        <div style="display:flex;gap:6px;margin-top:9px">
+          <button class="btn go" style="flex:1" onclick="copyWWEmail()">📋 Copy email</button>
+          <button class="btn" style="flex:1" onclick="openWWOutlook()">✉ Open in Outlook</button>
+        </div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--amber);font-weight:700;margin-top:7px">WED EOD · maddie@alphadigitalpro.com · CC: <span id="ww-cc-label">ehosey@kerrconsulting.com</span></div>
+      </div>
+
+      <!-- APPROVAL CHECKLIST -->
+      <div style="background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:13px">
+        <div class="sh" style="margin-bottom:9px">Before sending checklist</div>
+        <div style="display:flex;flex-direction:column;gap:6px" id="ww-checklist">
+          <label style="display:flex;gap:8px;align-items:center;cursor:pointer;font-size:12px;color:var(--ink3)"><input type="checkbox" accent-color="var(--teal)"> Posted in Ramp Sales Team Chat (Teams) on Tuesday</label>
+          <label style="display:flex;gap:8px;align-items:center;cursor:pointer;font-size:12px;color:var(--ink3)"><input type="checkbox" accent-color="var(--teal)"> No comments from Tuesday post (or comments addressed)</label>
+          <label style="display:flex;gap:8px;align-items:center;cursor:pointer;font-size:12px;color:var(--ink3)"><input type="checkbox" accent-color="var(--teal)"> Deal marked as Won in pipeline</label>
+          <label style="display:flex;gap:8px;align-items:center;cursor:pointer;font-size:12px;color:var(--ink3)"><input type="checkbox" accent-color="var(--teal)"> Win wire sent before Wed EOD</label>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
 <!-- CONTENT WORKFLOW -->
 <div class="panel" id="panel-content">
   <div class="ph"><div class="ph-l"><h1>Win Wire + Blog</h1><p>Tarun sends all · Ed cc'd · Tuesday Teams → Wednesday Maddie + Megan → Friday customer list</p></div>
@@ -633,6 +876,222 @@ textarea.inp{resize:vertical;min-height:80px;line-height:1.6}
     <div class="mon-stat"><div class="mon-lbl">Dismissed</div><div class="mon-val" style="color:var(--ink4)" id="mon-dis">0</div></div>
   </div>
   <div class="scroll"><div style="padding:14px 18px" id="anomaly-list"></div></div>
+</div>
+
+<!-- LIVE TRACKER -->
+<div class="panel" id="panel-tracker">
+  <div class="ph">
+    <div class="ph-l"><h1>Live Pipeline Tracker</h1><p>Real-time deal progress · touch sequences · activity log · auto-refreshes every 60 seconds</p></div>
+    <div class="ph-r">
+      <span id="tracker-last" style="font-family:var(--mono);font-size:10px;color:var(--ink4)">Updated just now</span>
+      <button class="btn" onclick="buildTracker()">↻ Refresh</button>
+      <button class="btn go" onclick="goPanel('pipeline','nav-pipe')">← Pipeline</button>
+    </div>
+  </div>
+  <div class="scroll"><div style="padding:14px 18px">
+    <!-- SUMMARY STATS -->
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:16px" id="tracker-stats"></div>
+    <!-- DEAL CARDS -->
+    <div class="sh">All active deals — click to open</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px" id="tracker-cards"></div>
+  </div></div>
+</div>
+
+<!-- AI SECRETARY -->
+<div class="panel" id="panel-secretary">
+  <div class="ph">
+    <div class="ph-l"><h1>AI Secretary</h1><p>Your proactive AI assistant · tracks what needs to happen · flags what's been missed · tells you exactly what to do next</p></div>
+    <div class="ph-r">
+      <button class="btn" onclick="buildSecretary()">↻ Re-analyze</button>
+      <button class="btn go" onclick="dismissAllSec()">✓ Dismiss all</button>
+    </div>
+  </div>
+  <div class="scroll"><div style="padding:14px 18px">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px" id="sec-summary"></div>
+    <div class="sh">Action queue — sorted by urgency</div>
+    <div id="sec-list"></div>
+    <div style="margin-top:20px">
+      <div class="sh">Make.com notification preview</div>
+      <div style="background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:14px">
+        <div style="font-size:12px;color:var(--ink3);line-height:1.7;margin-bottom:10px">When Make.com is connected, these are the Slack group DM messages Tarun and Ed will receive automatically the moment each trigger fires:</div>
+        <div id="sec-slack-previews"></div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- HOUSTON NETWORKING -->
+<div class="panel" id="panel-network">
+  <div class="ph">
+    <div class="ph-l"><h1>Houston Networking</h1><p>Finance + accounting groups · chamber events · CFO/Controller communities · in-person business development</p></div>
+    <div class="ph-r">
+      <button class="btn go" onclick="addNetworkEvent()">+ Add event</button>
+    </div>
+  </div>
+  <div class="scroll"><div style="padding:14px 18px">
+    <div class="al al-t"><div class="al-icon">🎯</div><div><b>Your target audience is in these rooms.</b> Controllers and CFOs at Houston finance events are exactly who you sell to. One conversation at FEI or a CFO Leadership Council event is worth 50 cold emails. These groups are pre-qualified — they all have ERPs, AP teams, and month-end pain.</div></div>
+
+    <div class="sh">Top Houston finance + accounting groups</div>
+    <div id="network-orgs"></div>
+
+    <div class="sh" style="margin-top:16px">Upcoming events tracker</div>
+    <div id="network-events"></div>
+
+    <div class="sh" style="margin-top:16px">Annual networking budget calculator</div>
+    <div style="background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:14px">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px" id="budget-inputs"></div>
+      <div style="background:var(--teal3);border:1px solid var(--teal4);border-radius:6px;padding:12px">
+        <div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--teal);letter-spacing:.07em;margin-bottom:8px">ANNUAL ROI ESTIMATE</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px" id="budget-roi"></div>
+      </div>
+    </div>
+
+    <div class="sh" style="margin-top:16px">Event conversation guide — what to say</div>
+    <div style="background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:14px">
+      <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:10px">When someone asks what you do:</div>
+      <div style="background:#fff;border:1px solid var(--line);border-radius:5px;padding:12px;font-size:12px;color:var(--ink2);line-height:1.85;margin-bottom:10px">"I work with mid-market companies on automating their AP and expense management — specifically connecting Sage 100, Sage 300, and QuickBooks Online to Ramp so the finance team stops doing manual reconciliation at month-end. Most companies we work with save 20–40 hours a month and close books 5 days faster. What ERP are you on?"</div>
+      <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:8px">If they say Sage / QuickBooks / Intacct — you have a live prospect. Say:</div>
+      <div style="background:var(--teal3);border:1px solid var(--teal4);border-radius:5px;padding:12px;font-size:12px;color:var(--teal2);line-height:1.85">"That's actually exactly what we specialize in. Are you handling the reconciliation manually right now? I'd love to show you what the connector does — do you have a card? I'll send you a quick overview and we can do 30 minutes on Teams."</div>
+      <button class="btn go" style="margin-top:9px" onclick="copyText('I work with mid-market companies on automating their AP and expense management — specifically connecting Sage 100, Sage 300, and QuickBooks Online to Ramp so the finance team stops doing manual reconciliation at month-end. Most companies we work with save 20–40 hours a month and close books 5 days faster. What ERP are you on?')">📋 Copy elevator pitch</button>
+    </div>
+  </div></div>
+</div>
+
+<!-- QUICK CAPTURE -->
+<div class="panel" id="panel-capture">
+  <div class="ph">
+    <div class="ph-l"><h1>Quick Capture</h1><p>Log leads from networking events · Slack bot does this on your phone · desk entry here</p></div>
+    <div class="ph-r"><button class="btn go" onclick="submitCapture()">+ Add lead</button></div>
+  </div>
+  <div class="scroll"><div style="padding:16px 20px;max-width:860px">
+
+    <!-- SLACK METHOD (primary) -->
+    <div class="al al-t"><div class="al-icon">📱</div><div><b>Fastest method — use this at events:</b> Open Slack on your phone → DM the <b>#lead-capture</b> channel → type naturally. Make.com parses it and adds to Google Sheets automatically. Confirmation DM sent back to you and Ed.</div></div>
+
+    <div style="background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:16px;margin-bottom:16px">
+      <div class="sh" style="margin-bottom:10px">What to type in Slack — any of these formats work</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="background:#fff;border:1px solid var(--line);border-radius:5px;padding:11px 13px">
+          <div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--teal);letter-spacing:.06em;margin-bottom:5px">FASTEST — just talk normally</div>
+          <div style="font-size:12px;color:var(--ink2);line-height:1.7">"Met Sarah Chen at FEI Houston. Controller at Meridian Foods. On Sage 300. Pain is manual month-end AP close takes 3 days. sarah.chen@meridianfoods.com 713.555.1234"</div>
+          <button class="btn" style="margin-top:7px;font-size:10px;padding:4px 9px" onclick="copyText('Met [First Last] at [Event]. [Title] at [Company]. On [ERP]. Pain is [describe]. [email] [phone]')">📋 Copy format</button>
+        </div>
+        <div style="background:#fff;border:1px solid var(--line);border-radius:5px;padding:11px 13px">
+          <div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--navy2);letter-spacing:.06em;margin-bottom:5px">STRUCTURED — if you want clean fields</div>
+          <div style="font-size:12px;color:var(--ink2);line-height:1.7">Name: Sarah Chen | Company: Meridian Foods | Title: Controller | ERP: Sage 300 | Email: sarah.chen@meridianfoods.com | Phone: 713.555.1234 | Source: FEI Houston | Pain: manual AP reconciliation month-end</div>
+          <button class="btn" style="margin-top:7px;font-size:10px;padding:4px 9px" onclick="copyText('Name: [name] | Company: [company] | Title: [title] | ERP: [ERP] | Email: [email] | Phone: [phone] | Source: [event] | Pain: [what they said]')">📋 Copy format</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DESK ENTRY FORM -->
+    <div style="background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:16px;margin-bottom:16px">
+      <div class="sh" style="margin-bottom:12px">Desk entry — add lead manually</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+        <div><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.07em">First Name</div><input class="inp" id="cap-first" placeholder="First name..."></div>
+        <div><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.07em">Last Name</div><input class="inp" id="cap-last" placeholder="Last name..."></div>
+        <div><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.07em">Title</div><input class="inp" id="cap-title" placeholder="Controller, CFO, AP Manager..."></div>
+        <div><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.07em">Company</div><input class="inp" id="cap-co" placeholder="Company name..."></div>
+        <div><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.07em">ERP Mentioned</div>
+          <select class="inp" id="cap-erp">
+            <option value="">Select or leave blank...</option>
+            <option>Sage 100</option><option>Sage 300</option>
+            <option>Sage 100 Contractor</option><option>Sage 300 CRE</option>
+            <option>Sage Intacct</option><option>QBO (QuickBooks Online)</option>
+            <option>Not mentioned</option><option>Unknown</option>
+          </select>
+        </div>
+        <div><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.07em">Industry</div><input class="inp" id="cap-ind" placeholder="e.g. Construction, Healthcare..."></div>
+        <div><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.07em">Email</div><input class="inp" id="cap-email" placeholder="email@company.com" type="email"></div>
+        <div><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.07em">Phone</div><input class="inp" id="cap-phone" placeholder="713.555.1234"></div>
+        <div><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.07em">Source / Event</div><input class="inp" id="cap-src" placeholder="FEI Houston, TXCPA Morning Buzz..."></div>
+        <div><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.07em">Captured by</div>
+          <select class="inp" id="cap-by">
+            <option value="Tarun">Tarun Jakkaraju</option>
+            <option value="Ed">Ed Hosey</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-bottom:10px"><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.07em">Pain signal / what they said</div><textarea class="inp" id="cap-pain" style="min-height:60px;resize:vertical" placeholder="What pain did they mention? What are they struggling with?"></textarea></div>
+      <div style="display:flex;gap:8px"><button class="btn go" onclick="submitCapture()">+ Add to captured leads</button><button class="btn" onclick="clearCapture()">✕ Clear</button></div>
+    </div>
+
+    <!-- CAPTURED LEADS TABLE -->
+    <div class="sh">Leads captured this session</div>
+    <div id="captured-list">
+      <div style="text-align:center;padding:24px;color:var(--ink4);background:var(--bg2);border:1px solid var(--line);border-radius:7px">
+        <div style="font-size:20px;margin-bottom:8px">📱</div>
+        <div style="font-size:12px;font-weight:700;color:var(--ink)">No leads captured yet this session</div>
+        <div style="font-size:11px;margin-top:4px">Use Slack on your phone at events, or fill the form above at your desk</div>
+      </div>
+    </div>
+
+    <!-- SCORING GUIDE -->
+    <div style="margin-top:16px">
+      <div class="sh">Lead scoring — quick reference</div>
+      <div style="background:var(--bg2);border:1px solid var(--line);border-radius:7px;padding:13px">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+          <div style="text-align:center"><div style="font-size:18px;font-weight:800;color:var(--teal)">+25</div><div style="font-size:11px;color:var(--ink3)">ERP confirmed (exact)</div></div>
+          <div style="text-align:center"><div style="font-size:18px;font-weight:800;color:var(--navy2)">+15</div><div style="font-size:11px;color:var(--ink3)">Decision maker (Controller/CFO)</div></div>
+          <div style="text-align:center"><div style="font-size:18px;font-weight:800;color:var(--navy2)">+15</div><div style="font-size:11px;color:var(--ink3)">Pain signal mentioned</div></div>
+          <div style="text-align:center"><div style="font-size:18px;font-weight:800;color:var(--amber2)">+15</div><div style="font-size:11px;color:var(--ink3)">25–500 employees</div></div>
+          <div style="text-align:center"><div style="font-size:18px;font-weight:800;color:var(--amber2)">+10</div><div style="font-size:11px;color:var(--ink3)">US-based</div></div>
+          <div style="text-align:center"><div style="font-size:18px;font-weight:800;color:var(--ink4)">+10</div><div style="font-size:11px;color:var(--ink3)">Not already Ramp customer</div></div>
+          <div style="text-align:center"><div style="font-size:18px;font-weight:800;color:var(--green2)">70+</div><div style="font-size:11px;color:var(--green2);font-weight:700">Register + pursue</div></div>
+          <div style="text-align:center"><div style="font-size:18px;font-weight:800;color:var(--red2)">&lt;70</div><div style="font-size:11px;color:var(--red2);font-weight:700">Monitor / archive</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div></div>
+</div>
+
+<!-- DAN'S VIEW -->
+<div class="panel" id="panel-dan">
+  <div class="ph">
+    <div class="ph-l"><h1>Dan's Dashboard</h1><p>Commission tracker · referral source · sign-off queue · deal monitoring · Slack alerts on close</p></div>
+    <div class="ph-r">
+      <div style="font-family:var(--mono);font-size:10px;padding:5px 10px;background:var(--violet3);color:var(--violet2);border-radius:4px;border:1px solid var(--violet4);font-weight:700">Dan Krishman · Practice Director</div>
+      <button class="btn" onclick="buildDanView()">↻ Refresh</button>
+    </div>
+  </div>
+  <div class="scroll"><div style="padding:14px 18px">
+
+    <div class="al al-n" style="margin-bottom:14px"><div class="al-icon">👔</div><div>Share with Dan: <b>tjakkaraju1.github.io/kerr-ramp-sage</b> → sidebar → Dan's Dashboard. Read-only. Commission alerts fire to Dan's Slack automatically when deals close.</div></div>
+
+    <!-- COMMISSION SUMMARY STATS -->
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px" id="dan-stats"></div>
+
+    <!-- COMMISSION TRACKER -->
+    <div class="sh">Commission tracker — all deals by referral source</div>
+    <div class="al al-r" style="margin-bottom:10px"><div class="al-icon">⚠</div><div><b>Commission rule:</b> Deals referred by Ramp AEs (Jamie/Eric) = <b>NO commission to Tarun or Ed.</b> Deals sourced by CBH, Kerr, or self-sourced = commission owed to owning AE on close.</div></div>
+    <table class="tbl" style="margin-bottom:16px" id="dan-comm-table">
+      <thead><tr>
+        <th>Company</th><th>ERP</th><th>Referred By</th><th>Owner</th><th>Tier</th><th>Status</th><th>Commission</th><th>Notes</th>
+      </tr></thead>
+      <tbody id="dan-comm-body"></tbody>
+    </table>
+
+    <!-- SIGN-OFF QUEUE -->
+    <div class="sh" style="margin-top:4px">Sign-off queue — custom scope awaiting Dan's approval</div>
+    <div id="dan-signoff" style="margin-bottom:16px"></div>
+
+    <!-- CLOSED DEALS — COMMISSION DUE -->
+    <div class="sh">Closed deals — commission status</div>
+    <div id="dan-closed"></div>
+
+    <!-- WIN WIRES -->
+    <div class="sh" style="margin-top:16px">Win wire tracker</div>
+    <div id="dan-wirelist"></div>
+
+    <!-- MAKE.COM ALERT PREVIEW -->
+    <div class="sh" style="margin-top:16px">Slack alert — what Dan receives when a deal closes</div>
+    <div style="background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:14px">
+      <div style="font-size:12px;color:var(--ink3);margin-bottom:9px">When Make.com is connected, Dan receives this Slack DM the moment a deal is marked Won:</div>
+      <div style="background:#fff;border:1px solid var(--line);border-radius:5px;padding:12px;font-size:12px;line-height:1.85;white-space:pre-wrap;color:var(--ink2);font-family:var(--sans)" id="dan-slack-preview"></div>
+    </div>
+
+  </div></div>
 </div>
 
 </main>
@@ -671,6 +1130,42 @@ function mailto(k){return 'mailto:'+em(k)}
 
 // ── STATE ──
 let activeUser = 'tarun';
+function switchUser(u) {
+  activeUser = u;
+  // Topbar buttons
+  document.getElementById('usr-t').classList.toggle('active', u === 'tarun');
+  document.getElementById('usr-e').classList.toggle('active', u === 'ed');
+  document.getElementById('usr-d').classList.toggle('active', u === 'dan');
+  // YOU tags
+  document.getElementById('you-t').style.display = u === 'tarun' ? 'block' : 'none';
+  document.getElementById('you-e').style.display = u === 'ed' ? 'block' : 'none';
+  document.getElementById('you-d').style.display = u === 'dan' ? 'block' : 'none';
+  // Active user name
+  const names = {tarun:'Tarun Jakkaraju', ed:'Ed Hosey', dan:'Dan Krishman'};
+  document.getElementById('sb-name').textContent = names[u] || 'Tarun Jakkaraju';
+  // Sender tag in templates
+  const st = document.getElementById('sender-tag');
+  if (st) st.textContent = 'Sending as: ' + (names[u] || 'Tarun Jakkaraju');
+  // Sidebar visibility — Dan sees only his nav items
+  const isDan = u === 'dan';
+  document.querySelectorAll('.ae-only').forEach(el => el.style.display = isDan ? 'none' : '');
+  document.querySelectorAll('.dan-only').forEach(el => el.style.display = isDan ? '' : 'none');
+  // Dan auto-navigates to his dashboard
+  if (isDan) {
+    goPanel('dan', 'nav-dan');
+  } else {
+    // Restore AE nav active state
+    document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
+    document.getElementById('nav-pipe').classList.add('on');
+    goPanel('pipeline', 'nav-pipe');
+  }
+  // Re-render templates with active user's voice
+  if (typeof renderTemplates === 'function') renderTemplates(currentCat || 'all');
+  // Update template count badge
+  const tb = document.getElementById('tmpl-count');
+  if (tb) tb.textContent = isDan ? '0' : (u === 'tarun' ? '24' : '13');
+  toast('Switched to ' + (names[u] || u));
+}
 let currentCat = 'all';
 let pickedSlots = [];
 let dismissedAnomalies = new Set();
@@ -733,8 +1228,27 @@ const deals = [
   {co:'[Paste your deals here]', erp:'Sage 100', type:'connector', src:'cbh', owner:'tarun',
    contact:'[Contact Name]', email:'', tier:'Tier 1 · $6k', status:'new',
    next:'Add your real deals — paste list in chat', touch:'Today',
-   opens:0, registered:false, aeConfirmed:false, winWireSent:false, sentTouches:0},
+   opens:0, registered:false, aeConfirmed:false, winWireSent:false, sentTouches:0,
+   // Commission tracking fields
+   referredBy:'cbh',        // 'cbh' | 'ramp' | 'kerr' | 'ed' | 'tarun' | 'other'
+   referredByName:'CBH',    // Display name of referral source
+   commissionOwed:true,     // false if referredBy === 'ramp' (Ramp-sourced = no AE commission)
+   commissionNote:''},      // Any notes Dan adds
 ];
+
+// Commission rules:
+// referredBy === 'ramp' → commissionOwed = false (Ramp-sourced, no Tarun/Ed commission)
+// referredBy === 'cbh'  → commissionOwed = true, owner gets commission
+// referredBy === 'kerr' → commissionOwed = true, owner gets commission
+// referredBy === 'other' → commissionOwed = true, review with Dan
+
+function commissionStatus(d) {
+  if (d.referredBy === 'ramp') return { owed: false, label: 'No commission — Ramp sourced', color: 'var(--ink4)', bg: 'var(--bg3)' };
+  if (d.status !== 'won') return { owed: null, label: 'Pending — deal not closed', color: 'var(--amber2)', bg: 'var(--amber3)' };
+  const ae = d.owner === 'tarun' ? 'Tarun Jakkaraju' : 'Ed Hosey';
+  return { owed: true, label: `Commission owed → ${ae}`, color: 'var(--green2)', bg: 'var(--green3)' };
+}
+
 
 // ── PIPELINE TAGS ──
 function erpTag(erp, type) {
@@ -766,11 +1280,17 @@ function renderPipe(data) {
   if (!tb) return;
   tb.innerHTML = data.map(d => {
     const idx = deals.indexOf(d);
+    const isRampSrc = d.referredBy === 'ramp';
+    const refLabel = d.referredByName || (d.src === 'ramp' ? 'Ramp' : d.src === 'cbh' ? 'CBH' : d.src === 'kerr' ? 'Kerr' : d.src || '—');
+    const refBg = isRampSrc ? 'var(--bg3)' : 'var(--green3)';
+    const refColor = isRampSrc ? 'var(--ink4)' : 'var(--green2)';
+    const refBorder = isRampSrc ? 'var(--line2)' : 'var(--green4)';
     return `<tr onclick="openDeal(${idx})">
       <td class="td-co">${d.co}</td>
       <td>${erpTag(d.erp, d.type)}</td>
       <td><span class="pill ${d.type==='commission'?'p-comm':'p-live'}" style="font-size:9px">${d.type==='commission'?'Commission':'Connector'}</span></td>
       <td>${srcTag(d.src)}</td>
+      <td><span style="font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;background:${refBg};color:${refColor};border:1px solid ${refBorder}">${refLabel}${isRampSrc?' · No comm':''}</span></td>
       <td>${ownerTag(d.owner)}</td>
       <td style="color:var(--ink3)">${d.contact}</td>
       <td style="font-family:var(--mono);font-size:10px">${d.tier}</td>
@@ -1215,6 +1735,22 @@ function genRegSlack() {
   toast('Registration copied — paste in Ramp Sales Team Slack thread!');
 }
 function copyReg() { genRegSlack(); }
+function checkRefSource(val) {
+  const flag = document.getElementById('ref-flag');
+  if (!flag) return;
+  if (val === 'ramp') {
+    flag.style.display = 'block';
+    flag.innerHTML = '<div class="al al-r" style="margin:0;padding:8px 11px"><div class="al-icon">🚫</div><div><b>NO commission to Tarun or Ed.</b> This deal was referred by Ramp AE (Jamie/Eric). Dan will be notified on close — no commission processed for AEs.</div></div>';
+  } else if (val === 'cbh' || val === 'kerr') {
+    flag.style.display = 'block';
+    flag.innerHTML = '<div class="al al-g" style="margin:0;padding:8px 11px"><div class="al-icon">💰</div><div><b>Commission owed to owning AE on close.</b> Dan will be notified via Slack when this deal closes and commission will be processed.</div></div>';
+  } else if (val === 'other') {
+    flag.style.display = 'block';
+    flag.innerHTML = '<div class="al al-a" style="margin:0;padding:8px 11px"><div class="al-icon">⚠</div><div><b>Dan will review.</b> Unknown referral source — commission status to be determined by Dan Krishman.</div></div>';
+  } else {
+    flag.style.display = 'none';
+  }
+}
 function clearReg() {
   ['r-co','r-web','r-poc','r-title','r-email','r-addr','r-fte','r-spend'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   document.getElementById('r-erp').value = '';
@@ -1518,8 +2054,678 @@ function copyWinWireDraft() {
   copyText(`WIN WIRE — POST TO RAMP SALES TEAM CHAT FIRST (TUESDAY)\n\nCompany: [Company Name]\nERP: [Sage 100 / Sage 300 / etc.]\nIndustry: [Industry] · Size: [FTE] employees\nTier: [Tier X — $X,XXX/year]\n\nProblem: [1–2 sentences — what were they doing manually?]\nSolution: [1–2 sentences — what does Ramp + Sage do?]\nResult: [Quantify — hours saved, errors reduced]\nDeal team: ${u} + [Ramp AE]\n\n---\nIf no Tuesday comments → send to ${em('maddie')} by Wednesday EOD\nCC: ${cc}`);
   toast('Win wire draft copied — post in Teams first!');
 }
-// Initial monitor build
-setTimeout(buildMonitor, 300);
+function copyWinWireDraft() {
+  const u = activeUser === 'tarun' ? 'Tarun Jakkaraju' : 'Ed Hosey';
+  const cc = activeUser === 'tarun' ? em('ed') : em('tarun');
+  copyText(`WIN WIRE — POST TO RAMP SALES TEAM CHAT FIRST (TUESDAY)\n\nCompany: [Company Name]\nERP: [Sage 100 / Sage 300 / etc.]\nIndustry: [Industry] · Size: [FTE] employees\nTier: [Tier X — $X,XXX/year]\n\nProblem: [1–2 sentences — what were they doing manually?]\nSolution: [1–2 sentences — what does Ramp + Sage do?]\nResult: [Quantify — hours saved, errors reduced]\nDeal team: ${u} + [Ramp AE]\n\n---\nIf no Tuesday comments → send to ${em('maddie')} by Wednesday EOD\nCC: ${cc}`);
+  toast('Win wire draft copied — post in Teams first!');
+}
+
+// ── WIN WIRE GENERATOR ──
+function buildWWDealSelector() {
+  const sel = document.getElementById('ww-deal-select');
+  if (!sel) return;
+  const wonDeals = deals.filter(d => d.status === 'won');
+  const opts = wonDeals.map((d, i) => `<option value="${deals.indexOf(d)}">🏆 ${d.co} — ${d.erp} (${d.tier})</option>`).join('');
+  sel.innerHTML = '<option value="">← Load from pipeline deal...</option>' + opts + '<option value="manual">✏ Fill manually</option>';
+  const badge = document.getElementById('ww-badge');
+  if (badge) { badge.style.display = wonDeals.length ? 'inline-flex' : 'none'; badge.textContent = wonDeals.length; }
+}
+
+function loadWWDeal(idx) {
+  if (!idx || idx === 'manual') return;
+  const d = deals[parseInt(idx)];
+  if (!d) return;
+  const co = document.getElementById('ww-co'); if (co) co.value = d.co;
+  const erp = document.getElementById('ww-erp'); if (erp) { [...erp.options].forEach(o => { if (o.value === d.erp || d.erp.startsWith(o.value)) o.selected = true; }); }
+  const tier = document.getElementById('ww-tier');
+  if (tier && d.tier) {
+    [...tier.options].forEach(o => { if (d.tier.includes('Tier 1')) { if (o.value.includes('6,000')) o.selected = true; } else if (d.tier.includes('Tier 2')) { if (o.value.includes('8,500')) o.selected = true; } else if (d.tier.includes('Tier 3')) { if (o.value.includes('11,000')) o.selected = true; } });
+  }
+  updateWWPreview();
+  toast('Deal loaded — fill Problem, Solution, Result from your call notes');
+}
+
+function buildWWContent() {
+  const co = (document.getElementById('ww-co') || {}).value || '[Company Name]';
+  const erp = (document.getElementById('ww-erp') || {}).value || '[ERP]';
+  const industry = (document.getElementById('ww-industry') || {}).value || '[Industry]';
+  const fte = (document.getElementById('ww-fte') || {}).value || '[FTE]';
+  const tier = (document.getElementById('ww-tier') || {}).value || '[Tier]';
+  const ae = (document.getElementById('ww-ae') || {}).value || 'Jamie Kraus';
+  const problem = (document.getElementById('ww-problem') || {}).value || '[Problem — what were they doing manually?]';
+  const solution = (document.getElementById('ww-solution') || {}).value || '[Solution — what does Ramp + Sage do for them?]';
+  const result = (document.getElementById('ww-result') || {}).value || '[Result — hours saved, errors reduced, etc.]';
+  const u = activeUser === 'tarun' ? 'Tarun Jakkaraju' : 'Ed Hosey';
+  return { co, erp, industry, fte, tier, ae, problem, solution, result, u };
+}
+
+function updateWWPreview() {
+  const f = buildWWContent();
+  const ww = `WIN WIRE: ${f.co}
+ERP: ${f.erp}
+Industry: ${f.industry} · Size: ${f.fte}
+Deal: ${f.tier}
+
+Problem:
+${f.problem}
+
+Solution:
+${f.solution}
+
+Result:
+${f.result}
+
+Deal team: ${f.u} + ${f.ae}`;
+  const prev = document.getElementById('ww-preview');
+  if (prev) prev.textContent = ww;
+  buildWWEmail(f, ww);
+}
+
+function buildWWEmail(f, ww) {
+  const from = activeUser === 'tarun' ? em('tarun') : em('ed');
+  const cc = activeUser === 'tarun' ? em('ed') : em('tarun');
+  const fromName = activeUser === 'tarun' ? 'Tarun Jakkaraju' : 'Ed Hosey';
+  const ccLabel = document.getElementById('ww-cc-label');
+  if (ccLabel) ccLabel.textContent = cc;
+  const email = `To: ${em('maddie')}
+CC: ${cc}
+Subject: Win Wire — ${f.co} · ${f.erp} · Week of [Date]
+
+Hi Maddie,
+
+Here's this week's win wire.
+
+---
+${ww}
+---
+
+Let me know if you need anything else.
+
+Best,
+${fromName}
+Account Executive | Kerr Consulting
+${from}`;
+  const emailEl = document.getElementById('ww-maddie-email');
+  if (emailEl) emailEl.textContent = email;
+}
+
+function generateWW() {
+  const f = buildWWContent();
+  if (f.co === '[Company Name]' || !document.getElementById('ww-co').value) {
+    toast('Fill in Company Name first', 'warn'); return;
+  }
+  updateWWPreview();
+  toast('Win wire generated — review, edit if needed, then copy to send!');
+}
+
+function editWW() {
+  const prev = document.getElementById('ww-preview');
+  if (!prev) return;
+  const isEditing = prev.contentEditable === 'true';
+  prev.contentEditable = isEditing ? 'false' : 'true';
+  prev.style.border = isEditing ? '1px solid var(--line)' : '1px solid var(--teal)';
+  prev.style.boxShadow = isEditing ? 'none' : '0 0 0 3px var(--teal3)';
+  if (!isEditing) { prev.focus(); toast('Editing win wire — click Edit again when done'); }
+  else { toast('Edits saved'); }
+}
+
+function copyWWContent() {
+  const prev = document.getElementById('ww-preview');
+  if (!prev || prev.textContent.includes('Fill in')) { toast('Generate win wire first', 'warn'); return; }
+  copyText(prev.innerText || prev.textContent);
+}
+
+function copyWWEmail() {
+  const el = document.getElementById('ww-maddie-email');
+  if (!el || el.textContent.includes('Generate win wire first')) { toast('Generate win wire first', 'warn'); return; }
+  copyText(el.textContent);
+  toast('Email copied — ready to send to Maddie!');
+}
+
+function openWWOutlook() {
+  const el = document.getElementById('ww-maddie-email');
+  if (!el || el.textContent.includes('Generate')) { toast('Generate win wire first', 'warn'); return; }
+  const f = buildWWContent();
+  const subj = `Win Wire — ${f.co} · ${f.erp} · Week of [Date]`;
+  window.open('mailto:' + em('maddie') + '?subject=' + encodeURIComponent(subj) + '&body=' + encodeURIComponent(el.textContent), '_blank');
+}
+
+function clearWW() {
+  ['ww-co','ww-industry','ww-fte','ww-problem','ww-solution','ww-result','ww-transcript'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  const erp = document.getElementById('ww-erp'); if (erp) erp.value = '';
+  const tier = document.getElementById('ww-tier'); if (tier) tier.value = '';
+  const sel = document.getElementById('ww-deal-select'); if (sel) sel.value = '';
+  const prev = document.getElementById('ww-preview'); if (prev) prev.textContent = 'Fill in the fields on the left to preview the win wire →';
+  const email = document.getElementById('ww-maddie-email'); if (email) email.textContent = 'Generate win wire first →';
+  const fs = document.getElementById('ww-file-status'); if (fs) fs.style.display = 'none';
+  document.querySelectorAll('#ww-checklist input[type="checkbox"]').forEach(c => c.checked = false);
+  toast('Cleared');
+}
+
+function handleWWFile(input) {
+  const file = input.files[0]; if (!file) return;
+  const status = document.getElementById('ww-file-status');
+  if (status) { status.style.display = 'block'; status.textContent = '📄 ' + file.name + ' loaded — click "Extract from transcript" to parse'; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const ta = document.getElementById('ww-transcript');
+    if (ta) ta.value = e.target.result.substring(0, 8000);
+  };
+  reader.readAsText(file);
+  toast('File loaded — click Extract to parse');
+}
+
+function handleWWDrop(event) {
+  event.preventDefault();
+  const file = event.dataTransfer.files[0]; if (!file) return;
+  document.getElementById('ww-file-input').files = event.dataTransfer.files;
+  handleWWFile(document.getElementById('ww-file-input'));
+  document.getElementById('ww-upload-zone').style.borderColor = 'var(--teal)';
+}
+
+function extractFromTranscript() {
+  const ta = document.getElementById('ww-transcript');
+  if (!ta || !ta.value.trim()) { toast('Paste or upload a transcript first', 'warn'); return; }
+  const text = ta.value;
+  // Heuristic extraction — finds sentences containing pain/problem/solution keywords
+  const sentences = text.split(/[.!?]\s+/).filter(s => s.length > 20);
+  const problemKw = ['manual','manually','reconcil','export','hours','pain','challenge','struggle','spreadsheet','csv','copy','paste','error'];
+  const solutionKw = ['sync','automat','connector','ramp','integrate','link','connect'];
+  const resultKw = ['save','saved','faster','reduc','eliminat','hour','day','week','close','book','error','accura'];
+  const problemSents = sentences.filter(s => problemKw.some(k => s.toLowerCase().includes(k))).slice(0, 3);
+  const solutionSents = sentences.filter(s => solutionKw.some(k => s.toLowerCase().includes(k))).slice(0, 3);
+  const resultSents = sentences.filter(s => resultKw.some(k => s.toLowerCase().includes(k))).slice(0, 3);
+  if (problemSents.length) { const el = document.getElementById('ww-problem'); if (el) el.value = problemSents.join('. ') + '.'; }
+  if (solutionSents.length) { const el = document.getElementById('ww-solution'); if (el) el.value = solutionSents.join('. ') + '.'; }
+  if (resultSents.length) { const el = document.getElementById('ww-result'); if (el) el.value = resultSents.join('. ') + '.'; }
+  // Try to extract company name
+  const coMatch = text.match(/(?:company|client|customer|organization)[:\s]+([A-Z][A-Za-z\s&]+?)(?:\s|,|\.|\n)/);
+  if (coMatch) { const el = document.getElementById('ww-co'); if (el && !el.value) el.value = coMatch[1].trim(); }
+  updateWWPreview();
+  toast('Extracted from transcript — review and edit before generating!', 'warn');
+}
+
+// Quick launch win wire from deal slide-out
+function launchWWFromDeal(idx) {
+  const d = deals[idx];
+  if (!d) return;
+  closeSlideout();
+  goPanel('winwire', 'nav-winwire');
+  setTimeout(() => {
+    const co = document.getElementById('ww-co'); if (co) co.value = d.co;
+    const industry = document.getElementById('ww-industry'); if (industry) industry.value = d.industry || '';
+    const fte = document.getElementById('ww-fte'); if (fte) fte.value = d.fte || '';
+    const erp = document.getElementById('ww-erp');
+    if (erp) [...erp.options].forEach(o => { if (d.erp.includes(o.value) || o.value === d.erp) o.selected = true; });
+    const tier = document.getElementById('ww-tier');
+    if (tier) [...tier.options].forEach(o => { if (d.tier && o.value.includes(d.tier.split('·')[0].trim().replace('Tier ','').trim().charAt(0))) o.selected = true; });
+    updateWWPreview();
+    toast('Deal loaded into Win Wire Generator — fill Problem, Solution, Result!');
+  }, 100);
+}
+
+// ── ED'S VOICE TEMPLATES ──
+// Ed's style: direct, confident, data-forward, slightly more formal than Tarun
+// Trained from: "combination of examples + style description" — update when Ed sends examples
+const edTemplates = [
+  {cat:'cold',tier:'p-live',tl:'Sage 100 · Live',name:'[Ed] Cold — Sage 100',touch:'Touch 1',eap:false,comm:false,note:'Confirm: Sage 100 standard OR Sage 100 Contractor?',
+   subj:'Sage 100 + Ramp — question for you',
+   body:()=>`Hi [First Name],\n\nI work with mid-market firms on Sage 100 and noticed [Company] might be dealing with the same AP reconciliation challenges I hear about regularly.\n\nThe manual export-and-reconcile process most Sage 100 teams run costs 20–40 hours per month. We have an automated connector between Sage 100 and Ramp that eliminates that entirely — AP invoices, payments, vendors, and GL accounts sync on an hourly schedule.\n\nWorth 30 minutes to see if it applies to your setup?\n\nBest,\nEdward Hosey\nAccount Executive | Kerr Consulting\n${em('ed')}`},
+  {cat:'cold',tier:'p-live',tl:'Sage 300 · Live',name:'[Ed] Cold — Sage 300',touch:'Touch 1',eap:false,comm:false,note:'Confirm: Sage 300 ERP OR Sage 300 CRE? Multi-company?',
+   subj:'Sage 300 + Ramp — question for you',
+   body:()=>`Hi [First Name],\n\nI focus on helping Sage 300 firms automate their AP and expense management workflows. I wanted to reach out to [Company] specifically.\n\nMost Sage 300 teams I speak with are still doing manual reconciliation between their ERP and corporate card data at month-end. Our exclusive connector with Ramp handles this automatically — including multi-company setups.\n\nDo you have 30 minutes this week?\n\nBest,\nEdward Hosey\nAccount Executive | Kerr Consulting\n${em('ed')}`},
+  {cat:'cold',tier:'p-comm',tl:'QBO · Commission',name:'[Ed] Cold — QBO',touch:'Touch 1',eap:false,comm:true,note:'Confirm QBO Online. Register immediately after qualifying.',
+   subj:'QuickBooks Online + Ramp — a question',
+   body:()=>`Hi [First Name],\n\nI work with QBO users on automating the reconciliation between their accounting and corporate spend.\n\nIf [Company] is still handling that manually at month-end, I'd like to show you how Ramp integrates directly with QuickBooks Online — 30 minutes is usually enough to determine fit.\n\nDo you have time this week?\n\nBest,\nEdward Hosey\nAccount Executive | Kerr Consulting\n${em('ed')}`},
+  {cat:'followup',tier:'p-live',tl:'All ERPs',name:'[Ed] Follow-up Touch 2',touch:'Touch 2',eap:false,comm:false,note:null,
+   subj:'Re: Ramp + Sage',
+   body:()=>`Hi [First Name],\n\nFollowing up on my previous note. Still relevant?\n\nHappy to find 30 minutes that works.\n\nBest,\nEdward Hosey\nAccount Executive | Kerr Consulting\n${em('ed')}`},
+  {cat:'followup',tier:'p-live',tl:'All ERPs',name:'[Ed] Follow-up Touch 3 — ROI',touch:'Touch 3',eap:false,comm:false,note:null,
+   subj:'Numbers on Ramp + Sage',
+   body:()=>`Hi [First Name],\n\nWanted to share some context before I follow up again.\n\nFirms on Sage typically see 20–40 hours saved per month in AP processing and $12,000–$25,000 in annual labor cost reductions after implementing the Ramp connector. The ROI calculator at ramp.anywareapps.com/ramp-roi-calculator can generate numbers specific to [Company].\n\nWorth 30 minutes?\n\nBest,\nEdward Hosey\nAccount Executive | Kerr Consulting\n${em('ed')}`},
+  {cat:'followup',tier:'p-live',tl:'All ERPs',name:'[Ed] Follow-up Touch 5 — Breakup',touch:'Touch 5',eap:false,comm:false,note:null,
+   subj:'Last note — Ramp + Sage',
+   body:()=>`Hi [First Name],\n\nI'll make this my last outreach — timing isn't always right and I respect that.\n\nIf the Ramp integration ever becomes relevant, feel free to reach out directly.\n\nBest,\nEdward Hosey\nAccount Executive | Kerr Consulting\n${em('ed')}`},
+  {cat:'confirm',tier:'p-live',tl:'All ERPs',name:'[Ed] Slot proposal',touch:'Scheduling',eap:false,comm:false,note:null,
+   subj:'Re: Ramp + Sage — times that work',
+   body:()=>`Hi [First Name],\n\nHappy to make this easy — [Time 1] CST or [Time 2] CST on [Day] both work on my end. Do either of those work for you?\n\nBest,\nEdward Hosey\nAccount Executive | Kerr Consulting\n${em('ed')}`},
+  {cat:'confirm',tier:'p-live',tl:'All ERPs',name:'[Ed] Meeting confirm — trio call',touch:'Confirm',eap:false,comm:false,note:null,
+   subj:'Confirmed: [Date] [Time] CST — Ramp + Sage',
+   body:()=>`Hi [First Name],\n\nConfirming our call for [Date] at [Time] CST — 30 minutes via Teams.\n\nI'll have our Ramp AE on the call as well so we can cover the integration, pricing, and implementation in one session.\n\nTeams link: [TEAMS LINK]\n\nBest,\nEdward Hosey\nAccount Executive | Kerr Consulting\n${em('ed')}`},
+  {cat:'linkedin',tier:'p-live',tl:'Sage 100',name:'[Ed] LinkedIn DM — Sage 100',touch:'DM 1',eap:false,comm:false,note:null,subj:null,
+   body:()=>`Hi [First Name] — I work with Sage 100 firms on AP automation and saw [Company] in my feed. Is your team still reconciling manually at month-end? We have a direct connector with Ramp that eliminates that. Happy to share more if relevant.`},
+  {cat:'linkedin',tier:'p-live',tl:'Sage 300',name:'[Ed] LinkedIn DM — Sage 300',touch:'DM 1',eap:false,comm:false,note:null,subj:null,
+   body:()=>`Hi [First Name] — I specialize in Sage 300 AP automation through Ramp. If [Company] is still doing manual GL reconciliation or vendor syncing, I'd like to share how we've helped similar firms. Worth a 30-minute look?`},
+  {cat:'proposal',tier:'p-live',tl:'Sage 100',name:'[Ed] Proposal — Sage 100',touch:'Proposal',eap:false,comm:false,note:'Confirm version 2018+. Admin access confirmed?',
+   subj:'Ramp + Sage 100 — summary and pricing',
+   body:()=>`Hi [First Name],\n\nThank you for your time today. Here is a summary of what we discussed.\n\nCompany profile: [Company] · Sage 100 [version] · [number] entities · ~[number] transactions/year\n\nWhat syncs:\n• AP invoices ← Ramp bills (auto-posted to Sage)\n• Payments ← Ramp (closes invoice automatically)\n• Vendors ⇄ two-way sync\n• GL accounts → Ramp (full multi-segment mapping)\n• Credit card transactions → Sage journal entries\n• Employee reimbursements ⇄\n\nAnnual subscription pricing:\n• Tier 1: $6,000/year (up to 10,000 transactions)\n• Tier 2: $8,500/year (up to 20,000 transactions)\n• Tier 3: $11,000/year (up to 30,000 transactions)\n• Custom pricing available for 30,000+ transactions\n\nImplementation: 4–6 weeks to go-live\n\n[Ramp AE] will be in touch regarding next steps on the Ramp side.\n\nBest,\nEdward Hosey\nAccount Executive | Kerr Consulting\n${em('ed')}`},
+  {cat:'objection',tier:'p-live',tl:'All ERPs',name:'[Ed] Objection — not the right time',touch:'Objection',eap:false,comm:false,note:null,
+   subj:'Re: Timing',
+   body:()=>`Hi [First Name],\n\nUnderstood — timing matters.\n\nFor context: firms on Sage typically save 20–40 hours per month in AP processing after implementation. The ROI calculator at ramp.anywareapps.com/ramp-roi-calculator can give you a specific number for [Company] when timing is right.\n\nI'll follow up in [30/60] days.\n\nBest,\nEdward Hosey\nAccount Executive | Kerr Consulting\n${em('ed')}`},
+  {cat:'internal',tier:'p-live',tl:'Internal',name:'[Ed] Post-call recap',touch:'Recap',eap:false,comm:false,note:null,
+   subj:'Call Recap — [Company] · [Date]',
+   body:()=>`Hi all,\n\nRecap from today's call with [Company].\n\nERP: [Sage 100 / 300 / etc.] · Contact: [name] · Title: [title]\n\nKey points discussed:\n• [Point 1]\n• [Point 2]\n• [Point 3]\n\nPain points identified:\n• [Pain 1]\n• [Pain 2]\n\nNext steps:\n• Edward Hosey — [action] by [date]\n• [Ramp AE] — [action] by [date]\n• [Prospect] — [action] by [date]\n\nNext call/follow-up: [date + time]\n\nBest,\nEdward Hosey\nAccount Executive | Kerr Consulting\n${em('ed')}`},
+];
+
+// Merge Ed templates into main template array when Ed is active
+function getActiveTemplates() {
+  if (activeUser === 'tarun') return templates;
+  // Ed: show Ed's templates + shared ones (internal, proposals not user-specific)
+  return [...edTemplates, ...templates.filter(t => t.cat === 'objection' || t.cat === 'internal')];
+}
+
+// ── PATCH goPanel to init win wire ──
+const _origGoPanel = goPanel;
+function goPanel(id, navId) {
+  _origGoPanel(id, navId);
+  if (id === 'winwire') {
+    buildWWDealSelector();
+    updateWWPreview();
+  }
+}
+
+// ── PATCH renderTemplates to use active user's templates ──
+function renderTemplates(cat) {
+  currentCat = cat;
+  const allTmpls = getActiveTemplates();
+  const data = cat === 'all' ? allTmpls : allTmpls.filter(t => t.cat === cat);
+  const grid = document.getElementById('tmpl-grid');
+  if (!grid) return;
+  grid.innerHTML = data.map((t, i) => {
+    const id = 'tc' + cat + i;
+    let flags = '';
+    if (t.eap) flags += `<div class="alert al-orange" style="margin:10px 14px 0"><div class="alert-icon">📣</div><div class="alert-body"><div class="alert-title">Early Adopter Program</div>Do not promise a live date.</div></div>`;
+    if (t.comm) flags += `<div class="alert al-violet" style="margin:10px 14px 0"><div class="alert-icon">💰</div><div class="alert-body"><div class="alert-title">Commission deal</div>Register in Slack thread first.</div></div>`;
+    if (t.note) flags += `<div class="alert al-teal" style="margin:10px 14px 0"><div class="alert-icon">🔍</div><div class="alert-body"><div class="alert-title">Confirm before sending</div>${t.note}</div></div>`;
+    const body = t.body();
+    const isEd = t.name.startsWith('[Ed]');
+    return `<div class="tmpl-card" style="${isEd ? 'border-left:3px solid var(--navy2)' : ''}">
+      <div class="tc-head" onclick="toggleTmpl('${id}','chev${id}')">
+        <span class="pill ${t.tier}" style="flex-shrink:0">${t.tl}</span>
+        ${isEd ? `<span style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--navy2);padding:2px 5px;border-radius:3px;background:var(--navy3);border:1px solid var(--navy4);flex-shrink:0">ED</span>` : ''}
+        <span class="tc-name">${t.name.replace('[Ed] ','')}</span>
+        <span class="tc-touch">${t.touch}</span>
+        <span class="tc-chev" id="chev${id}">▼</span>
+      </div>
+      <div class="tc-body" id="${id}">
+        ${flags}
+        <div style="padding:11px 14px">
+          ${t.subj ? `<div style="font-family:var(--mono);font-size:10px;color:var(--ink4);font-weight:600;margin-bottom:5px">Subject: <span style="color:var(--ink3);font-weight:400">${t.subj}</span></div>` : `<div style="font-family:var(--mono);font-size:10px;color:var(--ink4);margin-bottom:5px">LinkedIn / no subject</div>`}
+          <div class="ea-body" id="eb${id}" contenteditable="false">${body}</div>
+          <div class="ea-actions">
+            <button class="ea-btn approve" onclick="event.stopPropagation();copyText(document.getElementById('eb${id}').innerText);toast('✓ Copied: ${t.name.replace('[Ed] ','').replace(/'/g,"\\'")}')">✓ Approve + copy</button>
+            <button class="ea-btn send" onclick="event.stopPropagation();window.open('mailto:?subject='+encodeURIComponent('${(t.subj||'').replace(/'/g,"\\'")}')+'&body='+encodeURIComponent(document.getElementById('eb${id}').innerText),'_blank')">✉ Outlook</button>
+            <button class="ea-btn" onclick="event.stopPropagation();editT('${id}')">✏ Edit</button>
+            <button class="ea-btn" onclick="event.stopPropagation();const txt=document.getElementById('eb${id}').innerText;document.getElementById('wa-in').value=txt;goPanel('writing','nav-writing');toast('Loaded in Writing Assistant')">✍ Writing check</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── PATCH openDeal to add Win Wire button in slide-out ──
+const _origBuildSlideout = typeof buildSlideoutHTML === 'function' ? buildSlideoutHTML : null;
+// Intercept openDeal to inject Win Wire quick launch
+const _origOpenDeal = openDeal;
+function openDeal(idx) {
+  _origOpenDeal(idx);
+  // Add Win Wire button to footer if deal is won
+  const d = deals[idx];
+  if (d && d.status === 'won') {
+    setTimeout(() => {
+      const foot = document.getElementById('so-foot');
+         if (foot && !foot.querySelector('.ww-launch-btn')) {
+        const wwBtn = document.createElement('button');
+        wwBtn.className = 'btn ww-launch-btn';
+        wwBtn.style.cssText = 'background:var(--green2);border-color:var(--green2);color:#fff;margin-right:auto';
+        wwBtn.textContent = '🏆 Generate Win Wire';
+        wwBtn.onclick = () => launchWWFromDeal(idx);
+        foot.insertBefore(wwBtn, foot.firstChild);
+      }
+    }, 50);
+  }
+}
+
+// ── LIVE TRACKER ──
+function buildTracker(){
+  const stats=document.getElementById('tracker-stats');
+  const cards=document.getElementById('tracker-cards');
+  if(!stats||!cards)return;
+  const total=deals.length,won=deals.filter(d=>d.status==='won').length,active=deals.filter(d=>d.status==='active').length,stalled=deals.filter(d=>d.status==='stalled').length,comm=deals.filter(d=>d.type==='commission').length,unreg=deals.filter(d=>d.type==='commission'&&!d.registered).length;
+  stats.innerHTML=[{label:'Total',val:total,color:'var(--teal)'},{label:'Active',val:active,color:'var(--navy2)'},{label:'Won',val:won,color:'var(--green2)'},{label:'Stalled',val:stalled,color:'var(--amber2)'},{label:'Commission',val:comm,color:'var(--violet2)'},{label:'Unregistered',val:unreg,color:unreg>0?'var(--red2)':'var(--ink4)'}].map(s=>`<div style="background:var(--bg2);border:1px solid var(--line);border-radius:7px;padding:11px;text-align:center"><div style="font-family:var(--mono);font-size:9px;color:var(--ink4);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">${s.label}</div><div style="font-size:22px;font-weight:800;color:${s.color}">${s.val}</div></div>`).join('');
+  if(!deals.length){cards.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--ink4)"><div style="font-size:24px;margin-bottom:10px">📊</div><div style="font-weight:700;color:var(--ink);margin-bottom:6px">No deals yet — paste your list in chat</div></div>';return;}
+  const sc={new:'var(--navy2)',active:'var(--teal)',stalled:'var(--amber2)',won:'var(--green2)'};
+  cards.innerHTML=deals.map((d,i)=>{
+    const sent=d.sentTouches||0;
+    const anoms=getAnoms(d);
+    const dots=Array.from({length:5},(_,ti)=>`<div style="width:9px;height:9px;border-radius:50%;background:${ti<sent?'var(--teal)':'var(--line2)'};display:inline-block;margin-right:2px"></div>`).join('');
+    return`<div style="background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:13px;cursor:pointer;border-left:3px solid ${sc[d.status]||'var(--line)'}" onclick="openDeal(${i})">
+      <div style="display:flex;justify-content:space-between;margin-bottom:7px"><div style="font-size:13px;font-weight:800;color:var(--ink)">${d.co}</div><span style="font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:${sc[d.status]||'var(--bg3)'};color:#fff">${d.status}</span></div>
+      <div style="font-size:11px;color:var(--ink4);margin-bottom:6px">${d.erp} · ${d.owner==='tarun'?'Tarun':'Ed'}</div>
+      <div style="font-size:11px;color:var(--ink3);margin-bottom:7px">${d.next}</div>
+      <div style="margin-bottom:4px">${dots}</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--ink4)">Touch ${sent}/5 · ${d.touch||'Unknown'}</div>
+      ${anoms.length?`<div style="background:var(--red3);border-radius:4px;padding:4px 7px;margin-top:6px;font-size:10px;color:var(--red2);font-weight:700">⚠ ${anoms.length} issue${anoms.length>1?'s':''}</div>`:''}
+    </div>`;
+  }).join('');
+  const last=document.getElementById('tracker-last');
+  if(last)last.textContent='Updated '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+}
+setInterval(()=>{const p=document.getElementById('panel-tracker');if(p&&p.classList.contains('on'))buildTracker();},60000);
+
+// ── AI SECRETARY ──
+const SEC_DISMISSED=new Set();
+function getSecActions(){
+  const actions=[];
+  const dw=new Date().getDay();
+  deals.forEach(d=>{
+    const tm={'Today':0,'Mar 29':1,'Mar 28':2,'Mar 27':3,'Mar 26':4,'Mar 25':5,'Mar 24':6,'Mar 23':7,'Mar 22':8,'Mar 21':9,'Mar 20':10};
+    const days=tm[d.touch]||0;
+    const i=deals.indexOf(d);
+    if(d.status==='won'&&!d.winWireSent)actions.push({id:'ww|'+d.co,sev:'critical',icon:'🏆',title:'Win wire overdue — '+d.co,desc:'Deal closed but win wire not sent to Maddie. Generate now.',action:'Generate Win Wire',fn:`goPanel('winwire','nav-winwire')`});
+    if(d.type==='commission'&&!d.registered&&(d.status==='new'||d.status==='active'))actions.push({id:'reg|'+d.co,sev:'critical',icon:'💰',title:'Register '+d.co+' NOW',desc:d.erp+' is a commission deal. Register before 2nd touch.',action:'Copy Slack message',fn:`copyDealSlack(${i})`});
+    if(days>=7&&d.status!=='won')actions.push({id:'cold|'+d.co,sev:'high',icon:'🧊',title:d.co+' cold — '+days+' days',desc:'Touch '+((d.sentTouches||0)+1)+' overdue. Send now.',action:'Open deal',fn:`openDeal(${i})`});
+    if(d.erp==='Sage 100'||d.erp==='Sage 300')actions.push({id:'erp|'+d.co,sev:'high',icon:'🔍',title:'ERP unconfirmed — '+d.co,desc:'"'+d.erp+'" — standard or Contractor/CRE? Clarify before next touch.',action:'Clarify',fn:`openClarifierForDeal(${i})`});
+  });
+  if(dw===2)actions.push({id:'content-tue',sev:'medium',icon:'📋',title:'Post win wire + blog to Teams today',desc:'Post in Ramp Sales Team Chat. Tag Dan, Ed, Brennen, Sheila.',action:'Content workflow',fn:`goPanel('content','nav-content')`});
+  if(dw===3)actions.push({id:'content-wed',sev:'medium',icon:'📤',title:'Send win wire + blog to Maddie + Megan',desc:'If no Tuesday comments — send both by EOD.',action:'Content workflow',fn:`goPanel('content','nav-content')`});
+  if(dw===5)actions.push({id:'content-fri',sev:'medium',icon:'📊',title:'Customer list due to Maddie',desc:'Send updated list to Maddie by end of day.',action:'Content workflow',fn:`goPanel('content','nav-content')`});
+  return actions.filter(a=>!SEC_DISMISSED.has(a.id));
+}
+function buildSecretary(){
+  const actions=getSecActions();
+  const crit=actions.filter(a=>a.sev==='critical').length,high=actions.filter(a=>a.sev==='high').length,med=actions.filter(a=>a.sev==='medium').length;
+  const badge=document.getElementById('sec-badge');if(badge)badge.textContent=actions.length;
+  const sum=document.getElementById('sec-summary');
+  if(sum)sum.innerHTML=[{l:'Critical',v:crit,c:'var(--red2)'},{l:'High',v:high,c:'var(--amber2)'},{l:'Medium',v:med,c:'var(--navy2)'}].map(s=>`<div style="background:var(--bg2);border:1px solid var(--line);border-radius:7px;padding:11px;text-align:center"><div style="font-family:var(--mono);font-size:9px;color:var(--ink4);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">${s.l}</div><div style="font-size:22px;font-weight:800;color:${s.c}">${s.v}</div></div>`).join('');
+  const list=document.getElementById('sec-list');
+  if(!list)return;
+  if(!actions.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--ink4)"><div style="font-size:28px;margin-bottom:10px">✅</div><div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:5px">All clear — no actions needed</div><div style="font-size:12px">Your AI secretary will flag the next thing the moment it comes up.</div></div>';return;}
+  const ord={critical:0,high:1,medium:2};actions.sort((a,b)=>(ord[a.sev]||2)-(ord[b.sev]||2));
+  const sb={critical:'var(--red3)',high:'var(--amber3)',medium:'var(--navy3)'},sbr={critical:'var(--red4)',high:'var(--amber4)',medium:'var(--navy4)'},sc={critical:'var(--red2)',high:'var(--amber)',medium:'var(--navy2)'};
+  list.innerHTML=actions.map(a=>`<div style="background:${sb[a.sev]};border:1px solid ${sbr[a.sev]};border-radius:8px;padding:13px;margin-bottom:9px"><div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px"><span style="font-size:16px">${a.icon}</span><div style="flex:1"><div style="font-size:13px;font-weight:700;color:${sc[a.sev]}">${a.title}</div><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:${sc[a.sev]};opacity:.6;text-transform:uppercase;margin-top:2px">${a.sev}</div></div></div><div style="font-size:12px;color:var(--ink3);line-height:1.6;margin-bottom:9px">${a.desc}</div><div style="display:flex;gap:6px"><button style="font-family:var(--sans);font-size:10px;font-weight:700;padding:5px 12px;border-radius:4px;background:var(--teal);border:none;color:#fff;cursor:pointer" onclick="${a.fn}">${a.action} →</button><button style="font-family:var(--sans);font-size:10px;font-weight:700;padding:5px 12px;border-radius:4px;background:none;border:1px solid var(--line2);color:var(--ink4);cursor:pointer" onclick="dismissSec('${a.id}')">Dismiss</button></div></div>`).join('');
+  const sp=document.getElementById('sec-slack-previews');
+  if(sp)sp.innerHTML=['🚨 *COMMISSION DEAL — REGISTER NOW*\n\nCompany: [Company]\nProduct: QBO\n\nRegister before 2nd touch. Post in Ramp Slack @Eric @Jamie.\n\n→ tjakkaraju1.github.io/kerr-ramp-sage','🏆 *DEAL CLOSED — Win Wire Needed*\n\nCompany: [Company]\nTier: $6,000/year\n\nPost in Teams Tuesday → Maddie by Wed EOD.\n\n→ tjakkaraju1.github.io/kerr-ramp-sage','📅 *New Meeting Booked*\n\nProspect: [Name]\nTime: Apr 3 at 2:00 PM CST\n\nConfirm AE in Slack.\n\n→ tjakkaraju1.github.io/kerr-ramp-sage'].map(m=>`<div style="background:#fff;border:1px solid var(--line);border-radius:5px;padding:11px;margin-bottom:7px;font-size:11px;color:var(--ink2);line-height:1.8;white-space:pre-wrap;font-family:var(--sans)">${m}</div>`).join('');
+}
+function dismissSec(id){SEC_DISMISSED.add(id);buildSecretary();toast('Dismissed');}
+function dismissAllSec(){getSecActions().forEach(a=>SEC_DISMISSED.add(a.id));buildSecretary();}
+
+// ── HOUSTON NETWORKING ──
+const NETWORKS=[
+  {name:'FEI Houston',url:'feihouston.org',target:'CFOs, Controllers, VPs Finance',cost:'~$500–900/yr',freq:'Monthly events',why:'250+ senior finance execs. Your primary target audience.',roi:'High',events:['Apr 17','Apr 22']},
+  {name:'CFO Leadership Council Houston',url:'cfoleadershipcouncil.com/chapters/houston',target:'CFOs only',cost:'~$1,500–2,500/yr',freq:'Monthly programs',why:'2,500+ CFOs nationally. Houston chapter covers energy, healthcare, tech — all Sage/Intacct users.',roi:'High',events:['Monthly']},
+  {name:'TXCPA Houston',url:'txcpa.net',target:'CPAs, Controllers, accounting professionals',cost:'~$200–400/yr',freq:'Monthly Morning Buzz 7:30AM',why:'Controllers who are CPAs are your best Sage 100/300 prospects. Free for first 3 events.',roi:'High',events:['Monthly 7:30AM breakfasts']},
+  {name:'CFO Focus Houston',url:'cfofocus.org',target:'CFOs + GCs only (you attend as sponsor)',cost:'Sponsorship required',freq:'2–3x per year in Houston',why:'Intimate private home events. Houston CFOs in one room. Jane Wells moderates. April 2026 event coming.',roi:'Very High',events:['April 2026']},
+  {name:'Greater Houston Partnership',url:'houston.org',target:'Business leaders, Fortune 500 executives',cost:'Scales by company size',freq:'Year-round 2026 events',why:'Houston\'s largest chamber. Good for CBH referral networking and visibility.',roi:'Medium',events:['2026 calendar live']},
+  {name:'Houston West Chamber',url:'hwcoc.org',target:'Local businesses, 400+ members',cost:'From $500/yr',freq:'300+ events per year',why:'High volume. Good for smaller mid-market Sage 100 companies (25–200 FTE).',roi:'Medium',events:['Monthly luncheons']},
+  {name:'A&F Professionals Meetup Houston',url:'meetup.com',target:'Accountants, finance professionals',cost:'Free',freq:'Monthly',why:'Free entry. Controllers and AP managers attend. Great for Sage prospects at smaller companies.',roi:'Medium',events:['Monthly — free']},
+];
+function buildNetworking(){
+  const el=document.getElementById('network-orgs');if(!el)return;
+  el.innerHTML=NETWORKS.map(n=>`<div style="background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:14px;margin-bottom:10px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+      <div><div style="font-size:14px;font-weight:800;color:var(--ink)">${n.name}</div><div style="font-size:11px;color:var(--ink4);margin-top:2px">${n.target}</div></div>
+      <span style="font-family:var(--mono);font-size:9px;font-weight:700;padding:3px 8px;border-radius:3px;background:var(--teal3);color:var(--teal);border:1px solid var(--teal4);white-space:nowrap">ROI: ${n.roi}</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:9px">
+      <div><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em">Cost</div><div style="font-size:11px;color:var(--ink3)">${n.cost}</div></div>
+      <div><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em">Frequency</div><div style="font-size:11px;color:var(--ink3)">${n.freq}</div></div>
+    </div>
+    <div style="font-size:11px;color:var(--ink2);line-height:1.6;margin-bottom:8px;padding:8px;background:var(--teal3);border-radius:5px">${n.why}</div>
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;gap:5px;flex-wrap:wrap">${n.events.map(e=>`<span style="font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;background:var(--amber3);color:var(--amber2);border:1px solid var(--amber4)">${e}</span>`).join('')}</div>
+      <a href="https://${n.url}" target="_blank" style="font-family:var(--mono);font-size:10px;color:var(--teal);font-weight:600">${n.url} ↗</a>
+    </div>
+  </div>`).join('');
+  const bi=document.getElementById('budget-inputs');
+  if(bi)bi.innerHTML=[{l:'Events/month',id:'bi-ev',v:'2'},{l:'Avg cost/event',id:'bi-co',v:'50'},{l:'Annual memberships',id:'bi-me',v:'700'}].map(f=>`<div><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--ink4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em">${f.l}</div><input class="inp" id="${f.id}" value="${f.v}" type="number" oninput="calcBudget()" style="padding:6px 10px;font-size:12px"></div>`).join('');
+  calcBudget();
+  // Events table
+  const et=document.getElementById('network-events');
+  if(et)et.innerHTML=`<table class="tbl"><thead><tr><th>Date</th><th>Organization</th><th>Event</th><th>Cost</th><th>Target</th><th>Who goes</th></tr></thead><tbody>
+    <tr><td style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--teal)">Mar 31</td><td style="font-weight:700">FPA Houston</td><td>March Chapter Meeting</td><td>~$35 guest</td><td>Financial planners, advisors</td><td><span style="font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:var(--teal3);color:var(--teal);border:1px solid var(--teal4)">Both</span></td></tr>
+    <tr><td style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--teal)">Apr 17</td><td style="font-weight:700">FEI Houston</td><td>FEI Houston Monthly Event</td><td>Member rate</td><td>CFOs, Controllers, VPs Finance</td><td><span style="font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:var(--teal3);color:var(--teal);border:1px solid var(--teal4)">Both</span></td></tr>
+    <tr><td style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--teal)">Apr 22</td><td style="font-weight:700">FEI Houston</td><td>FEI Houston Event</td><td>Member rate</td><td>CFOs, Controllers, Treasurers</td><td><span style="font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:var(--teal3);color:var(--teal);border:1px solid var(--teal4)">Both</span></td></tr>
+    <tr><td style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--amber2)">Apr 2026</td><td style="font-weight:700">CFO Focus</td><td>Houston CFO Focus — private home</td><td>Sponsor to attend</td><td>Houston CFOs + GCs only</td><td><span style="font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:var(--amber3);color:var(--amber2);border:1px solid var(--amber4)">Investigate</span></td></tr>
+    <tr><td style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--navy2)">Monthly</td><td style="font-weight:700">TXCPA Houston</td><td>Morning Buzz Networking Breakfast, 7:30AM</td><td>Free first 3</td><td>CPAs, Controllers, AP managers</td><td><span style="font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:var(--navy3);color:var(--navy2);border:1px solid var(--navy4)">Alternate T/E</span></td></tr>
+    <tr><td style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--navy2)">Monthly</td><td style="font-weight:700">A&F Meetup</td><td>Accounting & Finance Professionals Networking</td><td>Free</td><td>Controllers, AP managers</td><td><span style="font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:var(--green3);color:var(--green2);border:1px solid var(--green4)">Free — attend both</span></td></tr>
+  </tbody></table>`;
+}
+function calcBudget(){
+  const ev=parseFloat(document.getElementById('bi-ev')?.value||2),co=parseFloat(document.getElementById('bi-co')?.value||50),me=parseFloat(document.getElementById('bi-me')?.value||700);
+  const annual=Math.round(ev*12*co+me),conv=Math.round(ev*12*0.05),rev=conv*7250;
+  const roi=document.getElementById('budget-roi');
+  if(roi)roi.innerHTML=[{l:'Annual budget',v:'$'+annual.toLocaleString(),c:'var(--ink)'},{l:'Est. deals/yr (5% conv.)',v:conv,c:'var(--teal)'},{l:'Est. revenue',v:'$'+rev.toLocaleString(),c:'var(--green2)'}].map(s=>`<div style="text-align:center"><div style="font-family:var(--mono);font-size:9px;color:var(--teal);letter-spacing:.06em;margin-bottom:4px;text-transform:uppercase">${s.l}</div><div style="font-size:20px;font-weight:800;color:${s.c}">${s.v}</div></div>`).join('');
+}
+
+// ── DAN'S VIEW ──
+function buildDanView(){
+  // ── STATS ──
+  const ds = document.getElementById('dan-stats');
+  if (ds) {
+    const totalComm = deals.filter(d => d.status === 'won' && d.referredBy !== 'ramp').length;
+    const noComm = deals.filter(d => d.referredBy === 'ramp').length;
+    const commPending = deals.filter(d => d.status !== 'won' && d.referredBy !== 'ramp').length;
+    ds.innerHTML = [
+      {l:'Total Deals', v:deals.length, c:'var(--navy2)'},
+      {l:'Active', v:deals.filter(d=>d.status==='active').length, c:'var(--teal)'},
+      {l:'Commission Due', v:totalComm, c:'var(--green2)'},
+      {l:'Pending (open)', v:commPending, c:'var(--amber2)'},
+      {l:'No Commission (Ramp)', v:noComm, c:'var(--ink4)'},
+    ].map(s=>`<div style="background:var(--bg2);border:1px solid var(--line);border-radius:7px;padding:11px;text-align:center"><div style="font-family:var(--mono);font-size:9px;color:var(--ink4);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">${s.l}</div><div style="font-size:20px;font-weight:800;color:${s.c}">${s.v}</div></div>`).join('');
+  }
+
+  // ── COMMISSION TABLE ──
+  const cb = document.getElementById('dan-comm-body');
+  if (cb) {
+    cb.innerHTML = deals.length ? deals.map(d => {
+      const cs = commissionStatus(d);
+      const ref = d.referredByName || (d.referredBy === 'ramp' ? 'Ramp AE' : d.referredBy === 'cbh' ? 'CBH' : d.referredBy === 'kerr' ? 'Kerr' : d.referredBy || '—');
+      const isRamp = d.referredBy === 'ramp';
+      return `<tr style="cursor:default">
+        <td style="font-weight:700;color:var(--ink)">${d.co}</td>
+        <td style="font-size:11px;color:var(--ink3)">${d.erp}</td>
+        <td>
+          <span style="font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;background:${isRamp?'var(--bg3)':'var(--navy3)'};color:${isRamp?'var(--ink4)':'var(--navy2)'};border:1px solid ${isRamp?'var(--line2)':'var(--navy4)'}">
+            ${ref}
+          </span>
+          ${isRamp ? '<span style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--red2);margin-left:4px">NO COMM</span>' : ''}
+        </td>
+        <td>${d.owner === 'tarun' ? 'Tarun' : 'Ed'}</td>
+        <td style="font-family:var(--mono);font-size:10px">${d.tier}</td>
+        <td>${statusTag(d.status)}</td>
+        <td>
+          <span style="font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;background:${cs.bg};color:${cs.color};border:1px solid ${cs.color}20">
+            ${cs.label}
+          </span>
+        </td>
+        <td style="font-size:11px;color:var(--ink4)">${d.commissionNote||'—'}</td>
+      </tr>`;
+    }).join('') : '<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--ink4)">No deals yet — paste your list in chat</td></tr>';
+  }
+
+  // ── SIGN-OFF QUEUE ──
+  const so = document.getElementById('dan-signoff');
+  if (so) {
+    const ns = deals.filter(d => d.status === 'active' && !d.aeConfirmed);
+    so.innerHTML = ns.length ? ns.map(d => `
+      <div style="background:var(--amber3);border:1px solid var(--amber4);border-radius:7px;padding:12px;margin-bottom:8px;display:flex;align-items:center;gap:12px">
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:700;color:var(--amber)">${d.co}</div>
+          <div style="font-size:11px;color:var(--amber2);margin-top:3px">${d.erp} · ${d.tier} · Owner: ${d.owner==='tarun'?'Tarun':'Ed'}</div>
+          <div style="font-size:11px;color:var(--ink3);margin-top:2px">Referred by: ${d.referredByName||d.referredBy||'Unknown'}</div>
+        </div>
+        <span style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--amber2);padding:4px 9px;border-radius:4px;background:#fff;border:1px solid var(--amber4)">NEEDS SIGN-OFF</span>
+      </div>`).join('') : '<div class="al al-g"><div class="al-icon">✓</div><div>No items awaiting sign-off.</div></div>';
+  }
+
+  // ── CLOSED DEALS — COMMISSION DUE ──
+  const dc = document.getElementById('dan-closed');
+  if (dc) {
+    const won = deals.filter(d => d.status === 'won');
+    if (!won.length) {
+      dc.innerHTML = '<div class="al al-n"><div class="al-icon">📊</div><div>No closed deals yet.</div></div>';
+    } else {
+      dc.innerHTML = won.map(d => {
+        const cs = commissionStatus(d);
+        const ae = d.owner === 'tarun' ? 'Tarun Jakkaraju' : 'Ed Hosey';
+        const aeEmail = d.owner === 'tarun' ? 'tarun@kerrconsulting.com' : 'ehosey@kerrconsulting.com';
+        return `<div style="background:${cs.owed?'var(--green3)':'var(--bg3)'};border:1px solid ${cs.owed?'var(--green4)':'var(--line2)'};border-radius:7px;padding:13px;margin-bottom:8px">
+          <div style="display:flex;align-items:flex-start;gap:12px">
+            <div style="font-size:20px">${cs.owed?'💰':'🚫'}</div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:700;color:${cs.owed?'var(--green2)':'var(--ink4)'}">${d.co}</div>
+              <div style="font-size:11px;color:var(--ink3);margin-top:3px">${d.erp} · ${d.tier}</div>
+              <div style="font-size:12px;font-weight:600;color:${cs.color};margin-top:5px">${cs.label}</div>
+              ${cs.owed ? `<div style="font-size:11px;color:var(--ink3);margin-top:3px">→ Process commission to: <b>${ae}</b> (${aeEmail})</div>` : ''}
+              <div style="font-size:11px;color:var(--ink4);margin-top:2px">Referred by: ${d.referredByName||d.referredBy||'Unknown'} · Source: ${d.src||'—'}</div>
+            </div>
+            <span style="font-family:var(--mono);font-size:9px;font-weight:700;padding:3px 8px;border-radius:3px;background:${d.winWireSent?'var(--green3)':'var(--red3)'};color:${d.winWireSent?'var(--green2)':'var(--red2)'};border:1px solid ${d.winWireSent?'var(--green4)':'var(--red4)'}">
+              ${d.winWireSent?'Wire Sent':'Wire Pending'}
+            </span>
+          </div>
+        </div>`;
+      }).join('');
+    }
+  }
+
+  // ── WIN WIRES ──
+  const wl = document.getElementById('dan-wirelist');
+  if (wl) {
+    const wd = deals.filter(d => d.status === 'won');
+    wl.innerHTML = wd.length ? wd.map(d => `
+      <div style="background:var(--green3);border:1px solid var(--green4);border-radius:7px;padding:11px;margin-bottom:8px;display:flex;align-items:center;gap:12px">
+        <div style="font-size:18px">🏆</div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:700;color:var(--green2)">${d.co}</div>
+          <div style="font-size:11px;color:var(--green2);opacity:.8">${d.erp} · ${d.tier} · ${d.owner==='tarun'?'Tarun':'Ed'}</div>
+        </div>
+        <span style="font-family:var(--mono);font-size:9px;font-weight:700;padding:3px 8px;border-radius:3px;background:${d.winWireSent?'var(--teal3)':'var(--red3)'};color:${d.winWireSent?'var(--teal)':'var(--red2)'};border:1px solid ${d.winWireSent?'var(--teal4)':'var(--red4)'}">${d.winWireSent?'Wire Sent':'Wire Pending'}</span>
+      </div>`).join('') : '<div class="al al-n"><div class="al-icon">📊</div><div>No closed deals yet.</div></div>';
+  }
+
+  // ── SLACK PREVIEW ──
+  const sp = document.getElementById('dan-slack-preview');
+  if (sp) {
+    const sampleDeal = deals.find(d => d.status === 'won') || deals[0];
+    if (sampleDeal) {
+      const ae = sampleDeal.owner === 'tarun' ? 'Tarun Jakkaraju' : 'Ed Hosey';
+      const isRamp = sampleDeal.referredBy === 'ramp';
+      sp.textContent = `💰 DEAL CLOSED — Commission Alert\n\nCompany: ${sampleDeal.co}\nERP: ${sampleDeal.erp}\nTier: ${sampleDeal.tier}\nOwner: ${ae}\nReferred by: ${sampleDeal.referredByName || sampleDeal.referredBy || '—'}\n\n${isRamp
+        ? '🚫 NO COMMISSION — This deal was sourced by Ramp AE (Jamie/Eric). No commission owed to Tarun or Ed.'
+        : `✅ COMMISSION OWED → ${ae}\nPlease process commission. Contact: ${sampleDeal.owner==='tarun'?'tarun@kerrconsulting.com':'ehosey@kerrconsulting.com'}`
+      }\n\nWin wire: ${sampleDeal.winWireSent ? 'Sent ✓' : 'Pending — generate now'}\n\n→ tjakkaraju1.github.io/kerr-ramp-sage`;
+    } else {
+      sp.textContent = 'Add deals to the pipeline to see a preview.';
+    }
+  }
+}
+
+// ── PATCH goPanel ──
+const _goPanelV2=goPanel;
+function goPanel(id,navId){
+  _goPanelV2(id,navId);
+  if(id==='tracker')setTimeout(buildTracker,50);
+  if(id==='secretary')setTimeout(buildSecretary,50);
+  if(id==='network')setTimeout(buildNetworking,50);
+  if(id==='dan')setTimeout(buildDanView,50);
+}
+
+// Init
+setTimeout(()=>{
+  buildMonitor();
+  buildWWDealSelector();
+  const a=getSecActions();
+  const b=document.getElementById('sec-badge');
+  if(b)b.textContent=a.length;
+},500);
+
+
+// ── QUICK CAPTURE ──
+let capturedLeads = [];
+function submitCapture() {
+  const first = (document.getElementById('cap-first')||{}).value||'';
+  const last  = (document.getElementById('cap-last')||{}).value||'';
+  const title = (document.getElementById('cap-title')||{}).value||'';
+  const co    = (document.getElementById('cap-co')||{}).value||'';
+  const erp   = (document.getElementById('cap-erp')||{}).value||'Not mentioned';
+  const ind   = (document.getElementById('cap-ind')||{}).value||'';
+  const email = (document.getElementById('cap-email')||{}).value||'';
+  const phone = (document.getElementById('cap-phone')||{}).value||'';
+  const src   = (document.getElementById('cap-src')||{}).value||'';
+  const pain  = (document.getElementById('cap-pain')||{}).value||'';
+  const by    = (document.getElementById('cap-by')||{}).value||'Tarun';
+  if (!first && !co) { toast('Add at least a name or company', 'warn'); return; }
+  // Score the lead
+  let score = 0;
+  if (erp && erp !== 'Not mentioned' && erp !== 'Unknown') score += 25;
+  if (['Controller','CFO','AP Manager','Director of Finance','VP Finance'].some(t => title.includes(t))) score += 15;
+  if (pain && pain.length > 10) score += 15;
+  if (email) score += 5;
+  if (phone) score += 5;
+  score += 10; // US assumed from Houston events
+  const lead = { first, last, title, co, erp, ind, email, phone, src, pain, by, score, date: new Date().toLocaleDateString() };
+  capturedLeads.push(lead);
+  renderCaptured();
+  // Generate Slack message
+  const slackMsg = `#lead-capture — New lead from ${src||'event'}\n\nName: ${first} ${last}\nTitle: ${title}\nCompany: ${co}\nERP: ${erp}\nIndustry: ${ind}\nEmail: ${email}\nPhone: ${phone}\nPain: ${pain}\nCaptured by: ${by}\nScore: ${score}/100`;
+  copyText(slackMsg);
+  toast(score >= 70 ? `✅ Lead added — Score ${score}/100 — pursue! Slack message copied` : `Lead added — Score ${score}/100 — monitor. Slack message copied`, score >= 70 ? '' : 'warn');
+  clearCapture();
+}
+function renderCaptured() {
+  const el = document.getElementById('captured-list');
+  if (!el || !capturedLeads.length) return;
+  el.innerHTML = capturedLeads.map((l, i) => `
+    <div style="background:var(--bg2);border:1px solid var(--line);border-radius:7px;padding:12px;margin-bottom:8px;display:flex;align-items:flex-start;gap:12px">
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+          <div style="font-size:13px;font-weight:700;color:var(--ink)">${l.first} ${l.last}</div>
+          <span style="font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:${l.score>=70?'var(--teal3)':'var(--amber3)'};color:${l.score>=70?'var(--teal)':'var(--amber2)'};border:1px solid ${l.score>=70?'var(--teal4)':'var(--amber4)'}">Score: ${l.score}/100</span>
+          ${l.score>=70?'<span style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--green2)">→ PURSUE</span>':''}
+        </div>
+        <div style="font-size:11px;color:var(--ink3)">${l.title} · ${l.co}${l.erp?' · '+l.erp:''}</div>
+        <div style="font-size:11px;color:var(--ink4);margin-top:3px">${l.email}${l.phone?' · '+l.phone:''}</div>
+        ${l.pain?`<div style="font-size:11px;color:var(--navy2);margin-top:4px;font-style:italic">"${l.pain}"</div>`:''}
+        <div style="font-family:var(--mono);font-size:9px;color:var(--ink4);margin-top:4px">Source: ${l.src||'—'} · Captured by ${l.by} · ${l.date}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0">
+        <button class="btn go" style="font-size:10px;padding:4px 9px" onclick="registerFromCapture(${i})">→ Register lead</button>
+        <button class="btn" style="font-size:10px;padding:4px 9px" onclick="copyText('${l.first} ${l.last} ${l.email} ${l.phone} ${l.co} ${l.title} ${l.erp}')">📋 Copy</button>
+      </div>
+    </div>`).join('');
+  const badge = document.getElementById('capture-badge');
+  if (badge) { badge.style.display = 'inline-flex'; badge.textContent = capturedLeads.length; }
+}
+function clearCapture() {
+  ['cap-first','cap-last','cap-title','cap-co','cap-email','cap-phone','cap-src','cap-pain','cap-ind'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  const erp=document.getElementById('cap-erp'); if(erp) erp.value='';
+}
+function registerFromCapture(i) {
+  const l = capturedLeads[i];
+  if (!l) return;
+  goPanel('register','nav-register');
+  setTimeout(() => {
+    const fields = { 'r-co': l.co, 'r-poc': `${l.first} ${l.last}`, 'r-title': l.title, 'r-email': l.email };
+    Object.entries(fields).forEach(([id, val]) => { const el=document.getElementById(id); if(el) el.value=val; });
+    const erp=document.getElementById('r-erp');
+    if(erp && l.erp) [...erp.options].forEach(o => { if(o.text.includes(l.erp.split(' ')[0])) o.selected=true; });
+    if(typeof updateReg==='function') updateReg();
+    toast(`${l.first} ${l.last} loaded into registration form`);
+  }, 100);
+}
+// Patch goPanel for capture
+const _goPanelV3 = goPanel;
+function goPanel(id, navId) {
+  _goPanelV3(id, navId);
+  if (id === 'capture') {
+    const by = document.getElementById('cap-by');
+    if (by) by.value = activeUser === 'tarun' ? 'Tarun' : 'Ed';
+  }
+}
+function addNetworkEvent(){toast("Drop the event details in chat and I will add it to the tracker!","warn");}
 </script>
 </body>
 </html>
