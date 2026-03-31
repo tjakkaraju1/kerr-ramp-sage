@@ -1222,11 +1222,11 @@ function panelRegister() {
 }
 
 // ─── SCHEDULER ───────────────────────────────
-// Calendly links — paste your real links here
+// Paste your real Calendly links here
 const CALENDLY_LINKS = {
-  tarun:   { discovery: 'https://calendly.com/tarun-kerr/discovery',   strategy: 'https://calendly.com/tarun-kerr/strategy' },
-  ed:      { discovery: 'https://calendly.com/ed-kerr/discovery',      strategy: 'https://calendly.com/ed-kerr/strategy' },
-  dan:     { discovery: 'https://calendly.com/dan-kerr/discovery',     strategy: 'https://calendly.com/dan-kerr/strategy' },
+  tarun: { discovery: 'https://calendly.com/tarun-kerr/discovery',  strategy: 'https://calendly.com/tarun-kerr/strategy' },
+  ed:    { discovery: 'https://calendly.com/ed-kerr/discovery',     strategy: 'https://calendly.com/ed-kerr/strategy' },
+  dan:   { discovery: 'https://calendly.com/dan-kerr/discovery',    strategy: 'https://calendly.com/dan-kerr/strategy' },
 };
 
 function panelScheduler() {
@@ -1236,7 +1236,7 @@ function panelScheduler() {
   return `
   <div class="card">
     <div class="card-title">Scheduler</div>
-    <div class="card-sub">Your Calendly links + Make.com calendar automation</div>
+    <div class="card-sub">Your Calendly links + Make.com calendar automation (pending setup)</div>
     <div class="grid-2" style="margin-bottom:16px">
       <div style="background:#f8faff;border:1px solid var(--border);border-radius:10px;padding:16px">
         <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:12px">YOUR CALENDLY LINKS</div>
@@ -1250,29 +1250,19 @@ function panelScheduler() {
           <a href="${links.strategy}" target="_blank" style="font-size:12px;color:#1d4ed8;word-break:break-all">${links.strategy}</a>
           <button onclick="navigator.clipboard.writeText('${links.strategy}').then(()=>alert('Copied!'))" class="btn btn-secondary btn-sm" style="margin-top:6px;width:100%">Copy link</button>
         </div>
-        <div style="margin-top:12px;font-size:11px;color:var(--muted)">Update CALENDLY_LINKS in the HTML config to set your real links.</div>
       </div>
       <div style="background:#f8faff;border:1px solid var(--border);border-radius:10px;padding:16px">
-        <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:12px">MAKE.COM CALENDAR AUTOMATION</div>
-        ${makeConfigured ? `
-        <div style="font-size:13px;color:#15803d;font-weight:500;margin-bottom:8px">✅ Make.com connected</div>
-        <div style="font-size:12px;color:var(--muted)">New Calendly booking → reads team calendars → creates invite → notifies Slack → logs to Sheets</div>
-        ` : `
-        <div style="font-size:13px;color:#92400e;font-weight:500;margin-bottom:8px">⏳ Make.com — pending setup</div>
-        <div style="font-size:12px;color:var(--muted);margin-bottom:10px">Once Make.com is configured, this will automatically:</div>
-        <div style="font-size:12px;color:var(--muted)">① New Calendly booking detected<br/>② Check selected team calendars<br/>③ Create Google Calendar invite<br/>④ Invite all attendees<br/>⑤ Notify Kerr Slack<br/>⑥ Log to Google Sheets</div>
-        <div style="margin-top:12px;padding:8px;background:#fffbeb;border-radius:6px;font-size:11px;color:#92400e">
-          Paste MAKE_WEBHOOK_URL_CALENDAR into the config block to activate.
-        </div>
-        `}
+        <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:12px">MAKE.COM — CALENDAR AUTOMATION</div>
+        <div style="font-size:13px;color:#92400e;font-weight:500;margin-bottom:8px">⏳ Pending Make.com setup</div>
+        <div style="font-size:12px;color:var(--muted)">Once configured:<br/>① Client books Calendly<br/>② Make.com checks team calendars<br/>③ Creates Google Calendar invite<br/>④ Notifies Kerr Slack<br/>⑤ Logs to Google Sheets</div>
       </div>
     </div>
     <div style="padding:14px;background:var(--bg);border-radius:10px">
-      <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px">QUICK SHARE A LINK</div>
+      <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px">QUICK SHARE</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button onclick="navigator.clipboard.writeText('${links.discovery}').then(()=>alert('Discovery link copied!'))" class="btn btn-primary btn-sm">📋 Copy Discovery (30 min)</button>
         <button onclick="navigator.clipboard.writeText('${links.strategy}').then(()=>alert('Strategy link copied!'))" class="btn btn-secondary btn-sm">📋 Copy Strategy (60 min)</button>
-        <button onclick="showPanel('meeting','Meeting Coordinator')" class="btn btn-secondary btn-sm">📅 Open Meeting Coordinator</button>
+        <button onclick="showPanel('meeting','Meeting Coordinator')" class="btn btn-secondary btn-sm">📅 Meeting Coordinator</button>
       </div>
     </div>
   </div>`;
@@ -1387,7 +1377,7 @@ function panelTemplates() {
   const isEd = currentUser?.key === 'ed';
   const userName = currentUser?.name?.split(' ')[0] || 'Tarun';
   const voiceDesc = isEd
-    ? 'Direct, data-forward, slightly more formal. Ed leads with numbers and efficiency.'
+    ? 'Direct, data-forward. Ed leads with numbers, ROI, and efficiency.'
     : 'Confident, warm, relationship-first. Tarun leads with context and trust.';
   return `
   <div class="card">
@@ -2230,28 +2220,11 @@ Looking forward to our ${purpose.toLowerCase()}. Here's a quick agenda:
 ${agenda.slice(0,4).map(a=>'• '+a.replace(/\s*\(\d+ min\)/,'')).join('\n')}
 
 Please confirm this time works, or feel free to use my Calendly link to reschedule:
-${(CALENDLY_LINKS[currentUser?.key||'tarun']?.discovery) || 'https://calendly.com/kerr/discovery'}
+${CALENDLY_LINKS[currentUser?.key||"tarun"]?.discovery || "https://calendly.com/kerr/discovery"}
 
 Talk soon,
 ${currentUser?.name || 'Tarun'}
 Kerr Consulting | ramp.anywareapps.com`;
-
-  // Fire Kerr Slack notification for kickoffs and discovery calls
-  const slackEventMap = {
-    'Implementation kickoff': 'kickoff_booked',
-    'Discovery call':         'discovery_booked',
-  };
-  const slackEvent = slackEventMap[purpose];
-  if (slackEvent && all.length > 0) {
-    const teamStr = internalNames.join(', ');
-    notifySlack(slackEvent, {
-      company: client.split('—')[0].trim(),
-      contact: externalNames[0] || '',
-      time: 'TBD — invite pending',
-      team: teamStr,
-      rep: currentUser?.name || 'Tarun'
-    }).catch(()=>{});
-  }
 }
 
 function generateAvailability() {
@@ -2286,7 +2259,7 @@ Hi [Client Name],
 We're looking to schedule our ${purpose.toLowerCase()} between ${dateFrom} and ${dateTo}.
 
 Could you share 2–3 times that work for you? Or feel free to book directly here:
-${(CALENDLY_LINKS[currentUser?.key||'tarun']?.discovery) || 'https://calendly.com/kerr/discovery'}
+${CALENDLY_LINKS[currentUser?.key||"tarun"]?.discovery || "https://calendly.com/kerr/discovery"}
 
 Looking forward to it,
 ${currentUser?.name || 'Tarun'}
@@ -2858,22 +2831,16 @@ function runTemplate() {
   const prospect = document.getElementById('tpl-prospect')?.value;
   const erp      = document.getElementById('tpl-erp')?.value;
   const isEd     = currentUser?.key === 'ed';
-
   const voicePrompt = isEd
-    ? `Write a ${type} email in Ed Hosey's voice.
-Ed is an Account Executive at Kerr Consulting — direct, data-forward, and slightly more formal than his colleagues. He leads with numbers, efficiency gains, and ROI. He is concise, respects the prospect's time, and doesn't over-explain. He builds trust through precision.`
-    : `Write a ${type} email in Tarun Jakkaraju's voice.
-Tarun is the owner of Kerr Consulting — confident, warm, relationship-first. Houston-based RevOps consultant and Platinum Ramp Partner. He leads with context and trust, not features. He's direct but never cold. He sounds like a person, not a sales bot.`;
-
-  const erpLine = erp ? `The prospect is running ${erp}. Reference this naturally — it shows you've done your research. Use the specific sync maps and gotchas for ${erp} from your knowledge base.` : '';
+    ? `Write a ${type} email in Ed Hosey's voice. Ed is an Account Executive at Kerr Consulting — direct, data-forward, slightly formal. He leads with numbers and ROI. He is concise and respects the prospect's time.`
+    : `Write a ${type} email in Tarun Jakkaraju's voice. Tarun is the owner of Kerr Consulting — confident, warm, relationship-first. Houston-based RevOps consultant and Platinum Ramp Partner. He leads with context and trust.`;
+  const erpLine = erp ? `The prospect is running ${erp}. Reference this naturally — use the specific sync maps and details for ${erp} from your knowledge base.` : '';
   const prospectLine = prospect ? `Prospect/company: ${prospect}.` : '';
-
   callSage(`${voicePrompt}
 ${prospectLine}
 ${erpLine}
 Context: ${ctx || 'Ramp + Sage ERP integration outreach'}.
-Use exact ROI numbers and pricing from your knowledge base where relevant.
-Write only the email — no preamble, no explanation. Sound like a real person who knows their product cold.`, 'tpl-out');
+Use exact ROI numbers and pricing from your knowledge base. Write only the email — no preamble. Sound like a real person who knows their product cold.`, 'tpl-out');
 }
 
 function runWinWire() {
