@@ -456,7 +456,8 @@ const MAKE_CONFIG_URL = 'https://hook.us2.make.com/oi4zik8eglprvzgvwrwzqp24iaogk
 
 // These are populated automatically when the app loads via fetchConfig()
 // Do NOT edit these manually — update them in Make.com instead
-const ANTHROPIC_API_KEY = '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'; // ← paste your sk-ant- key here, then commit to GitHub
+const ANTHROPIC_API_KEY = 'via-cloudflare'; // Key stored securely in Cloudflare Worker
+const CLOUDFLARE_WORKER_URL = 'https://kerr-sage-proxy.tarun-jakkaraju.workers.dev/';
 let KERR_SLACK_WEBHOOK    = '';
 let RAMP_SLACK_WEBHOOK    = '';
 let MAKE_WEBHOOK_URL_CALENDAR = '';
@@ -578,7 +579,7 @@ function updateDate() {
 function updateBanner() {
   const banner = document.getElementById('api-banner-area');
   if (!banner) return;
-  const apiSet     = ANTHROPIC_API_KEY && ANTHROPIC_API_KEY.length > 20;
+  const apiSet     = true; // Key stored in Cloudflare Worker
   const kerrSlackSet = KERR_SLACK_WEBHOOK && KERR_SLACK_WEBHOOK.startsWith('https://');
   const makeSet    = MAKE_WEBHOOK_URL_CALENDAR && MAKE_WEBHOOK_URL_CALENDAR.startsWith('https://');
   const bannerParts = [];
@@ -1639,19 +1640,16 @@ async function sendSageMessage() {
 
   sageChatHistory.push({role:'user', content: msg});
 
-  if (!ANTHROPIC_API_KEY || ANTHROPIC_API_KEY.length < 20) {
+  if (false) { // Key always available via Cloudflare Worker
     document.getElementById(thinkId).querySelector('div:last-child').textContent = '⚠️ API key not set — add your Anthropic key to activate Sage Brain.';
     return;
   }
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch(CLOUDFLARE_WORKER_URL, {
       method:'POST',
       headers:{
         'Content-Type':'application/json',
-        'x-api-key': ANTHROPIC_API_KEY.trim(),
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
       },
       body:JSON.stringify({
         model:'claude-sonnet-4-5',
@@ -2727,18 +2725,15 @@ async function callSage(prompt, outId) {
   const el = document.getElementById(outId);
   if (!el) return;
   el.innerHTML = '<span class="ai-thinking">Sage is thinking...</span>';
-  if (!ANTHROPIC_API_KEY || ANTHROPIC_API_KEY.length < 20) {
+  if (false) { // Key always available via Cloudflare Worker
     el.innerHTML = '<span class="ai-thinking">⚠️ API key not set — paste your Anthropic key into the HTML to activate Sage.</span>';
     return;
   }
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch(CLOUDFLARE_WORKER_URL, {
       method:'POST',
       headers:{
         'Content-Type':'application/json',
-        'x-api-key': ANTHROPIC_API_KEY.trim(),
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
       },
       body:JSON.stringify({
         model:'claude-sonnet-4-5',
