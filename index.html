@@ -1,0 +1,3112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Kerr Sage</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --green: #00D632;
+  --green-dim: #00b82c;
+  --navy: #1B2A5C;
+  --navy-light: #243570;
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --border: #e2e5ec;
+  --text: #1a1d2e;
+  --muted: #6b7280;
+  --sidebar-w: 220px;
+  --header-h: 56px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* ── LOGIN ── */
+#login-screen{
+  position:fixed;inset:0;background:var(--navy);
+  display:flex;align-items:center;justify-content:center;
+  z-index:1000;
+}
+.login-card{
+  background:#fff;border-radius:16px;padding:40px 36px;
+  width:360px;box-shadow:0 20px 60px rgba(0,0,0,0.25);
+}
+.login-logo{
+  display:flex;align-items:center;gap:10px;margin-bottom:32px;
+}
+.login-logo .dot{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--green);display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:700;color:#fff;
+}
+.login-logo span{font-size:22px;font-weight:600;color:var(--navy);}
+.login-card label{
+  display:block;font-size:12px;font-weight:500;
+  color:var(--muted);margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase;
+}
+.login-card input{
+  width:100%;padding:11px 14px;border:1.5px solid var(--border);
+  border-radius:8px;font-size:14px;font-family:inherit;
+  outline:none;transition:border .15s;margin-bottom:16px;
+}
+.login-card input:focus{border-color:var(--green);}
+.login-btn{
+  width:100%;padding:12px;background:var(--green);border:none;
+  border-radius:8px;font-size:14px;font-weight:600;color:#fff;
+  cursor:pointer;transition:background .15s;font-family:inherit;
+}
+.login-btn:hover{background:var(--green-dim);}
+.login-err{
+  color:#e53e3e;font-size:13px;margin-top:12px;
+  text-align:center;display:none;
+}
+
+/* ── APP SHELL ── */
+#app{display:none;min-height:100vh;}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  position:fixed;top:0;left:0;bottom:0;
+  width:var(--sidebar-w);background:var(--navy);
+  display:flex;flex-direction:column;z-index:100;
+  overflow-y:auto;
+}
+.sidebar-logo{
+  padding:18px 16px 14px;display:flex;align-items:center;gap:9px;
+  border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;
+}
+.sidebar-logo .dot{
+  width:30px;height:30px;border-radius:8px;background:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.sidebar-logo span{font-size:16px;font-weight:600;color:#fff;}
+.sidebar-user{
+  padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;
+}
+.sidebar-user .uname{font-size:12px;font-weight:500;color:#fff;opacity:.9;}
+.sidebar-user .urole{font-size:11px;color:var(--green);font-weight:500;margin-top:1px;}
+.sidebar-section{
+  padding:16px 10px 6px;font-size:10px;font-weight:600;
+  color:rgba(255,255,255,0.35);letter-spacing:.08em;text-transform:uppercase;
+}
+.nav-item{
+  display:flex;align-items:center;gap:9px;padding:9px 12px;
+  border-radius:8px;margin:1px 6px;cursor:pointer;
+  font-size:13px;font-weight:400;color:rgba(255,255,255,0.7);
+  transition:all .15s;border:none;background:none;width:calc(100% - 12px);text-align:left;
+}
+.nav-item:hover{background:rgba(255,255,255,0.08);color:#fff;}
+.nav-item.active{background:rgba(0,214,50,0.15);color:var(--green);font-weight:500;}
+.nav-item .icon{font-size:15px;flex-shrink:0;width:18px;text-align:center;}
+.sidebar-footer{
+  margin-top:auto;padding:12px 10px;border-top:1px solid rgba(255,255,255,0.08);flex-shrink:0;
+}
+.logout-btn{
+  display:flex;align-items:center;gap:8px;padding:8px 12px;
+  border-radius:8px;cursor:pointer;font-size:12px;
+  color:rgba(255,255,255,0.5);transition:all .15s;
+  border:none;background:none;width:100%;font-family:inherit;
+}
+.logout-btn:hover{color:#fff;background:rgba(255,255,255,0.08);}
+
+/* ── MAIN ── */
+.main{
+  margin-left:var(--sidebar-w);min-height:100vh;
+  display:flex;flex-direction:column;
+}
+.topbar{
+  position:sticky;top:0;background:var(--surface);
+  border-bottom:1px solid var(--border);padding:0 28px;
+  height:var(--header-h);display:flex;align-items:center;
+  justify-content:space-between;z-index:50;flex-shrink:0;
+}
+.topbar-title{font-size:16px;font-weight:600;color:var(--text);}
+.topbar-sub{font-size:12px;color:var(--muted);margin-top:1px;}
+.content{padding:24px 28px;flex:1;}
+
+/* ── CARDS ── */
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:20px 22px;margin-bottom:16px;
+}
+.card-title{font-size:14px;font-weight:600;margin-bottom:4px;}
+.card-sub{font-size:12px;color:var(--muted);margin-bottom:16px;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+
+/* ── FORM ELEMENTS ── */
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:12px;font-weight:500;color:var(--muted);margin-bottom:5px;}
+.field input,.field textarea,.field select{
+  width:100%;padding:10px 13px;border:1.5px solid var(--border);
+  border-radius:8px;font-size:13px;font-family:inherit;outline:none;
+  transition:border .15s;background:#fff;resize:vertical;
+}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--green);}
+.field textarea{min-height:90px;}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:9px 16px;border-radius:8px;font-size:13px;font-weight:500;
+  cursor:pointer;border:none;font-family:inherit;transition:all .15s;
+}
+.btn-primary{background:var(--green);color:#fff;}
+.btn-primary:hover{background:var(--green-dim);}
+.btn-secondary{background:var(--bg);border:1.5px solid var(--border);color:var(--text);}
+.btn-secondary:hover{border-color:var(--navy);}
+.btn-navy{background:var(--navy);color:#fff;}
+.btn-navy:hover{background:var(--navy-light);}
+.btn-sm{padding:6px 12px;font-size:12px;}
+.btn-group{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
+
+/* ── BADGES ── */
+.badge{
+  display:inline-block;padding:2px 8px;border-radius:20px;
+  font-size:11px;font-weight:500;
+}
+.badge-green{background:#dcfce7;color:#15803d;}
+.badge-blue{background:#dbeafe;color:#1d4ed8;}
+.badge-amber{background:#fef3c7;color:#92400e;}
+.badge-red{background:#fee2e2;color:#991b1b;}
+.badge-gray{background:#f3f4f6;color:#374151;}
+
+/* ── TABLE ── */
+.tbl{width:100%;border-collapse:collapse;font-size:13px;}
+.tbl th{
+  text-align:left;padding:10px 12px;font-size:11px;font-weight:600;
+  color:var(--muted);border-bottom:1px solid var(--border);
+  text-transform:uppercase;letter-spacing:.04em;
+}
+.tbl td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:#fafbfc;}
+
+/* ── STAT CARDS ── */
+.stat{padding:18px 20px;background:var(--surface);border:1px solid var(--border);border-radius:12px;}
+.stat-label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
+.stat-val{font-size:28px;font-weight:600;color:var(--text);margin:4px 0 2px;line-height:1;}
+.stat-change{font-size:12px;color:var(--muted);}
+.stat-change.up{color:#15803d;}
+.stat-change.down{color:#dc2626;}
+
+/* ── AI OUTPUT ── */
+.ai-output{
+  background:#f8fffe;border:1.5px solid #bbf7d0;border-radius:10px;
+  padding:14px 16px;font-size:13px;line-height:1.65;min-height:80px;
+  color:var(--text);white-space:pre-wrap;
+}
+.ai-thinking{color:var(--muted);font-style:italic;font-size:13px;}
+
+/* ── PIPELINE TABLE ── */
+.stage-pill{
+  display:inline-block;padding:3px 10px;border-radius:20px;
+  font-size:11px;font-weight:500;
+}
+.stage-prospect{background:#eff6ff;color:#1d4ed8;}
+.stage-qualified{background:#fef3c7;color:#92400e;}
+.stage-proposal{background:#f3e8ff;color:#6b21a8;}
+.stage-negotiation{background:#fff7ed;color:#c2410c;}
+.stage-closed-won{background:#dcfce7;color:#15803d;}
+.stage-closed-lost{background:#fee2e2;color:#991b1b;}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:4px;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:0;}
+.tab{
+  padding:8px 16px;font-size:13px;font-weight:500;cursor:pointer;
+  border-bottom:2px solid transparent;color:var(--muted);
+  transition:all .15s;margin-bottom:-1px;background:none;border-top:none;border-left:none;border-right:none;
+  font-family:inherit;
+}
+.tab.active{color:var(--navy);border-bottom-color:var(--green);}
+.tab:hover:not(.active){color:var(--text);}
+
+/* ── ANOMALY ── */
+.anomaly-row{
+  display:flex;align-items:flex-start;gap:12px;padding:12px 0;
+  border-bottom:1px solid var(--border);
+}
+.anomaly-row:last-child{border-bottom:none;}
+.anomaly-dot{
+  width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px;
+}
+.a-high{background:#dc2626;}
+.a-med{background:#f59e0b;}
+.a-low{background:#3b82f6;}
+
+/* ── RESPONSIVE HIDE ── */
+.panel{display:none;}
+.panel.active{display:block;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);transition:transform .2s;}
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-left:0;}
+  .grid-2,.grid-3{grid-template-columns:1fr;}
+  .content{padding:16px;}
+  .topbar{padding:0 16px;}
+}
+
+/* ── GLOBAL SEARCH ── */
+.search-wrap{position:relative;flex:1;max-width:320px;}
+.search-wrap input{
+  width:100%;padding:7px 12px 7px 32px;
+  border:1.5px solid var(--border);border-radius:8px;
+  font-size:13px;font-family:inherit;outline:none;
+  transition:border .15s;background:var(--bg);
+}
+.search-wrap input:focus{border-color:var(--green);background:#fff;}
+.search-wrap .search-icon{
+  position:absolute;left:10px;top:50%;transform:translateY(-50%);
+  font-size:13px;color:var(--muted);pointer-events:none;
+}
+.search-results{
+  position:absolute;top:calc(100% + 4px);left:0;right:0;
+  background:#fff;border:1px solid var(--border);border-radius:10px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.1);z-index:200;
+  max-height:300px;overflow-y:auto;display:none;
+}
+.search-results.open{display:block;}
+.search-result-item{
+  padding:10px 14px;font-size:13px;cursor:pointer;
+  border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:center;
+}
+.search-result-item:last-child{border-bottom:none;}
+.search-result-item:hover{background:var(--bg);}
+.search-result-type{font-size:10px;font-weight:600;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.04em;flex-shrink:0;}
+
+/* ── NOTIFICATION BELL ── */
+.notif-btn{
+  position:relative;padding:7px;border-radius:8px;
+  cursor:pointer;border:none;background:none;font-size:16px;
+  color:var(--muted);transition:all .15s;
+}
+.notif-btn:hover{background:var(--bg);color:var(--text);}
+.notif-badge{
+  position:absolute;top:2px;right:2px;
+  width:16px;height:16px;background:#dc2626;
+  border-radius:50%;font-size:9px;font-weight:700;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* ── DARK MODE ── */
+.dark-toggle{
+  padding:7px;border-radius:8px;cursor:pointer;
+  border:none;background:none;font-size:15px;
+  color:var(--muted);transition:all .15s;
+}
+.dark-toggle:hover{background:var(--bg);color:var(--text);}
+body.dark{
+  --bg:#0f1117;--surface:#1a1d2e;--border:#2a2d3e;
+  --text:#e2e4f0;--muted:#6b7280;--surface2:#242740;
+}
+body.dark .login-card{background:#1a1d2e;color:#e2e4f0;}
+body.dark .login-card input{background:#0f1117;color:#e2e4f0;border-color:#2a2d3e;}
+body.dark .field input,body.dark .field textarea,body.dark .field select{background:#0f1117;color:#e2e4f0;}
+body.dark .tbl tr:hover td{background:#242740;}
+body.dark .search-results{background:#1a1d2e;}
+body.dark .search-result-item:hover{background:#242740;}
+
+/* ── KANBAN ── */
+.kanban-board{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;}
+.kanban-col{
+  flex-shrink:0;width:200px;background:var(--bg);
+  border-radius:10px;padding:12px;
+}
+.kanban-col-title{
+  font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--muted);margin-bottom:10px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.kanban-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;padding:10px 12px;margin-bottom:8px;
+  cursor:pointer;transition:box-shadow .15s;font-size:13px;
+}
+.kanban-card:hover{box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.kanban-val{font-weight:600;color:var(--navy);font-size:12px;margin-top:4px;}
+.kanban-owner{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* ── PIPELINE VIEW TOGGLE ── */
+.view-toggle{display:flex;gap:4px;}
+.view-btn{
+  padding:5px 10px;border-radius:6px;font-size:12px;
+  cursor:pointer;border:1px solid var(--border);background:none;
+  color:var(--muted);font-family:inherit;transition:all .15s;
+}
+.view-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+
+/* ── COMMISSION BADGE ── */
+.comm-badge{
+  display:inline-block;padding:2px 7px;border-radius:4px;
+  font-size:10px;font-weight:700;letter-spacing:.04em;
+}
+.comm-yes{background:#dcfce7;color:#15803d;}
+.comm-no{background:#fee2e2;color:#991b1b;}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px;}
+::-webkit-scrollbar-thumb:hover{background:var(--muted);}
+
+/* ── TOOLTIP ── */
+[data-tip]{position:relative;}
+[data-tip]:hover::after{
+  content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;
+  transform:translateX(-50%);background:#1a1d2e;color:#fff;
+  font-size:11px;padding:4px 8px;border-radius:5px;white-space:nowrap;z-index:300;
+  pointer-events:none;
+}
+
+/* ── SKELETON LOADER ── */
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.skeleton{
+  background:linear-gradient(90deg,var(--border) 25%,var(--bg) 50%,var(--border) 75%);
+  background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:6px;
+}
+
+/* ── API KEY BANNER ── */
+.api-banner{
+  background:#fffbeb;border:1px solid #fde68a;border-radius:8px;
+  padding:10px 14px;font-size:12px;color:#92400e;
+  display:flex;align-items:center;gap:8px;margin-bottom:16px;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     LOGIN SCREEN
+═══════════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="dot">S</div>
+      <span>Kerr Sage</span>
+    </div>
+    <label for="lu">Username</label>
+    <input type="text" id="lu" placeholder="your username" autocomplete="username"/>
+    <label for="lp">Password</label>
+    <input type="password" id="lp" placeholder="••••••••" autocomplete="current-password"/>
+    <button class="login-btn" onclick="doLogin()">Sign in</button>
+    <div class="login-err" id="lerr">Incorrect username or password.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     APP
+═══════════════════════════════════════════ -->
+<div id="app">
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="dot">S</div>
+      <span>Kerr Sage</span>
+    </div>
+    <div class="sidebar-user">
+      <div class="uname" id="sb-name">—</div>
+      <div class="urole" id="sb-role">—</div>
+    </div>
+    <div id="nav-links"></div>
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="doLogout()">↩ Sign out</button>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="topbar-title" id="top-title">Dashboard</div>
+        <div class="topbar-sub" id="top-sub">Kerr Consulting · RevOps</div>
+      </div>
+      <div class="search-wrap" style="margin:0 16px">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="global-search" placeholder="Search deals, contacts, panels..." autocomplete="off"
+          oninput="doSearch(this.value)" onfocus="doSearch(this.value)" onblur="setTimeout(()=>closeSearch(),200)"/>
+        <div class="search-results" id="search-results"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <button class="notif-btn" onclick="showPanel('anomaly','Anomaly Monitor')" data-tip="Alerts">
+          🔔<span class="notif-badge" id="notif-count">3</span>
+        </button>
+        <button class="dark-toggle" onclick="toggleDark()" id="dark-btn" data-tip="Dark mode">🌙</button>
+        <div style="font-size:12px;color:var(--muted)" id="top-date"></div>
+      </div>
+    </div>
+    <div id="api-banner-area"></div>
+    <div class="content" id="panel-area"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// KERR SAGE — CONFIGURATION
+// Keys and webhooks are fetched from Make.com on load.
+// You never need to edit this file again.
+// To update any key: change it in Make.com Scenario 1 → Webhook response body.
+// ═══════════════════════════════════════════
+
+const MAKE_CONFIG_URL = 'https://hook.us2.make.com/oi4zik8eglprvzgvwrwzqp24iaogkroz';
+
+// These are populated automatically when the app loads via fetchConfig()
+// Do NOT edit these manually — update them in Make.com instead
+const ANTHROPIC_API_KEY = 'YOUR_API_KEY_HERE'; // ← paste your sk-ant- key here, then commit to GitHub
+let KERR_SLACK_WEBHOOK    = '';
+let RAMP_SLACK_WEBHOOK    = '';
+let MAKE_WEBHOOK_URL_CALENDAR = '';
+let MAKE_WEBHOOK_URL_LEAD     = '';
+
+// Ramp contacts (static — not sensitive)
+const RAMP_CONTACTS = {
+  eric:  { name: 'Eric Lengerich', email: 'elengerich@ramp.com' },
+  jamie: { name: 'Jamie Kraus',    email: 'jamie.kraus@ramp.com' },
+  sean:  { name: 'Sean Fonteyne', email: 'Sfonteyne@ramp.com' },
+};
+
+// ─── FETCH CONFIG FROM MAKE.COM ─────────────
+// Called once on login. Populates all keys from Make.com.
+// To update a key: change it in Make.com, no file edit needed.
+async function fetchConfig() {
+  try {
+    const res = await fetch(MAKE_CONFIG_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'get_config' })
+    });
+    // Read as text first — Make.com sometimes sends wrong Content-Type
+    const raw = await res.text();
+    console.log('Kerr Sage: Make.com raw response:', raw);
+    // Strip anything before the first { and after the last }
+    const jsonStr = raw.substring(raw.indexOf('{'), raw.lastIndexOf('}') + 1);
+    const cfg = JSON.parse(jsonStr);
+    if (cfg.kerr_slack)     KERR_SLACK_WEBHOOK        = cfg.kerr_slack.trim();
+    if (cfg.ramp_slack)     RAMP_SLACK_WEBHOOK        = cfg.ramp_slack.trim();
+    if (cfg.make_lead)      MAKE_WEBHOOK_URL_LEAD     = cfg.make_lead.trim();
+    if (cfg.make_calendar)  MAKE_WEBHOOK_URL_CALENDAR = cfg.make_calendar.trim();
+    console.log('Kerr Sage: config loaded from Make.com ✅');
+    updateBanner();
+    return true;
+  } catch(e) {
+    console.warn('Kerr Sage: could not load config from Make.com —', e.message);
+    return false;
+  }
+}
+
+// ═══════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════
+const USERS = {
+  'tarun': { pass: 'kerr-tarun', name: 'Tarun Jakkaraju', role: 'Admin', access: 'admin' },
+  'ed':    { pass: 'kerr-ed',    name: 'Ed Hosey',        role: 'Account Executive', access: 'ed' },
+  'dan':   { pass: 'kerr-dan',   name: 'Dan',             role: 'Account Executive', access: 'dan' },
+};
+
+let currentUser = null;
+
+function doLogin() {
+  const u = document.getElementById('lu').value.trim().toLowerCase();
+  const p = document.getElementById('lp').value.trim();
+  const user = USERS[u];
+  if (user && user.pass === p) {
+    currentUser = { ...user, key: u };
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    // Show loading state while fetching config from Make.com
+    const area = document.getElementById('panel-area');
+    if (area) area.innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted);font-size:14px">⏳ Loading Kerr Sage config...</div>';
+    fetchConfig().then(() => initApp());
+  } else {
+    document.getElementById('lerr').style.display = 'block';
+  }
+}
+
+document.getElementById('lp').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+document.getElementById('lu').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('lp').focus(); });
+
+function doLogout() {
+  currentUser = null;
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('lu').value = '';
+  document.getElementById('lp').value = '';
+  document.getElementById('lerr').style.display = 'none';
+}
+
+// ═══════════════════════════════════════════
+// NAV DEFINITIONS
+// ═══════════════════════════════════════════
+const ALL_PANELS = [
+  // SHARED — everyone
+  { id:'pipeline',   label:'Pipeline',          icon:'📊', section:'Shared', access:['admin','ed','dan'] },
+  { id:'clients',    label:'Client Profiles',   icon:'🏢', section:'Shared', access:['admin','ed','dan'] },
+  { id:'contacts',   label:'Contacts',          icon:'👥', section:'Shared', access:['admin','ed','dan'] },
+  { id:'tracker',    label:'Live Tracker',      icon:'📡', section:'Shared', access:['admin','ed','dan'] },
+  { id:'pricing',    label:'Pricing',           icon:'💲', section:'Shared', access:['admin','ed','dan'] },
+  { id:'anomaly',    label:'Anomaly Monitor',   icon:'🔍', section:'Shared', access:['admin','ed','dan'] },
+  { id:'sagebrain',  label:'Sage Brain',        icon:'🤖', section:'Shared', access:['admin','ed','dan'] },
+  { id:'writing',    label:'Writing Assistant', icon:'✍️',  section:'Shared', access:['admin','ed','dan'] },
+  { id:'clarifier',  label:'Sage Clarifier',    icon:'🧠', section:'Shared', access:['admin','ed','dan'] },
+  { id:'secretary',  label:'AI Secretary',      icon:'📅', section:'Shared', access:['admin','ed','dan'] },
+  { id:'meeting',    label:'Meeting Coordinator',icon:'🗓️', section:'Shared', access:['admin','ed','dan'] },
+  { id:'houston',    label:'Houston Networking',icon:'🤝', section:'Shared', access:['admin','ed','dan'] },
+  { id:'register',   label:'Register Lead',     icon:'➕', section:'Shared', access:['admin','ed','dan'] },
+  { id:'scheduler',  label:'Scheduler',         icon:'📆', section:'Shared', access:['admin','ed','dan'] },
+  { id:'capture',    label:'Quick Capture',     icon:'⚡', section:'Shared', access:['admin','ed','dan'] },
+  { id:'customdev',  label:'Custom Dev',        icon:'🔧', section:'Shared', access:['admin','ed','dan'] },
+  // TARUN ONLY
+  { id:'templates',  label:'Templates',          icon:'📝', section:'Admin Only', access:['admin'] },
+  { id:'winwire',    label:'Win Wire Generator', icon:'🏆', section:'Admin Only', access:['admin'] },
+  { id:'workflow',   label:'Content Workflow',   icon:'🔄', section:'Admin Only', access:['admin'] },
+  // DAN ONLY
+  { id:'dandash',    label:"Dan's Dashboard",    icon:'📈', section:"Dan's View",  access:['admin','dan'] },
+];
+
+// ═══════════════════════════════════════════
+// INIT APP
+// ═══════════════════════════════════════════
+function updateDate() {
+  const el = document.getElementById('top-date');
+  if (el) el.textContent = new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+}
+
+function updateBanner() {
+  const banner = document.getElementById('api-banner-area');
+  if (!banner) return;
+  const apiSet     = ANTHROPIC_API_KEY && ANTHROPIC_API_KEY.length > 20;
+  const kerrSlackSet = KERR_SLACK_WEBHOOK && KERR_SLACK_WEBHOOK.startsWith('https://');
+  const makeSet    = MAKE_WEBHOOK_URL_CALENDAR && MAKE_WEBHOOK_URL_CALENDAR.startsWith('https://');
+  const bannerParts = [];
+  if (!apiSet)      bannerParts.push('🤖 <strong>AI inactive</strong> — API key not loaded');
+  if (!kerrSlackSet) bannerParts.push('💬 <strong>Slack inactive</strong> — add Kerr Slack webhook in Make.com');
+  if (!makeSet)     bannerParts.push('⚙️ <strong>Make.com</strong> — calendar webhook pending');
+  if (bannerParts.length > 0) {
+    banner.innerHTML = `<div class="api-banner" style="margin:12px 28px 0">${bannerParts.join(' &nbsp;·&nbsp; ')}</div>`;
+  } else {
+    banner.innerHTML = '';
+  }
+}
+
+function initApp() {
+  loadState();
+  document.getElementById('sb-name').textContent = currentUser.name;
+  document.getElementById('sb-role').textContent = currentUser.role;
+  updateDate();
+  setInterval(updateDate, 60000);
+
+  // Banner runs after config is fetched — called from fetchConfig().then()
+  updateBanner();
+
+  const access = currentUser.access;
+  const visible = ALL_PANELS.filter(p => p.access.includes(access));
+
+  // Build nav
+  const nav = document.getElementById('nav-links');
+  nav.innerHTML = '';
+  let lastSection = '';
+  visible.forEach(p => {
+    if (p.section !== lastSection) {
+      const sec = document.createElement('div');
+      sec.className = 'sidebar-section';
+      sec.textContent = p.section;
+      nav.appendChild(sec);
+      lastSection = p.section;
+    }
+    const btn = document.createElement('button');
+    btn.className = 'nav-item';
+    btn.id = 'nav-' + p.id;
+    btn.innerHTML = `<span class="icon">${p.icon}</span>${p.label}`;
+    btn.onclick = () => showPanel(p.id, p.label);
+    nav.appendChild(btn);
+  });
+
+  // Keyboard shortcut: / to focus search, Esc to clear
+  document.addEventListener('keydown', e => {
+    if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      document.getElementById('global-search')?.focus();
+    }
+    if (e.key === 'Escape') {
+      document.getElementById('global-search').blur();
+      closeSearch();
+    }
+  });
+
+  // Show first panel
+  showPanel(visible[0].id, visible[0].label);
+}
+
+// ═══════════════════════════════════════════
+// GLOBAL SEARCH
+// ═══════════════════════════════════════════
+const SEARCH_INDEX = [
+  {type:'Panel', label:'Pipeline', id:'pipeline', keywords:'pipeline deals opportunities'},
+  {type:'Panel', label:'Contacts', id:'contacts', keywords:'contacts clients people'},
+  {type:'Panel', label:'Sage Brain', id:'sagebrain', keywords:'chat ai ask question sage brain'},
+  {type:'Panel', label:'Writing Assistant', id:'writing', keywords:'email write outreach draft'},
+  {type:'Panel', label:'Sage Clarifier', id:'clarifier', keywords:'clarify decode client message'},
+  {type:'Panel', label:'AI Secretary', id:'secretary', keywords:'meeting prep agenda recap'},
+  {type:'Panel', label:'Register Lead', id:'register', keywords:'add lead new prospect register'},
+  {type:'Panel', label:'Pricing', id:'pricing', keywords:'pricing quote tiers cost'},
+  {type:'Panel', label:'Scheduler', id:'scheduler', keywords:'schedule calendly meeting book'},
+  {type:'Panel', label:'Quick Capture', id:'capture', keywords:'capture note quick idea'},
+  {type:'Panel', label:'Anomaly Monitor', id:'anomaly', keywords:'alerts anomaly stalled deals'},
+  {type:'Panel', label:'Houston Networking', id:'houston', keywords:'houston network events'},
+  {type:'Panel', label:'Custom Dev', id:'customdev', keywords:'custom development request build'},
+  {type:'Contact', label:'Maria Chen — Apex Industries (CFO)', id:'contacts', keywords:'maria chen apex'},
+  {type:'Contact', label:'James Tran — Gulf Coast Logistics (CEO)', id:'contacts', keywords:'james tran gulf coast'},
+  {type:'Contact', label:'Sarah Kim — Pinnacle Health (CFO)', id:'contacts', keywords:'sarah kim pinnacle'},
+  {type:'Deal', label:'Gulf Coast Logistics — $62K Negotiation', id:'pipeline', keywords:'gulf coast 62k negotiation'},
+  {type:'Deal', label:'Apex Industries — $48K Proposal', id:'pipeline', keywords:'apex 48k proposal'},
+  {type:'Deal', label:'TechBridge Solutions — $27.8K Proposal', id:'pipeline', keywords:'techbridge 27k'},
+  {type:'KB', label:'Pricing: Tier 1 $6K / Tier 2 $8.5K / Tier 3 $11K', id:'pricing', keywords:'price tier cost 6000 8500 11000'},
+  {type:'KB', label:'ROI: 20–40 hrs/month saved, $12–25K annually', id:'sagebrain', keywords:'roi savings hours'},
+  {type:'KB', label:'Timeline: 4–6 weeks standard implementation', id:'sagebrain', keywords:'timeline implementation weeks'},
+];
+
+function doSearch(q) {
+  const res = document.getElementById('search-results');
+  if (!q || q.length < 2) { res.classList.remove('open'); return; }
+  const ql = q.toLowerCase();
+  const matches = SEARCH_INDEX.filter(item =>
+    item.label.toLowerCase().includes(ql) ||
+    item.keywords.toLowerCase().includes(ql)
+  ).slice(0, 8);
+  if (!matches.length) { res.classList.remove('open'); return; }
+  const typeColors = {'Panel':'#1d4ed8','Contact':'#15803d','Deal':'#6b21a8','KB':'#92400e'};
+  res.innerHTML = matches.map(m => `
+    <div class="search-result-item" onclick="showPanel('${m.id}','${m.label.split('—')[0].trim()}');document.getElementById('global-search').value='';closeSearch()">
+      <span class="search-result-type" style="color:${typeColors[m.type]||'#374151'}">${m.type}</span>
+      <span>${m.label}</span>
+    </div>`).join('');
+  res.classList.add('open');
+}
+
+function closeSearch() {
+  document.getElementById('search-results')?.classList.remove('open');
+}
+
+function showPanel(id, label) {
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  const nb = document.getElementById('nav-' + id);
+  if (nb) nb.classList.add('active');
+  document.getElementById('top-title').textContent = label;
+  document.title = label + ' — Kerr Sage';
+  const area = document.getElementById('panel-area');
+  area.innerHTML = renderPanel(id);
+}
+
+// ═══════════════════════════════════════════
+// PANEL RENDERERS
+// ═══════════════════════════════════════════
+function renderPanel(id) {
+  const map = {
+    pipeline:   panelPipeline,
+    clients:    panelClients,
+    contacts:   panelContacts,
+    tracker:    panelTracker,
+    pricing:    panelPricing,
+    anomaly:    panelAnomaly,
+    sagebrain:  panelSageBrain,
+    writing:    panelWriting,
+    clarifier:  panelClarifier,
+    secretary:  panelSecretary,
+    meeting:    panelMeeting,
+    houston:    panelHouston,
+    register:   panelRegister,
+    scheduler:  panelScheduler,
+    capture:    panelCapture,
+    customdev:  panelCustomDev,
+    templates:  panelTemplates,
+    winwire:    panelWinWire,
+    workflow:   panelWorkflow,
+    dandash:    panelDanDash,
+  };
+  return (map[id] || (() => '<div class="card"><p>Coming soon.</p></div>'))();
+}
+
+// ─── PIPELINE ───────────────────────────────
+const PIPELINE_DATA = [
+  {company:'Apex Industries',contact:'Maria Chen',title:'CFO',stage:'proposal',value:48000,owner:'Tarun',close:'Apr 15',erp:'Sage 100',source:'Referral',comm:true},
+  {company:'Gulf Coast Logistics',contact:'James Tran',title:'CEO',stage:'negotiation',value:62000,owner:'Ed',close:'Apr 8',erp:'Sage 300',source:'LinkedIn',comm:true},
+  {company:'Pinnacle Health',contact:'Sarah Kim',title:'CFO',stage:'qualified',value:31500,owner:'Tarun',close:'May 1',erp:'Sage 100',source:'Inbound',comm:true},
+  {company:'HarbourView Capital',contact:'Tom Nguyen',title:'MD',stage:'prospect',value:19200,owner:'Ed',close:'May 20',erp:'Sage 300',source:'Cold outreach',comm:true},
+  {company:'TechBridge Solutions',contact:'Lisa Park',title:'COO',stage:'proposal',value:27800,owner:'Dan',close:'Apr 22',erp:'Sage 100',source:'Referral',comm:false},
+  {company:'Meridian Consulting',contact:'David Ross',title:'CFO',stage:'closed-won',value:55000,owner:'Tarun',close:'Mar 28',erp:'Sage 100',source:'Referral',comm:true},
+  {company:'Summit Freight',contact:'Bob Crane',title:'Controller',stage:'qualified',value:34000,owner:'Dan',close:'May 10',erp:'Sage 300',source:'Apollo',comm:false},
+  {company:'Redline Tech',contact:'Amy Vo',title:'Finance Director',stage:'prospect',value:18500,owner:'Dan',close:'Jun 1',erp:'Sage 100',source:'LinkedIn',comm:false},
+  {company:'Ironclad Systems',contact:'Ray Dubois',title:'VP Finance',stage:'negotiation',value:48700,owner:'Dan',close:'Apr 18',erp:'Sage 300',source:'Networking',comm:false},
+];
+let pipelineView = 'table';
+let pipelineSort = {col:'value',dir:'desc'};
+let pipelineSearch = '';
+
+function panelPipeline() {
+  const total = PIPELINE_DATA.filter(d=>d.stage!=='closed-won'&&d.stage!=='closed-lost').reduce((s,d)=>s+d.value,0);
+  const open = PIPELINE_DATA.filter(d=>d.stage!=='closed-won'&&d.stage!=='closed-lost').length;
+  const won = PIPELINE_DATA.filter(d=>d.stage==='closed-won').reduce((s,d)=>s+d.value,0);
+  return `
+  <div class="grid-3" style="margin-bottom:16px">
+    <div class="stat"><div class="stat-label">Open Deals</div><div class="stat-val">${open}</div><div class="stat-change up">↑ Pipeline active</div></div>
+    <div class="stat"><div class="stat-label">Pipeline Value</div><div class="stat-val">$${Math.round(total/1000)}K</div><div class="stat-change up">Open opportunities</div></div>
+    <div class="stat"><div class="stat-label">Closed Won (MTD)</div><div class="stat-val">$${Math.round(won/1000)}K</div><div class="stat-change up">↑ Great work</div></div>
+  </div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input type="text" placeholder="🔍 Search deals..." style="padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;outline:none;width:200px" oninput="pipelineSearch=this.value;renderPipelineTable()" onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor='var(--border)'"/>
+        <select style="padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;outline:none;" onchange="filterPipelineStage(this.value)">
+          <option value="">All stages</option>
+          <option value="prospect">Prospect</option>
+          <option value="qualified">Qualified</option>
+          <option value="proposal">Proposal</option>
+          <option value="negotiation">Negotiation</option>
+          <option value="closed-won">Closed Won</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="view-toggle">
+          <button class="view-btn ${pipelineView==='table'?'active':''}" onclick="setPipelineView('table')">≡ Table</button>
+          <button class="view-btn ${pipelineView==='kanban'?'active':''}" onclick="setPipelineView('kanban')">⊞ Kanban</button>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="exportCSV('pipeline')" data-tip="Export CSV">↓ CSV</button>
+        <button class="btn btn-primary btn-sm" onclick="showAddDeal()">+ Add Deal</button>
+      </div>
+    </div>
+    <div id="pipeline-body">${pipelineView==='table' ? buildPipelineTable(PIPELINE_DATA) : buildKanban(PIPELINE_DATA)}</div>
+  </div>`;
+}
+
+let stageFilter = '';
+function filterPipelineStage(s) { stageFilter = s; renderPipelineTable(); }
+function setPipelineView(v) { pipelineView = v; showPanel('pipeline','Pipeline'); }
+
+function buildPipelineTable(data) {
+  let filtered = data.filter(d => {
+    const q = pipelineSearch.toLowerCase();
+    return (!q || d.company.toLowerCase().includes(q) || d.contact.toLowerCase().includes(q) || d.erp.toLowerCase().includes(q))
+      && (!stageFilter || d.stage === stageFilter);
+  });
+  filtered.sort((a,b) => {
+    const mul = pipelineSort.dir==='asc'?1:-1;
+    if(pipelineSort.col==='value') return mul*(a.value-b.value);
+    return mul*(a[pipelineSort.col]||'').localeCompare(b[pipelineSort.col]||'');
+  });
+  const stageMap = {'prospect':'stage-prospect','qualified':'stage-qualified','proposal':'stage-proposal','negotiation':'stage-negotiation','closed-won':'stage-closed-won','closed-lost':'stage-closed-lost'};
+  const stageLabel = {'prospect':'Prospect','qualified':'Qualified','proposal':'Proposal','negotiation':'Negotiation','closed-won':'Closed Won','closed-lost':'Closed Lost'};
+  const thStyle = 'cursor:pointer;user-select:none';
+  const sortArrow = (col) => pipelineSort.col===col ? (pipelineSort.dir==='asc'?' ↑':' ↓') : '';
+  return `<table class="tbl"><thead><tr>
+    <th style="${thStyle}" onclick="sortPipeline('company')">Company${sortArrow('company')}</th>
+    <th>Contact</th>
+    <th>ERP</th>
+    <th style="${thStyle}" onclick="sortPipeline('stage')">Stage${sortArrow('stage')}</th>
+    <th style="${thStyle}" onclick="sortPipeline('value')">Value${sortArrow('value')}</th>
+    <th>Owner</th>
+    <th>Commission</th>
+    <th style="${thStyle}" onclick="sortPipeline('close')">Close${sortArrow('close')}</th>
+  </tr></thead><tbody>
+  ${filtered.map(d=>`<tr>
+    <td><strong>${d.company}</strong></td>
+    <td>${d.contact}<br/><span style="font-size:11px;color:var(--muted)">${d.title}</span></td>
+    <td><span class="badge badge-blue">${d.erp}</span></td>
+    <td><span class="stage-pill ${stageMap[d.stage]}">${stageLabel[d.stage]}</span></td>
+    <td><strong>$${d.value.toLocaleString()}</strong></td>
+    <td>${d.owner}</td>
+    <td><span class="comm-badge ${d.comm?'comm-yes':'comm-no'}">${d.comm?'✓ COMM':'NO COMM'}</span></td>
+    <td>${d.close}</td>
+  </tr>`).join('')}
+  </tbody></table>`;
+}
+
+function buildKanban(data) {
+  const stages = ['prospect','qualified','proposal','negotiation','closed-won'];
+  const labels = {prospect:'Prospect',qualified:'Qualified',proposal:'Proposal',negotiation:'Negotiation','closed-won':'Closed Won'};
+  const stageMap = {prospect:'stage-prospect',qualified:'stage-qualified',proposal:'stage-proposal',negotiation:'stage-negotiation','closed-won':'stage-closed-won'};
+  return `<div class="kanban-board">${stages.map(s=>{
+    const deals = data.filter(d=>d.stage===s);
+    const total = deals.reduce((sum,d)=>sum+d.value,0);
+    return `<div class="kanban-col">
+      <div class="kanban-col-title"><span>${labels[s]}</span><span>${deals.length}</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px">$${Math.round(total/1000)}K total</div>
+      ${deals.map(d=>`<div class="kanban-card">
+        <div style="font-weight:600;font-size:13px">${d.company}</div>
+        <div style="font-size:11px;color:var(--muted)">${d.contact}</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+          <span class="kanban-val">$${d.value.toLocaleString()}</span>
+          <span class="comm-badge ${d.comm?'comm-yes':'comm-no'}" style="font-size:9px">${d.comm?'COMM':'NO COMM'}</span>
+        </div>
+        <div class="kanban-owner">${d.owner} · ${d.erp}</div>
+      </div>`).join('')}
+    </div>`;
+  }).join('')}</div>`;
+}
+
+function sortPipeline(col) {
+  if(pipelineSort.col===col) pipelineSort.dir = pipelineSort.dir==='asc'?'desc':'asc';
+  else { pipelineSort.col=col; pipelineSort.dir='desc'; }
+  renderPipelineTable();
+}
+
+function renderPipelineTable() {
+  const body = document.getElementById('pipeline-body');
+  if (body) body.innerHTML = pipelineView==='table' ? buildPipelineTable(PIPELINE_DATA) : buildKanban(PIPELINE_DATA);
+}
+
+function showAddDeal() {
+  const area = document.getElementById('panel-area');
+  const existing = document.getElementById('add-deal-modal');
+  if (existing) { existing.remove(); return; }
+  const modal = document.createElement('div');
+  modal.id = 'add-deal-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:500;display:flex;align-items:center;justify-content:center;';
+  modal.innerHTML = `<div style="background:var(--surface);border-radius:16px;padding:28px;width:480px;max-width:95vw;box-shadow:0 20px 60px rgba(0,0,0,0.2)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+      <div style="font-size:16px;font-weight:600">Add Deal</div>
+      <button onclick="document.getElementById('add-deal-modal').remove()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted)">×</button>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Company Name</label><input type="text" id="ad-company" placeholder="Apex Industries"/></div>
+      <div class="field"><label>Contact Name</label><input type="text" id="ad-contact" placeholder="Maria Chen"/></div>
+      <div class="field"><label>ERP Version</label><select id="ad-erp"><option>Sage 100</option><option>Sage 300</option><option>Sage 100 Contractor</option><option>Sage 300 CRE</option><option>Sage Intacct</option><option>Unknown</option></select></div>
+      <div class="field"><label>Stage</label><select id="ad-stage"><option value="prospect">Prospect</option><option value="qualified">Qualified</option><option value="proposal">Proposal</option><option value="negotiation">Negotiation</option></select></div>
+      <div class="field"><label>Deal Value ($)</label><input type="number" id="ad-value" placeholder="25000"/></div>
+      <div class="field"><label>Close Date</label><input type="date" id="ad-close"/></div>
+    </div>
+    <div class="field"><label>Commission</label>
+      <div style="display:flex;gap:12px;margin-top:4px">
+        <label style="display:flex;gap:6px;align-items:center;font-size:13px"><input type="radio" name="ad-comm" value="yes" checked/> Commission owed</label>
+        <label style="display:flex;gap:6px;align-items:center;font-size:13px"><input type="radio" name="ad-comm" value="no"/> No commission (Ramp-sourced)</label>
+      </div>
+    </div>
+    <button class="btn btn-primary" style="width:100%" onclick="addDeal()">Add to Pipeline</button>
+  </div>`;
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e => { if(e.target===modal) modal.remove(); });
+}
+
+function addDeal() {
+  const co = document.getElementById('ad-company')?.value?.trim();
+  if (!co) { alert('Company name required'); return; }
+  const d = {
+    company: co,
+    contact: document.getElementById('ad-contact')?.value || '—',
+    title: '',
+    erp: document.getElementById('ad-erp')?.value || 'Sage 100',
+    stage: document.getElementById('ad-stage')?.value || 'prospect',
+    value: parseInt(document.getElementById('ad-value')?.value) || 0,
+    close: document.getElementById('ad-close')?.value || 'TBD',
+    owner: currentUser?.name?.split(' ')[0] || 'Rep',
+    source: 'Manual',
+    comm: document.querySelector('input[name="ad-comm"]:checked')?.value !== 'no'
+  };
+  PIPELINE_DATA.unshift(d);
+  saveState();
+  document.getElementById('add-deal-modal')?.remove();
+  showPanel('pipeline','Pipeline');
+}
+
+// ─── CONTACTS ───────────────────────────────
+const CONTACTS_DATA = [
+  {name:'Maria Chen',company:'Apex Industries',title:'CFO',email:'m.chen@apex.com',phone:'(713) 555-0182',erp:'Sage 100',status:'active'},
+  {name:'James Tran',company:'Gulf Coast Logistics',title:'CEO',email:'jtran@gclogistics.com',phone:'(832) 555-0247',erp:'Sage 300',status:'negotiation'},
+  {name:'Sarah Kim',company:'Pinnacle Health',title:'CFO',email:'skim@pinnaclehealth.com',phone:'(281) 555-0391',erp:'Sage 100',status:'qualified'},
+  {name:'Tom Nguyen',company:'HarbourView Capital',title:'Managing Director',email:'tnguyen@hvc.com',phone:'(713) 555-0458',erp:'Sage 300',status:'prospect'},
+  {name:'Lisa Park',company:'TechBridge Solutions',title:'COO',email:'lpark@techbridge.com',phone:'(832) 555-0512',erp:'Sage 100',status:'proposal'},
+  {name:'Bob Crane',company:'Summit Freight',title:'Controller',email:'bcrane@summitfreight.com',phone:'(713) 555-0633',erp:'Sage 300',status:'qualified'},
+  {name:'Amy Vo',company:'Redline Tech',title:'Finance Director',email:'avo@redlinetech.com',phone:'(832) 555-0744',erp:'Sage 100',status:'prospect'},
+  {name:'Ray Dubois',company:'Ironclad Systems',title:'VP Finance',email:'rdubois@ironclad.com',phone:'(281) 555-0855',erp:'Sage 300',status:'negotiation'},
+];
+let contactSearch = '';
+const statusLabels = {active:'Active',negotiation:'In Negotiation',qualified:'Qualified',proposal:'Proposal Sent',prospect:'Prospect'};
+const statusBadge = {active:'badge-green',negotiation:'badge-amber',qualified:'badge-blue',proposal:'badge-blue',prospect:'badge-gray'};
+
+function panelContacts() {
+  return `
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div><div class="card-title">Contacts</div><div class="card-sub" style="margin-bottom:0">All clients and prospects</div></div>
+      <div style="display:flex;gap:8px">
+        <input type="text" placeholder="🔍 Search contacts..." style="padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;outline:none;width:200px" oninput="contactSearch=this.value;renderContacts()" onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor='var(--border)'"/>
+        <button class="btn btn-secondary btn-sm" onclick="exportCSV('contacts')">↓ CSV</button>
+        <button class="btn btn-primary btn-sm">+ Add Contact</button>
+      </div>
+    </div>
+    <div id="contacts-body">${buildContactsTable(CONTACTS_DATA)}</div>
+  </div>`;
+}
+
+function buildContactsTable(data) {
+  const q = contactSearch.toLowerCase();
+  const filtered = data.filter(d =>
+    !q || d.name.toLowerCase().includes(q) || d.company.toLowerCase().includes(q) ||
+    d.title.toLowerCase().includes(q) || d.erp.toLowerCase().includes(q)
+  );
+  return `<table class="tbl"><thead><tr>
+    <th>Name</th><th>Company</th><th>Title</th><th>ERP</th><th>Email</th><th>Phone</th><th>Status</th>
+  </tr></thead><tbody>
+  ${filtered.map(d=>`<tr>
+    <td><strong>${d.name}</strong></td>
+    <td>${d.company}</td>
+    <td>${d.title}</td>
+    <td><span class="badge badge-blue">${d.erp}</span></td>
+    <td><a href="mailto:${d.email}" style="color:var(--navy)">${d.email}</a></td>
+    <td>${d.phone}</td>
+    <td><span class="badge ${statusBadge[d.status]}">${statusLabels[d.status]}</span></td>
+  </tr>`).join('')}
+  </tbody></table>`;
+}
+
+function renderContacts() {
+  const body = document.getElementById('contacts-body');
+  if (body) body.innerHTML = buildContactsTable(CONTACTS_DATA);
+}
+
+// ─── LIVE TRACKER ────────────────────────────
+function panelTracker() {
+  return `
+  <div class="grid-3" style="margin-bottom:16px">
+    <div class="stat"><div class="stat-label">Calls Today</div><div class="stat-val">7</div><div class="stat-change up">↑ 2 vs avg</div></div>
+    <div class="stat"><div class="stat-label">Emails Sent</div><div class="stat-val">23</div><div class="stat-change">on track</div></div>
+    <div class="stat"><div class="stat-label">Meetings Set</div><div class="stat-val">3</div><div class="stat-change up">↑ 1 this week</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Today's Activity Log</div>
+    <div class="card-sub">Real-time from Google Sheets via Make.com</div>
+    <table class="tbl">
+      <thead><tr><th>Time</th><th>Rep</th><th>Activity</th><th>Contact</th><th>Outcome</th></tr></thead>
+      <tbody>
+        <tr><td>9:02am</td><td>Tarun</td><td>Call</td><td>Maria Chen</td><td><span class="badge badge-green">Proposal accepted</span></td></tr>
+        <tr><td>9:45am</td><td>Ed</td><td>Email</td><td>James Tran</td><td><span class="badge badge-blue">Follow-up scheduled</span></td></tr>
+        <tr><td>10:30am</td><td>Dan</td><td>Meeting</td><td>Lisa Park</td><td><span class="badge badge-amber">Needs review</span></td></tr>
+        <tr><td>11:15am</td><td>Tarun</td><td>Call</td><td>Tom Nguyen</td><td><span class="badge badge-gray">No answer</span></td></tr>
+        <tr><td>1:00pm</td><td>Ed</td><td>Meeting</td><td>Sarah Kim</td><td><span class="badge badge-green">Moving forward</span></td></tr>
+      </tbody>
+    </table>
+  </div>`;
+}
+
+// ─── PRICING ─────────────────────────────────
+function panelPricing() {
+  return `
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="card">
+      <div class="card-title">AnyWare Apps Integration Pricing</div>
+      <div class="card-sub">Sage 100 &amp; Sage 300 — same pricing structure, billed annually</div>
+      <table class="tbl">
+        <thead><tr><th>Tier</th><th>Max Transactions/Year</th><th>Annual Price</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Tier 1</strong></td><td>Up to 10,000</td><td style="color:var(--navy);font-weight:600">$6,000</td></tr>
+          <tr><td><strong>Tier 2</strong></td><td>Up to 20,000</td><td style="color:var(--navy);font-weight:600">$8,500</td></tr>
+          <tr><td><strong>Tier 3</strong></td><td>Up to 30,000</td><td style="color:var(--navy);font-weight:600">$11,000</td></tr>
+          <tr><td><strong>Custom</strong></td><td>Over 30,000</td><td style="color:var(--muted)">Volume-based</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px;padding:10px;background:#f0fdf4;border-radius:8px;font-size:12px;color:#15803d">
+        ✓ Setup included &nbsp;·&nbsp; ✓ Support warranty included &nbsp;·&nbsp; ✓ Auto-upgrades to next tier if volume exceeded
+      </div>
+      <div style="margin-top:10px">
+        <a href="https://ramp.anywareapps.com/ramp-roi-calculator" target="_blank" class="btn btn-primary btn-sm">💰 ROI Calculator</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Quick Quote Estimator</div>
+      <div class="card-sub">Estimate annual cost by transaction volume</div>
+      <div class="field"><label>ERP Version</label>
+        <select id="erp-sel" onchange="calcQuote()">
+          <option>Sage 100</option>
+          <option>Sage 300</option>
+          <option>Sage 100 Contractor</option>
+          <option>Sage 300 CRE</option>
+        </select>
+      </div>
+      <div class="field"><label>Estimated Annual Transactions</label>
+        <select id="pkg-sel" onchange="calcQuote()">
+          <option value="6000">Up to 10,000 — Tier 1</option>
+          <option value="8500">Up to 20,000 — Tier 2</option>
+          <option value="11000">Up to 30,000 — Tier 3</option>
+          <option value="0">Over 30,000 — Custom</option>
+        </select>
+      </div>
+      <div class="field"><label>Add-ons</label>
+        <label style="font-size:13px;color:var(--text);display:flex;gap:8px;align-items:center;margin-bottom:6px"><input type="checkbox" id="ao1" onchange="calcQuote()" style="width:auto;margin:0"> Custom development (quote required)</label>
+        <label style="font-size:13px;color:var(--text);display:flex;gap:8px;align-items:center;margin-bottom:6px"><input type="checkbox" id="ao2" onchange="calcQuote()" style="width:auto;margin:0"> Ramp optimization engagement (+$2,500)</label>
+        <label style="font-size:13px;color:var(--text);display:flex;gap:8px;align-items:center"><input type="checkbox" id="ao3" onchange="calcQuote()" style="width:auto;margin:0"> Extended post-go-live support (+$1,500)</label>
+      </div>
+      <div style="background:var(--bg);border-radius:8px;padding:14px;text-align:center">
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Estimated Annual Total</div>
+        <div style="font-size:32px;font-weight:600;color:var(--navy)" id="quote-total">$6,000</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px" id="quote-erp">Sage 100 · Tier 1</div>
+      </div>
+    </div>
+  </div>
+  <div class="grid-3">
+    <div class="stat"><div class="stat-label">Avg Hours Saved/Month</div><div class="stat-val">20–40</div><div class="stat-change up">Per finance team member</div></div>
+    <div class="stat"><div class="stat-label">Annual Labor Savings</div><div class="stat-val">$12–25K</div><div class="stat-change up">At $25–30/hr loaded rate</div></div>
+    <div class="stat"><div class="stat-label">Typical ROI Timeline</div><div class="stat-val">6–12 mo</div><div class="stat-change">Most recover cost in Q1</div></div>
+  </div>`;
+}
+
+// ─── ANOMALY MONITOR ─────────────────────────
+function panelAnomaly() {
+  return `
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="stat"><div class="stat-label">Active Alerts</div><div class="stat-val" style="color:#dc2626">3</div><div class="stat-change down">2 high priority</div></div>
+    <div class="stat"><div class="stat-label">Last Scan</div><div class="stat-val" style="font-size:20px">2 min ago</div><div class="stat-change">Auto-scan every 15 min</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Anomaly Feed</div>
+    <div class="card-sub">Pipeline irregularities and stalled deals flagged by Sage</div>
+    <div class="anomaly-row">
+      <div class="anomaly-dot a-high"></div>
+      <div><div style="font-size:13px;font-weight:500">Gulf Coast Logistics — no activity in 12 days</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Deal value $62K. Last touch: Ed sent proposal. Suggested: follow-up call today.</div></div>
+    </div>
+    <div class="anomaly-row">
+      <div class="anomaly-dot a-high"></div>
+      <div><div style="font-size:13px;font-weight:500">HarbourView Capital — close date passed</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Expected close Mar 25. Update pipeline stage or extend date.</div></div>
+    </div>
+    <div class="anomaly-row">
+      <div class="anomaly-dot a-med"></div>
+      <div><div style="font-size:13px;font-weight:500">Pinnacle Health — proposal not opened</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Sent 5 days ago, no open tracking. Consider resend or call.</div></div>
+    </div>
+    <div class="anomaly-row">
+      <div class="anomaly-dot a-low"></div>
+      <div><div style="font-size:13px;font-weight:500">3 prospects with no contact in 30 days</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Recommend archiving or re-engaging before end of month.</div></div>
+    </div>
+  </div>`;
+}
+
+// ─── WRITING ASSISTANT ───────────────────────
+function panelWriting() {
+  return `
+  <div class="card">
+    <div class="card-title">Writing Assistant</div>
+    <div class="card-sub">AI-powered emails, follow-ups, and outreach — personalized to their Sage ERP version</div>
+    <div class="grid-2">
+      <div>
+        <div class="field"><label>Content Type</label>
+          <select id="wtype">
+            <option>Follow-up email</option>
+            <option>Cold outreach</option>
+            <option>Proposal cover letter</option>
+            <option>Meeting recap</option>
+            <option>Thank you note</option>
+            <option>Re-engagement (gone cold)</option>
+            <option>Referral ask</option>
+          </select>
+        </div>
+        <div class="grid-2" style="gap:10px">
+          <div class="field"><label>Prospect / Company</label><input type="text" id="wprospect" placeholder="e.g. James Tran — Gulf Coast"/></div>
+          <div class="field"><label>Their ERP Version</label>
+            <select id="w-erp">
+              <option value="">Unknown / General</option>
+              <option value="Sage 100">Sage 100</option>
+              <option value="Sage 300">Sage 300</option>
+              <option value="Sage 100 Contractor">Sage 100 Contractor</option>
+              <option value="Sage 300 CRE">Sage 300 CRE</option>
+              <option value="Sage Intacct">Sage Intacct</option>
+            </select>
+          </div>
+        </div>
+        <div class="field"><label>Key Context</label><textarea id="wcontext" placeholder="What happened in the last meeting? Any objections? Key points to hit? Their specific pain?"></textarea></div>
+        <div class="field"><label>Tone</label>
+          <select id="wtone">
+            <option>Professional and warm</option>
+            <option>Direct and confident</option>
+            <option>Casual and friendly</option>
+            <option>Formal</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="runWriting()">✍️ Generate Draft</button>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:8px">GENERATED DRAFT</div>
+        <div class="ai-output" id="writing-out" style="min-height:220px"><span class="ai-thinking">Your draft will appear here...</span></div>
+        <div class="btn-group" style="margin-top:10px">
+          <button class="btn btn-secondary btn-sm" onclick="copyOut('writing-out')">Copy</button>
+          <button class="btn btn-secondary btn-sm" onclick="runWriting()">Regenerate</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── SAGE CLARIFIER ──────────────────────────
+function panelClarifier() {
+  return `
+  <div class="card">
+    <div class="card-title">Sage Clarifier</div>
+    <div class="card-sub">Paste a vague client request — Sage tells you exactly what they mean</div>
+    <div class="grid-2">
+      <div>
+        <div class="field"><label>Client Message or Request</label>
+          <textarea id="clf-in" style="min-height:140px" placeholder="Paste the client email, message, or request here. Can be messy or vague."></textarea>
+        </div>
+        <button class="btn btn-primary" onclick="runClarifier()">🧠 Clarify with Sage</button>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:8px">SAGE'S INTERPRETATION</div>
+        <div class="ai-output" id="clf-out" style="min-height:140px"><span class="ai-thinking">Sage will break down what the client actually wants...</span></div>
+        <div class="btn-group" style="margin-top:10px">
+          <button class="btn btn-secondary btn-sm" onclick="copyOut('clf-out')">Copy</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── AI SECRETARY ────────────────────────────
+function panelSecretary() {
+  return `
+  <div class="card">
+    <div class="card-title">AI Secretary</div>
+    <div class="card-sub">Prep for meetings, build agendas, and summarize notes</div>
+    <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+      <button class="btn btn-primary btn-sm" id="sec-tab-prep" onclick="secTab('prep')">📋 Meeting Prep</button>
+      <button class="btn btn-secondary btn-sm" id="sec-tab-agenda" onclick="secTab('agenda')">📅 Agenda Builder</button>
+      <button class="btn btn-secondary btn-sm" id="sec-tab-recap" onclick="secTab('recap')">📝 Meeting Recap</button>
+      <button class="btn btn-secondary btn-sm" id="sec-tab-objections" onclick="secTab('objections')">🛡️ Objection Prep</button>
+    </div>
+    <div class="grid-2">
+      <div>
+        <div class="field"><label>Meeting With</label><input type="text" id="sec-who" placeholder="Client name / company + their ERP version"/></div>
+        <div class="field"><label>Meeting Type</label>
+          <select id="sec-type">
+            <option>Discovery call</option>
+            <option>Proposal presentation</option>
+            <option>Technical demo</option>
+            <option>Follow-up</option>
+            <option>Negotiation</option>
+            <option>Implementation kickoff</option>
+            <option>QBR / Check-in</option>
+          </select>
+        </div>
+        <div class="field"><label>Context / Notes</label><textarea id="sec-ctx" placeholder="What do you know? What's their pain? What's your goal for this meeting?"></textarea></div>
+        <div id="sec-mode-label" style="font-size:11px;font-weight:600;color:var(--green);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">MODE: MEETING PREP</div>
+        <button class="btn btn-primary" onclick="runSecretary()">📅 Generate</button>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:8px">OUTPUT</div>
+        <div class="ai-output" id="sec-out" style="min-height:200px"><span class="ai-thinking">Select a mode above, fill in the details, and hit Generate...</span></div>
+        <div class="btn-group" style="margin-top:10px">
+          <button class="btn btn-secondary btn-sm" onclick="copyOut('sec-out')">Copy</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── HOUSTON NETWORKING ──────────────────────
+function panelHouston() {
+  return `
+  <div class="card">
+    <div class="card-title">Houston Networking</div>
+    <div class="card-sub">Local events, warm intro opportunities, and community intel</div>
+    <div class="grid-2" style="margin-bottom:16px">
+      <div style="background:#eff6ff;border-radius:10px;padding:16px">
+        <div style="font-size:12px;font-weight:600;color:#1d4ed8;margin-bottom:10px">UPCOMING EVENTS</div>
+        <div style="font-size:13px;margin-bottom:8px"><strong>Houston Tech Rodeo</strong><br/><span style="color:var(--muted);font-size:12px">Apr 12 · NRG Center · 200+ attendees</span></div>
+        <div style="font-size:13px;margin-bottom:8px"><strong>Greater Houston Partnership Mixer</strong><br/><span style="color:var(--muted);font-size:12px">Apr 18 · Four Seasons · C-suite focused</span></div>
+        <div style="font-size:13px"><strong>Energy Innovation Summit</strong><br/><span style="color:var(--muted);font-size:12px">May 3 · Hilton Americas · Oil & Gas</span></div>
+      </div>
+      <div style="background:#f0fdf4;border-radius:10px;padding:16px">
+        <div style="font-size:12px;font-weight:600;color:#15803d;margin-bottom:10px">WARM INTRO OPPORTUNITIES</div>
+        <div style="font-size:13px;margin-bottom:8px"><strong>Maria Chen → CFO at Meridian</strong><br/><span style="color:var(--muted);font-size:12px">Connected via LinkedIn. Overlap: Rice alumni.</span></div>
+        <div style="font-size:13px;margin-bottom:8px"><strong>James Tran → CEO at Summit Freight</strong><br/><span style="color:var(--muted);font-size:12px">Referred by mutual contact at GHP.</span></div>
+        <div style="font-size:13px"><strong>Sarah Kim → VC partner at Archetype</strong><br/><span style="color:var(--muted);font-size:12px">Met at Greentown Labs event.</span></div>
+      </div>
+    </div>
+    <div class="field"><label>Research a Houston Contact or Company</label><input type="text" id="hou-q" placeholder="e.g. Fulton Technology — who should I know there?"/></div>
+    <button class="btn btn-primary" onclick="runHouston()">🤝 Research</button>
+    <div class="ai-output" id="hou-out" style="margin-top:14px"><span class="ai-thinking">Local intel will appear here...</span></div>
+  </div>`;
+}
+
+// ─── REGISTER LEAD ───────────────────────────
+function panelRegister() {
+  return `
+  <div class="card">
+    <div class="card-title">Register Lead</div>
+    <div class="card-sub">Log a new lead — syncs to Google Sheets and notifies Slack</div>
+    <div class="grid-2">
+      <div>
+        <div class="field"><label>Company Name</label><input type="text" id="rl-co" placeholder="Apex Industries"/></div>
+        <div class="field"><label>Contact Name</label><input type="text" id="rl-cn" placeholder="Maria Chen"/></div>
+        <div class="field"><label>Title</label><input type="text" id="rl-title" placeholder="CFO / Controller / VP Finance"/></div>
+        <div class="field"><label>Email</label><input type="email" id="rl-email" placeholder="m.chen@apex.com"/></div>
+        <div class="field"><label>Phone</label><input type="tel" id="rl-phone" placeholder="(713) 555-0182"/></div>
+      </div>
+      <div>
+        <div class="field"><label>ERP Version</label>
+          <select id="rl-erp">
+            <option>Sage 100</option>
+            <option>Sage 300</option>
+            <option>Sage 100 Contractor</option>
+            <option>Sage 300 CRE</option>
+            <option>Sage Intacct</option>
+            <option>Sage X3</option>
+            <option>Unknown / TBD</option>
+          </select>
+        </div>
+        <div class="field"><label>Lead Source</label>
+          <select id="rl-src">
+            <option>Networking event</option>
+            <option>Referral</option>
+            <option>LinkedIn / Apollo</option>
+            <option>Cold outreach</option>
+            <option>ROI Calculator</option>
+            <option>Inbound / Website</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Estimated Deal Size</label>
+          <select id="rl-val">
+            <option>Tier 1 — $6,000</option>
+            <option>Tier 2 — $8,500</option>
+            <option>Tier 3 — $11,000</option>
+            <option>Custom / TBD</option>
+          </select>
+        </div>
+        <div class="field"><label>Initial Notes</label><textarea id="rl-notes" placeholder="Key pain points, context, how you met, current ERP pain..."></textarea></div>
+        <button class="btn btn-primary" onclick="submitLead().catch(e=>console.warn('Sage: submitLead error',e))" style="width:100%">➕ Register Lead</button>
+        <div id="rl-confirm" style="display:none;margin-top:10px;padding:10px;background:#dcfce7;border-radius:8px;font-size:13px;color:#15803d">
+          ✓ Lead registered — logged to Google Sheets + Slack notified
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── SCHEDULER ───────────────────────────────
+// Paste your real Calendly links here
+const CALENDLY_LINKS = {
+  tarun: { discovery: 'https://calendly.com/tarun-kerr/discovery',  strategy: 'https://calendly.com/tarun-kerr/strategy' },
+  ed:    { discovery: 'https://calendly.com/ed-kerr/discovery',     strategy: 'https://calendly.com/ed-kerr/strategy' },
+  dan:   { discovery: 'https://calendly.com/dan-kerr/discovery',    strategy: 'https://calendly.com/dan-kerr/strategy' },
+};
+
+function panelScheduler() {
+  const userKey = currentUser?.key || 'tarun';
+  const links = CALENDLY_LINKS[userKey] || CALENDLY_LINKS.tarun;
+  const makeConfigured = MAKE_WEBHOOK_URL_CALENDAR && MAKE_WEBHOOK_URL_CALENDAR !== 'YOUR_MAKE_CALENDAR_WEBHOOK_HERE';
+  return `
+  <div class="card">
+    <div class="card-title">Scheduler</div>
+    <div class="card-sub">Your Calendly links + Make.com calendar automation (pending setup)</div>
+    <div class="grid-2" style="margin-bottom:16px">
+      <div style="background:#f8faff;border:1px solid var(--border);border-radius:10px;padding:16px">
+        <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:12px">YOUR CALENDLY LINKS</div>
+        <div style="margin-bottom:12px">
+          <div style="font-size:13px;font-weight:500;margin-bottom:4px">${currentUser?.name || 'You'} — 30 min Discovery</div>
+          <a href="${links.discovery}" target="_blank" style="font-size:12px;color:#1d4ed8;word-break:break-all">${links.discovery}</a>
+          <button onclick="navigator.clipboard.writeText('${links.discovery}').then(()=>alert('Copied!'))" class="btn btn-secondary btn-sm" style="margin-top:6px;width:100%">Copy link</button>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:500;margin-bottom:4px">${currentUser?.name || 'You'} — 60 min Strategy</div>
+          <a href="${links.strategy}" target="_blank" style="font-size:12px;color:#1d4ed8;word-break:break-all">${links.strategy}</a>
+          <button onclick="navigator.clipboard.writeText('${links.strategy}').then(()=>alert('Copied!'))" class="btn btn-secondary btn-sm" style="margin-top:6px;width:100%">Copy link</button>
+        </div>
+      </div>
+      <div style="background:#f8faff;border:1px solid var(--border);border-radius:10px;padding:16px">
+        <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:12px">MAKE.COM — CALENDAR AUTOMATION</div>
+        <div style="font-size:13px;color:#92400e;font-weight:500;margin-bottom:8px">⏳ Pending Make.com setup</div>
+        <div style="font-size:12px;color:var(--muted)">Once configured:<br/>① Client books Calendly<br/>② Make.com checks team calendars<br/>③ Creates Google Calendar invite<br/>④ Notifies Kerr Slack<br/>⑤ Logs to Google Sheets</div>
+      </div>
+    </div>
+    <div style="padding:14px;background:var(--bg);border-radius:10px">
+      <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px">QUICK SHARE</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button onclick="navigator.clipboard.writeText('${links.discovery}').then(()=>alert('Discovery link copied!'))" class="btn btn-primary btn-sm">📋 Copy Discovery (30 min)</button>
+        <button onclick="navigator.clipboard.writeText('${links.strategy}').then(()=>alert('Strategy link copied!'))" class="btn btn-secondary btn-sm">📋 Copy Strategy (60 min)</button>
+        <button onclick="showPanel('meeting','Meeting Coordinator')" class="btn btn-secondary btn-sm">📅 Meeting Coordinator</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── QUICK CAPTURE ───────────────────────────
+function panelCapture() {
+  const historyHtml = captureHistory.length === 0
+    ? '<div style="color:var(--muted);font-size:13px;padding:8px 0">No captures yet — type something above and hit Send.</div>'
+    : captureHistory.slice(0,10).map(c=>`
+      <div class="anomaly-row">
+        <div class="anomaly-dot a-low" style="margin-top:4px"></div>
+        <div>
+          <div style="font-size:13px">${c.text}</div>
+          <div style="font-size:11px;color:var(--muted)">${c.time} · ${c.type} · ${c.who}</div>
+        </div>
+      </div>`).join('');
+
+  return `
+  <div class="card">
+    <div class="card-title">Quick Capture</div>
+    <div class="card-sub">Brain dump anything — saves to your session feed instantly</div>
+    <div class="field"><label>What do you want to capture?</label>
+      <textarea id="qc-text" style="min-height:100px;font-size:15px" placeholder="Lead name, idea, follow-up reminder, deal note... anything. Type fast and hit Send."></textarea>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:14px">
+      <div class="field" style="margin:0;flex:1"><label>Type</label>
+        <select id="qc-type">
+          <option>Lead note</option>
+          <option>Follow-up reminder</option>
+          <option>Deal update</option>
+          <option>Idea</option>
+          <option>Task</option>
+          <option>Client note</option>
+        </select>
+      </div>
+      <div style="padding-top:18px">
+        <button class="btn btn-primary" onclick="submitCapture()" style="height:40px">⚡ Send</button>
+      </div>
+    </div>
+    <div id="qc-confirm" style="display:none;margin-top:4px;padding:10px;background:#dcfce7;border-radius:8px;font-size:13px;color:#15803d"></div>
+    <div style="margin-top:18px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div style="font-size:12px;font-weight:600;color:var(--muted)">RECENT CAPTURES</div>
+        ${captureHistory.length>0?`<button class="btn btn-secondary btn-sm" onclick="captureHistory=[];saveState();renderCaptureHistory()">Clear</button>`:''}
+      </div>
+      <div id="capture-feed">${historyHtml}</div>
+    </div>
+  </div>`;
+}
+
+// ─── CUSTOM DEV ──────────────────────────────
+function panelCustomDev() {
+  return `
+  <div class="card">
+    <div class="card-title">Custom Dev</div>
+    <div class="card-sub">Request custom automations, integrations, or features from the Sage team</div>
+    <div class="grid-2">
+      <div>
+        <div class="field"><label>What do you need built?</label>
+          <textarea id="cd-req" style="min-height:120px" placeholder="Describe the workflow, automation, or feature you want. Be as specific as possible."></textarea>
+        </div>
+        <div class="field"><label>Priority</label>
+          <select id="cd-pri">
+            <option>Nice to have</option>
+            <option>Important</option>
+            <option>Urgent</option>
+          </select>
+        </div>
+        <div class="field"><label>Connected Tools</label>
+          <select id="cd-tools">
+            <option>Make.com</option>
+            <option>Google Sheets</option>
+            <option>Slack</option>
+            <option>Calendly</option>
+            <option>Anthropic API</option>
+            <option>Other / Not sure</option>
+          </select>
+        </div>
+        <button class="btn btn-navy" onclick="submitDevReq()">🔧 Submit Request</button>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px">ACTIVE REQUESTS</div>
+        <div style="background:var(--bg);border-radius:8px;padding:12px;margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <div style="font-size:13px;font-weight:500">Win Wire auto-Slack notification</div>
+            <span class="badge badge-green">Done</span>
+          </div>
+          <div style="font-size:12px;color:var(--muted)">Make.com → Slack #wins channel</div>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;padding:12px;margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <div style="font-size:13px;font-weight:500">Calendly → CRM sync</div>
+            <span class="badge badge-amber">In Progress</span>
+          </div>
+          <div style="font-size:12px;color:var(--muted)">Auto-log bookings to pipeline</div>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;padding:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <div style="font-size:13px;font-weight:500">Dan's reporting dashboard</div>
+            <span class="badge badge-blue">Queued</span>
+          </div>
+          <div style="font-size:12px;color:var(--muted)">Custom KPI view for Dan</div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── TEMPLATES (Tarun only) ──────────────────
+function panelTemplates() {
+  const isEd = currentUser?.key === 'ed';
+  const userName = currentUser?.name?.split(' ')[0] || 'Tarun';
+  const voiceDesc = isEd
+    ? 'Direct, data-forward. Ed leads with numbers, ROI, and efficiency.'
+    : 'Confident, warm, relationship-first. Tarun leads with context and trust.';
+  return `
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
+      <div>
+        <div class="card-title">Templates — ${userName}'s Voice</div>
+        <div class="card-sub">${voiceDesc}</div>
+      </div>
+      <span class="badge badge-green">${userName}</span>
+    </div>
+    <div class="grid-2">
+      <div>
+        <div class="field"><label>Template Type</label>
+          <select id="tpl-type">
+            <option>First touch — cold outreach</option>
+            <option>Post-meeting follow-up</option>
+            <option>Proposal follow-up</option>
+            <option>Re-engagement (gone cold)</option>
+            <option>Referral ask</option>
+            <option>Check-in / nurture</option>
+            <option>Win announcement</option>
+          </select>
+        </div>
+        <div class="field"><label>Prospect / Company</label>
+          <input type="text" id="tpl-prospect" placeholder="Company name — contact name"/>
+        </div>
+        <div class="field"><label>ERP Version</label>
+          <select id="tpl-erp">
+            <option value="">Unknown / General</option>
+            <option value="Sage 100">Sage 100</option>
+            <option value="Sage 300">Sage 300</option>
+            <option value="Sage 100 Contractor">Sage 100 Contractor</option>
+            <option value="Sage 300 CRE">Sage 300 CRE</option>
+            <option value="Sage Intacct">Sage Intacct</option>
+          </select>
+        </div>
+        <div class="field"><label>Context / Angle</label>
+          <input type="text" id="tpl-ctx" placeholder="Pain point, what you know about them, previous interaction"/>
+        </div>
+        <button class="btn btn-primary" onclick="runTemplate()">📝 Generate in ${userName}'s Voice</button>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:8px">${userName.toUpperCase()}'S TEMPLATE</div>
+        <div class="ai-output" id="tpl-out" style="min-height:200px"><span class="ai-thinking">Template will be generated in ${userName}'s voice...</span></div>
+        <div class="btn-group" style="margin-top:10px">
+          <button class="btn btn-secondary btn-sm" onclick="copyOut('tpl-out')">Copy</button>
+          <button class="btn btn-secondary btn-sm" onclick="runTemplate()">Regenerate</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── WIN WIRE GENERATOR (Tarun only) ─────────
+function panelWinWire() {
+  return `
+  <div class="card">
+    <div class="card-title">Win Wire Generator</div>
+    <div class="card-sub">Turn a closed deal into a polished win announcement for Slack and the team</div>
+    <div class="grid-2">
+      <div>
+        <div class="field"><label>Client Name</label><input type="text" id="ww-client" placeholder="Meridian Consulting"/></div>
+        <div class="field"><label>Deal Value</label><input type="text" id="ww-val" placeholder="$55,000"/></div>
+        <div class="field"><label>Package / Service</label><input type="text" id="ww-pkg" placeholder="Enterprise 90-day engagement"/></div>
+        <div class="field"><label>Key Win Details</label><textarea id="ww-notes" placeholder="How did you win this? Key decision maker, turning point, what tipped it..."></textarea></div>
+        <button class="btn btn-primary" onclick="runWinWire()">🏆 Generate Win Wire</button>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:500;color:var(--muted);margin-bottom:8px">WIN WIRE DRAFT</div>
+        <div class="ai-output" id="ww-out"><span class="ai-thinking">Your win wire will appear here, ready to post to Slack...</span></div>
+        <div class="btn-group" style="margin-top:10px">
+          <button class="btn btn-primary btn-sm" id="ww-post-btn" onclick="postSlack().catch(e=>console.warn('Sage: postSlack error',e))">Post to Slack #wins</button>
+          <button class="btn btn-secondary btn-sm" onclick="copyOut('ww-out')">Copy</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── CONTENT WORKFLOW (Tarun only) ───────────
+function panelWorkflow() {
+  return `
+  <div class="card">
+    <div class="card-title">Content Workflow</div>
+    <div class="card-sub">Manage proposals, case studies, and marketing content pipeline</div>
+    <table class="tbl" style="margin-bottom:16px">
+      <thead><tr><th>Content</th><th>Type</th><th>Status</th><th>Owner</th><th>Due</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Gulf Coast Case Study</strong></td><td>Case Study</td><td><span class="badge badge-amber">In Draft</span></td><td>Tarun</td><td>Apr 10</td></tr>
+        <tr><td><strong>Q2 Capabilities Deck</strong></td><td>Presentation</td><td><span class="badge badge-blue">In Review</span></td><td>Tarun</td><td>Apr 5</td></tr>
+        <tr><td><strong>LinkedIn Article — RevOps Trends</strong></td><td>Article</td><td><span class="badge badge-green">Published</span></td><td>Tarun</td><td>Mar 28</td></tr>
+        <tr><td><strong>Email Nurture Sequence</strong></td><td>Email</td><td><span class="badge badge-gray">Planned</span></td><td>Tarun</td><td>Apr 20</td></tr>
+      </tbody>
+    </table>
+    <div class="field"><label>Generate Content Brief</label><input type="text" id="cw-topic" placeholder="e.g. Case study for energy sector client win"/></div>
+    <button class="btn btn-primary" onclick="runContentBrief()">🔄 Generate Brief</button>
+    <div class="ai-output" id="cw-out" style="margin-top:14px"><span class="ai-thinking">Content brief will appear here...</span></div>
+  </div>`;
+}
+
+// ─── DAN'S DASHBOARD ─────────────────────────
+function panelDanDash() {
+  return `
+  <div class="grid-3" style="margin-bottom:16px">
+    <div class="stat"><div class="stat-label">Dan's Pipeline</div><div class="stat-val">$89K</div><div class="stat-change up">↑ 3 deals</div></div>
+    <div class="stat"><div class="stat-label">Meetings This Week</div><div class="stat-val">4</div><div class="stat-change">2 pending</div></div>
+    <div class="stat"><div class="stat-label">Follow-ups Due</div><div class="stat-val" style="color:#f59e0b">6</div><div class="stat-change down">3 overdue</div></div>
+  </div>
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="card">
+      <div class="card-title">Dan's Active Deals</div>
+      <table class="tbl">
+        <thead><tr><th>Company</th><th>Stage</th><th>Value</th><th>Next Step</th></tr></thead>
+        <tbody>
+          <tr><td><strong>TechBridge</strong></td><td><span class="stage-pill stage-proposal">Proposal</span></td><td>$27,800</td><td>Follow-up call</td></tr>
+          <tr><td><strong>Summit Freight</strong></td><td><span class="stage-pill stage-qualified">Qualified</span></td><td>$34,000</td><td>Send proposal</td></tr>
+          <tr><td><strong>Redline Tech</strong></td><td><span class="stage-pill stage-prospect">Prospect</span></td><td>$18,500</td><td>Discovery call</td></tr>
+          <tr><td><strong>Ironclad Systems</strong></td><td><span class="stage-pill stage-negotiation">Negotiation</span></td><td>$48,700</td><td>Legal review</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">Dan's This Week</div>
+      <div class="anomaly-row"><div class="anomaly-dot a-low" style="margin-top:4px"></div><div><div style="font-size:13px">TechBridge — Lisa Park · Follow-up call</div><div style="font-size:12px;color:var(--muted)">Mon Apr 1 · 10:00am</div></div></div>
+      <div class="anomaly-row"><div class="anomaly-dot a-med" style="margin-top:4px"></div><div><div style="font-size:13px">Summit Freight — Send proposal by EOD</div><div style="font-size:12px;color:var(--muted)">Tue Apr 2 · Due today</div></div></div>
+      <div class="anomaly-row"><div class="anomaly-dot a-low" style="margin-top:4px"></div><div><div style="font-size:13px">Ironclad Systems — Legal call</div><div style="font-size:12px;color:var(--muted)">Thu Apr 4 · 3:00pm</div></div></div>
+      <div class="anomaly-row" style="border:none"><div class="anomaly-dot a-high" style="margin-top:4px"></div><div><div style="font-size:13px">Redline Tech — No contact in 14 days</div><div style="font-size:12px;color:var(--muted)">Action needed</div></div></div>
+    </div>
+  </div>`;
+}
+
+// ─── SAGE BRAIN CHATBOT ──────────────────────
+let sageChatHistory = [];
+function panelSageBrain() {
+  return `
+  <div class="card" style="height:calc(100vh - 140px);display:flex;flex-direction:column;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;flex-shrink:0">
+      <div>
+        <div class="card-title">Sage Brain</div>
+        <div class="card-sub">Ask anything about Ramp, Sage ERP, pricing, objections, or deal strategy</div>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="clearSageChat()">Clear chat</button>
+    </div>
+    <div id="sage-messages" style="flex:1;overflow-y:auto;padding:12px 0;display:flex;flex-direction:column;gap:12px;min-height:0">
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div style="width:28px;height:28px;border-radius:8px;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0">S</div>
+        <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 14px;font-size:13px;line-height:1.6;max-width:85%">
+          Hi ${currentUser?.name?.split(' ')[0] || 'there'}! I'm Sage — I know everything about the AnyWare Apps Ramp + Sage integration, pricing, objection handling, and deal strategy. Ask me anything.<br/><br/>
+          Try: <em>"What's the ROI pitch for a Sage 300 prospect?"</em> or <em>"How do I handle the CSV objection?"</em> or <em>"Which contract template do I use for a Sage 100 + custom dev deal?"</em>
+        </div>
+      </div>
+    </div>
+    <div style="flex-shrink:0;padding-top:12px;border-top:1px solid var(--border);display:flex;gap:8px">
+      <input type="text" id="sage-input" placeholder="Ask Sage anything..." 
+        style="flex:1;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;outline:none"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendSageMessage();}"
+        onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor='var(--border)'"/>
+      <button class="btn btn-primary" onclick="sendSageMessage().catch(e=>console.warn('Sage: sendSageMessage error',e))" style="flex-shrink:0">Ask Sage →</button>
+    </div>
+    <div style="margin-top:8px;flex-shrink:0">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:6px">Quick questions:</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-secondary btn-sm" onclick="quickAsk('What is the ROI pitch for a Sage 100 prospect with 500 monthly transactions?')">ROI pitch</button>
+        <button class="btn btn-secondary btn-sm" onclick="quickAsk('How do I handle the objection: we already do CSV exports?')">CSV objection</button>
+        <button class="btn btn-secondary btn-sm" onclick="quickAsk('What pricing tier fits a company with 15,000 transactions per year?')">Pricing calc</button>
+        <button class="btn btn-secondary btn-sm" onclick="quickAsk('Which contract template do I use for Sage 300 standard implementation?')">Which template?</button>
+        <button class="btn btn-secondary btn-sm" onclick="quickAsk('What are the top 5 qualifying questions for a discovery call?')">Discovery Qs</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+async function sendSageMessage() {
+  const input = document.getElementById('sage-input');
+  const msg = input?.value?.trim();
+  if (!msg) return;
+  input.value = '';
+  const container = document.getElementById('sage-messages');
+  if (!container) return;
+
+  // Add user message
+  const userName = currentUser?.name?.split(' ')[0] || 'You';
+  container.innerHTML += `
+    <div style="display:flex;gap:10px;align-items:flex-start;justify-content:flex-end">
+      <div style="background:var(--navy);color:#fff;border-radius:10px;padding:10px 14px;font-size:13px;line-height:1.6;max-width:85%">${msg}</div>
+      <div style="width:28px;height:28px;border-radius:8px;background:var(--muted);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0">${userName[0]}</div>
+    </div>`;
+  container.scrollTop = container.scrollHeight;
+
+  // Thinking indicator
+  const thinkId = 'sage-think-' + Date.now();
+  container.innerHTML += `
+    <div id="${thinkId}" style="display:flex;gap:10px;align-items:flex-start">
+      <div style="width:28px;height:28px;border-radius:8px;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0">S</div>
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 14px;font-size:13px;color:var(--muted);font-style:italic">Sage is thinking...</div>
+    </div>`;
+  container.scrollTop = container.scrollHeight;
+
+  sageChatHistory.push({role:'user', content: msg});
+
+  if (!ANTHROPIC_API_KEY || ANTHROPIC_API_KEY.length < 20) {
+    document.getElementById(thinkId).querySelector('div:last-child').textContent = '⚠️ API key not set — add your Anthropic key to activate Sage Brain.';
+    return;
+  }
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key': ANTHROPIC_API_KEY.trim(),
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({
+        model:'claude-sonnet-4-5',
+        max_tokens:1200,
+        system: buildSystemPrompt(),
+        messages: sageChatHistory
+      })
+    });
+    const data = await res.json();
+
+    // Show actual error if API returned one
+    if (data.error) {
+      const thinkEl = document.getElementById(thinkId);
+      if (thinkEl) {
+        thinkEl.querySelector('div:last-child').textContent = '⚠️ API error: ' + data.error.message;
+        thinkEl.querySelector('div:last-child').style.fontStyle = 'normal';
+        thinkEl.querySelector('div:last-child').style.color = '#dc2626';
+      }
+      return;
+    }
+
+    const reply = data.content?.map(b=>b.text||'').join('') || 'No response.';
+    sageChatHistory.push({role:'assistant', content: reply});
+
+    const thinkEl = document.getElementById(thinkId);
+    if (thinkEl) {
+      thinkEl.querySelector('div:last-child').innerHTML = reply.replace(/\n/g,'<br/>');
+      thinkEl.querySelector('div:last-child').style.fontStyle = 'normal';
+      thinkEl.querySelector('div:last-child').style.color = 'var(--text)';
+    }
+  } catch(e) {
+    const thinkEl = document.getElementById(thinkId);
+    if (thinkEl) thinkEl.querySelector('div:last-child').textContent = 'Connection error — check your API key.';
+  }
+  container.scrollTop = container.scrollHeight;
+}
+
+function quickAsk(q) {
+  const input = document.getElementById('sage-input');
+  if (input) { input.value = q; sendSageMessage(); }
+}
+
+function clearSageChat() {
+  sageChatHistory = [];
+  const c = document.getElementById('sage-messages');
+  if (c) c.innerHTML = `<div style="display:flex;gap:10px;align-items:flex-start"><div style="width:28px;height:28px;border-radius:8px;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0">S</div><div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 14px;font-size:13px;line-height:1.6;max-width:85%">Chat cleared. What can I help you with?</div></div>`;
+}
+
+// ─── CLIENT PROFILES DATA ────────────────────
+const CLIENT_PROFILES = [
+  {
+    id:'capps',name:'Capps Construction & Plumbing',industry:'Construction',size:'>50 employees',
+    erp:'Sage 100',status:'active',temp:'Friendly — Signed',
+    contacts:[{name:'Cody Lewis',role:'Primary Contact',email:''}],
+    rampStatus:'Implementing',kerr:'New',paymentMethod:'Both (AP + Credit Card)',pm:'Tara Woolbright',
+    scope:'Ramp × Sage 100 + Custom Job Costing Module',
+    customDev:'Yes — Selective sync logic, job costing enhancements, custom fields for allocations and PO handling. Sync project code/name from Sage to Ramp. Sync cost code/name to Ramp accounting field.',
+    devHours:40,price:'Custom',rampContact:'Sean Fonteyne — Sfonteyne@ramp.com',
+    goals:'Accurate job costing by mapping transactions to projects/jobs. Selective sync for better control. Custom fields for allocation + reporting. Handle mixed PO and non-PO invoices without disrupting committed cost visibility.',
+    gotchas:'Mixed PO and non-PO invoices must not disrupt committed cost visibility in Sage job costing module.',
+    crossSell:'',lastTouch:'Jan 5 2026 — SOW signed',
+    nextSteps:'Begin development — selective sync logic + job costing custom fields (phased approach)',
+    notes:'Sean Fonteyne (Ramp) doing implementation on Ramp side.',
+    sowUrl:'https://kerrcloud.sharepoint.com/:b:/s/RampIntegrations/IQBZONLuxu5pSJlR1OclbJT2AYxhlYQb5l6KPCK0QPwjKIQ?e=SMTD99'
+  },
+  {
+    id:'mamalycha',name:'Mama Lycha',industry:'Food Manufacturing / Distribution',size:'Medium — multi-entity, scaling post-PE recap',
+    erp:'Sage 100',status:'active',temp:'Inquisitive, Ready to move forward',
+    contacts:[{name:'James Ezell',role:'CFO',email:'jezell@mamalycha.com'},{name:'Jose Domingo "JD" Perez',role:'Controller',email:''}],
+    rampStatus:'Not yet live — Card, Expense, AP payments only',kerr:'Existing',paymentMethod:'ACH / check / wire via Sage 100 AP',pm:'Tara Woolbright',
+    scope:'Ramp × Sage 100 Connector ($8,500/yr) + Custom AP bidirectional sync ($4,500) — implementation fee waived',
+    customDev:'Yes — AP bidirectional sync: Sage 100 vendor invoices push into Ramp for payment. Update Sage AP invoice with Ramp ID.',
+    devHours:36,price:'$8,500/yr + $4,500 custom dev (implementation waived)',rampContact:'',
+    goals:'Enable credit card FIRST (critical — do this before AP connector). Reduce fraud exposure on corporate cards. Eliminate manual AP (~2 days/month). Stronger approvals + audit readiness.',
+    gotchas:'PO → Item Receipt → AP flow must stay in Sage 100. Potential multi-entity growth considerations.',
+    crossSell:'TBD',lastTouch:'Dec 23 2025 — SOW signed',
+    nextSteps:'⚡ PRIORITY: Enable credit card connector first, THEN deploy AP connector',
+    notes:'High fraud exposure on corporate cards. Ramp and client want credit card connector live ASAP.',
+    sowUrl:'https://kerrcloud.sharepoint.com/:b:/s/RampIntegrations/IQCiqUDZ9ELQTK1tQm3LpVarAQiSqUHz0V6I_N0HCvb3aj0?e=ieYpce'
+  },
+  {
+    id:'thrillone',name:'Thrill Sports LLC (Thrill One)',industry:'Sports & Entertainment',size:'51–200 employees',
+    erp:'Sage Intacct',status:'active',temp:'Friendly — Super Responsive',
+    contacts:[{name:'Katie Riccio',role:'Finance / Accounting Lead — Primary Decision Maker',email:'kriccio@thrillone.com'}],
+    rampStatus:'Already on Ramp',kerr:'New',paymentMethod:'Custom integration only',pm:'Brennen Herr',
+    scope:'Ramp → Sage Intacct SFTP GL Integration — SFTP ingestion of Ramp transactions + Automated GL Journal Entry creation in Intacct',
+    customDev:'Yes — custom SFTP ingestion logic + JE creation rules (replica of prior implementation, still custom deployment)',
+    devHours:null,price:'Custom',rampContact:'',
+    goals:'Automate ingestion of Ramp card transactions into Sage Intacct GL via SFTP. Live ASAP to capture January activity.',
+    gotchas:'Confirm preferred posting date (transaction date selected). Sender ID credentials may need reset.',
+    crossSell:'Nothing discussed yet — great client, try to upsell as we go (note: probably should have charged more)',
+    lastTouch:'Jan 2026 — SOW signed',
+    nextSteps:'Confirm posting date + Sender ID credentials reset. Begin dev week 1 → testing weeks 2-3 → deploy.',
+    notes:'Super responsive, great client. Try to identify cross-sell as project progresses.',
+    sowUrl:'https://kerrcloud.sharepoint.com/:w:/s/RampIntegrations/IQDcRxbhCqFZSKKsnDtwxjazAVH50YAJpLQos2FqB0o61hk?e=IXKogV'
+  },
+  {
+    id:'csj',name:'CSJ Carondelet',industry:'TBD — needs to be filled in',size:'TBD',
+    erp:'TBD',status:'prospect',temp:'Unknown',
+    contacts:[{name:'Patty',role:'Current CFO (Signatory)',email:''},{name:'Linda',role:'Incoming CFO',email:''},{name:'Lauren',role:'Technical Contact',email:''}],
+    rampStatus:'Unknown',kerr:'Unknown',paymentMethod:'Unknown',pm:'',
+    scope:'TBD — profile incomplete',customDev:'Unknown',devHours:null,price:'TBD',rampContact:'',
+    goals:'',
+    gotchas:'CFO transition in progress: Patty signs, Linda takes over as CFO. Lauren is technical POC.',
+    crossSell:'',lastTouch:'Unknown',
+    nextSteps:'🚨 URGENT: Complete client profile — confirm industry, ERP, scope. Collect contacts before CFO transition.',
+    notes:'Patty will sign. Linda is incoming CFO. Lauren is technical contact.',
+    sowUrl:''
+  },
+  {
+    id:'usis',name:'USIS',industry:'Technology / Services',size:'Not specified',
+    erp:'Sage 100',status:'active',temp:'Committed — requires high interaction',
+    contacts:[{name:'John Lagana',role:'Project Approver',email:'JohnLagana@usis.net'}],
+    rampStatus:'Ramp Expense Management (credit card + expense data)',kerr:'New',paymentMethod:'ACH',pm:'Brennen Herr',
+    scope:'Ramp to Sage 100 integration via SQL job table. Middleware for automated/manual imports. SendGrid email notifications for success/failure.',
+    customDev:'Yes — API retrieval, data transformation, error handling, SendGrid email workflow, SQL job posting with deletion/insertion logic',
+    devHours:40,price:'$4,000/yr (capped for life of contract) + $6,500 custom dev = $10,500 first year',
+    rampContact:'Sophie (Ramp AE) — waiting to hear back as of Dec 1 2025',
+    goals:'Hourly automated imports with error handling. Confirmation emails for success/failure. Comprehensive testing and UAT.',
+    gotchas:'Credential expiry risk for SendGrid and API. Posting frequency mismatch mitigated via configurable scheduler.',
+    crossSell:'Additional Sage modules (Purchasing/AP flow excluded from current scope). Ramp Purchasing integration.',
+    lastTouch:'Nov 24 2025 — SOW signed',
+    nextSteps:'Confirm Ramp AE Sophie status. Begin architecture + SQL job table development.',
+    notes:'Strict NDA + data destruction policy post-support. Warranty covers SQL extraction + GL posting only — excludes AP flow and external outages.',
+    sowUrl:'https://kerrcloud.sharepoint.com/:b:/s/RampIntegrations/ERfaoqbBVO9JkZWd62cCkbIBSgEB7Qd1Rja7tQi79Ei-iA?e=kvxUNR'
+  }
+];
+
+let activeClient = null;
+
+// ─── CLIENT PROFILES PANEL ───────────────────
+function panelClients() {
+  const statusColor = {active:'badge-green',prospect:'badge-amber',closed:'badge-gray'};
+  const statusLabel = {active:'Active',prospect:'Prospect',closed:'Closed'};
+  return `
+  <div class="grid-2" style="gap:16px">
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-size:14px;font-weight:600">Client Profiles</div>
+        <span style="font-size:12px;color:var(--muted)">${CLIENT_PROFILES.length} clients</span>
+      </div>
+      ${CLIENT_PROFILES.map(c=>`
+      <div onclick="showClientDetail('${c.id}')" style="background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:all .15s" id="ccard-${c.id}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <div style="font-weight:600;font-size:13px">${c.name}</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">${c.industry||'Industry TBD'} · ${c.erp}</div>
+          </div>
+          <span class="badge ${statusColor[c.status]||'badge-gray'}">${statusLabel[c.status]||'Unknown'}</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+          ${c.contacts.slice(0,2).map(ct=>`<span style="font-size:11px;background:var(--bg);padding:2px 8px;border-radius:4px;color:var(--muted)">${ct.name} · ${ct.role}</span>`).join('')}
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-top:6px">📋 ${c.lastTouch}</div>
+      </div>`).join('')}
+    </div>
+    <div id="client-detail">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:30px;text-align:center;color:var(--muted);font-size:13px">
+        ← Select a client to view their full profile
+      </div>
+    </div>
+  </div>`;
+}
+
+function showClientDetail(id) {
+  activeClient = id;
+  const c = CLIENT_PROFILES.find(x=>x.id===id);
+  if (!c) return;
+  document.querySelectorAll('[id^="ccard-"]').forEach(el=>{
+    el.style.borderColor = el.id === 'ccard-'+id ? 'var(--green)' : 'var(--border)';
+  });
+  const detail = document.getElementById('client-detail');
+  if (!detail) return;
+  const statusColor = {active:'badge-green',prospect:'badge-amber',closed:'badge-gray'};
+  detail.innerHTML = `
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;overflow-y:auto;max-height:calc(100vh - 200px)">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
+      <div>
+        <div style="font-size:16px;font-weight:700">${c.name}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">${c.industry} · ${c.erp} · ${c.size}</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span class="badge ${statusColor[c.status]||'badge-gray'}">${c.status}</span>
+        <span class="badge badge-blue" style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.temp||'—'}</span>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+      <div style="background:var(--bg);border-radius:8px;padding:10px">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px">Contacts</div>
+        ${c.contacts.map(ct=>`<div style="font-size:12px;margin-bottom:5px"><strong>${ct.name}</strong><br/><span style="color:var(--muted)">${ct.role}</span>${ct.email?'<br/><a href="mailto:'+ct.email+'" style="color:var(--navy);font-size:11px">'+ct.email+'</a>':''}</div>`).join('')}
+      </div>
+      <div style="background:var(--bg);border-radius:8px;padding:10px">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px">Project Info</div>
+        <div style="font-size:12px;margin-bottom:3px"><strong>PM:</strong> ${c.pm||'TBD'}</div>
+        <div style="font-size:12px;margin-bottom:3px"><strong>Dev hrs:</strong> ${c.devHours||'TBD'}</div>
+        <div style="font-size:12px;margin-bottom:3px"><strong>Price:</strong> ${c.price||'TBD'}</div>
+        <div style="font-size:12px;margin-bottom:3px"><strong>Payment:</strong> ${c.paymentMethod||'TBD'}</div>
+        <div style="font-size:12px"><strong>Ramp contact:</strong> ${c.rampContact||'—'}</div>
+      </div>
+    </div>
+    <div style="margin-bottom:12px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:5px">Scope</div>
+      <div style="font-size:13px;line-height:1.5">${c.scope||'TBD'}</div>
+    </div>
+    ${c.customDev&&c.customDev!=='Unknown'?`<div style="margin-bottom:12px;padding:10px;background:#eff6ff;border-radius:8px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#1d4ed8;margin-bottom:5px">Custom Development</div><div style="font-size:12px;line-height:1.5;color:#1e40af">${c.customDev}</div></div>`:''}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+      <div style="background:#f0fdf4;border-radius:8px;padding:10px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#15803d;margin-bottom:5px">Goals</div>
+        <div style="font-size:12px;line-height:1.5;color:#166534">${c.goals||'—'}</div>
+      </div>
+      <div style="background:#fff7ed;border-radius:8px;padding:10px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#c2410c;margin-bottom:5px">Gotchas</div>
+        <div style="font-size:12px;line-height:1.5;color:#9a3412">${c.gotchas||'—'}</div>
+      </div>
+    </div>
+    <div style="background:#fef3c7;border-radius:8px;padding:12px;margin-bottom:12px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#92400e;margin-bottom:5px">📋 Last Touch → Next Steps</div>
+      <div style="font-size:12px;color:#78350f;margin-bottom:6px"><strong>Last:</strong> ${c.lastTouch}</div>
+      <div style="font-size:13px;color:#92400e;font-weight:500">${c.nextSteps}</div>
+    </div>
+    ${c.crossSell?`<div style="margin-bottom:12px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:5px">Cross-Sell</div><div style="font-size:12px">${c.crossSell}</div></div>`:''}
+    ${c.notes?`<div style="margin-bottom:12px;padding:10px;background:var(--bg);border-radius:8px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:5px">Notes</div><div style="font-size:12px">${c.notes}</div></div>`:''}
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+      ${c.sowUrl?`<a href="${c.sowUrl}" target="_blank" class="btn btn-secondary btn-sm">📄 SOW</a>`:''}
+      <button class="btn btn-primary btn-sm" onclick="prepMeetingForClient('${c.id}')">📅 Schedule Meeting</button>
+      <button class="btn btn-secondary btn-sm" onclick="writeEmailForClient('${c.id}')">✍️ Draft Email</button>
+    </div>
+  </div>`;
+}
+
+function prepMeetingForClient(id) {
+  const c = CLIENT_PROFILES.find(x=>x.id===id);
+  if (!c) return;
+  showPanel('meeting','Meeting Coordinator');
+  setTimeout(()=>{
+    const el = document.getElementById('mt-client');
+    if (el) el.value = c.name + ' — ' + (c.contacts[0]?.name||'') + ' (' + c.erp + ')';
+    const ctx = document.getElementById('mt-ctx');
+    if (ctx) ctx.value = 'Last touch: ' + c.lastTouch + '\nNext steps: ' + c.nextSteps;
+  }, 150);
+}
+
+function writeEmailForClient(id) {
+  const c = CLIENT_PROFILES.find(x=>x.id===id);
+  if (!c) return;
+  showPanel('writing','Writing Assistant');
+  setTimeout(()=>{
+    const ep = document.getElementById('wprospect');
+    if (ep) ep.value = c.name + ' — ' + (c.contacts[0]?.name||'');
+    const erp = document.getElementById('w-erp');
+    if (erp) erp.value = c.erp;
+    const ctx = document.getElementById('wcontext');
+    if (ctx) ctx.value = 'Next steps: ' + c.nextSteps;
+  }, 150);
+}
+
+// ─── MEETING COORDINATOR PANEL ───────────────
+// ─── MEETING TEAM STATE ──────────────────────
+const KERR_TEAM = [
+  {name:'Tarun Jakkaraju', role:'Admin/Owner',       email:'tarun@kerrconsulting.com',  key:'tarun',   initials:'TJ'},
+  {name:'Ed Hosey',        role:'Account Executive', email:'ehosey@kerrconsulting.com', key:'ed',      initials:'EH'},
+  {name:'Dan Krishman',    role:'Practice Director', email:'dan@kerrconsulting.com',    key:'dan',     initials:'DK'},
+  {name:'Brennen Herr',    role:'PM',                email:'bherr@kerrconsulting.com',  key:'brennen', initials:'BH'},
+  {name:'Sheila',          role:'Custom Dev',        email:'sheila@kerrconsulting.com', key:'sheila',  initials:'SH'},
+  {name:'Tara Woolbright', role:'PM',                email:'tara@kerrconsulting.com',   key:'tara',    initials:'TW'},
+  {name:'Jamie Kraus',     role:'Ramp Partner',      email:'jamie.kraus@ramp.com',      key:'jamie',   initials:'JK'},
+  {name:'Eric Lengerich',  role:'Ramp AE',           email:'elengerich@ramp.com',       key:'eric',    initials:'EL'},
+];
+
+const MEETING_SUGGESTIONS = {
+  'Implementation kickoff': ['tarun','brennen','tara','sheila'],
+  'Discovery call':         ['tarun','ed'],
+  'UAT review':             ['brennen','sheila','tara'],
+  'Go-live check-in':       ['tarun','brennen','tara'],
+  'QBR / status update':    ['tarun','dan','brennen'],
+  'Custom dev scoping':     ['tarun','sheila','brennen'],
+  'Follow-up / next steps': ['tarun','ed'],
+  'Cross-sell discussion':  ['tarun','dan','ed'],
+  'Ramp partner review':    ['tarun','jamie','eric'],
+};
+
+const MAKE_WEBHOOK_URL = MAKE_WEBHOOK_URL_CALENDAR || '';
+let mtExtraAttendees = [];
+
+function panelMeeting() {
+  const clientOptions = CLIENT_PROFILES.map(c =>
+    `<option value="${c.id}">${c.name}</option>`).join('');
+  const today = new Date().toISOString().split('T')[0];
+  const nextWeek = new Date(Date.now()+7*86400000).toISOString().split('T')[0];
+
+  return `
+  <div class="grid-2" style="gap:16px">
+    <div class="card">
+      <div class="card-title">📅 Meeting Coordinator</div>
+      <div class="card-sub">Build your attendee list, generate an agenda, and send to Make.com to check calendars</div>
+
+      <div class="field"><label>Client</label>
+        <select id="mt-client-sel" onchange="mtAutoFillClient(this.value)" style="margin-bottom:6px">
+          <option value="">— Select a client —</option>
+          ${clientOptions}
+          <option value="custom">Other / type manually</option>
+        </select>
+        <input type="text" id="mt-client" placeholder="Client name — Contact name (Role)"/>
+      </div>
+
+      <div class="field">
+        <label>Meeting Purpose <span style="color:var(--green);font-size:11px">Auto-suggests attendees</span></label>
+        <select id="mt-purpose" onchange="mtSuggestAttendees(this.value)">
+          <option>Implementation kickoff</option>
+          <option>Discovery call</option>
+          <option>UAT review</option>
+          <option>Go-live check-in</option>
+          <option>QBR / status update</option>
+          <option>Custom dev scoping</option>
+          <option>Follow-up / next steps</option>
+          <option>Cross-sell discussion</option>
+          <option>Ramp partner review</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Kerr Team Attendees <span style="color:var(--muted);font-size:11px">Check all who should attend</span></label>
+        <div id="mt-team-list" style="border:1.5px solid var(--border);border-radius:8px;overflow:hidden;margin-top:4px">
+          ${KERR_TEAM.map((m,i) => `
+          <label id="mt-row-${m.key}" style="display:flex;align-items:center;gap:10px;padding:9px 12px;cursor:pointer;transition:background .1s;${i < KERR_TEAM.length-1 ? 'border-bottom:1px solid var(--border);' : ''}background:var(--surface)">
+            <input type="checkbox" id="mt-cb-${m.key}" data-email="${m.email}" data-name="${m.name}" style="width:auto;margin:0;flex-shrink:0" onchange="mtToggleRow('${m.key}');mtUpdatePreview()" ${m.key===currentUser?.key?'checked':''}>
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">${m.initials}</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:13px;font-weight:500">${m.name}</div>
+              <div style="font-size:11px;color:var(--muted)">${m.role}</div>
+            </div>
+            <div style="font-size:11px;color:var(--muted);flex-shrink:0;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.email}</div>
+          </label>`).join('')}
+        </div>
+        <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+          <button class="btn btn-secondary btn-sm" onclick="mtSelectAll()">Select all</button>
+          <button class="btn btn-secondary btn-sm" onclick="mtClearAll()">Clear all</button>
+          <button class="btn btn-secondary btn-sm" onclick="mtSuggestAttendees(document.getElementById('mt-purpose').value)">↺ Re-suggest</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Add External Attendees <span style="color:var(--muted);font-size:11px">Clients, anyone else</span></label>
+        <div style="display:flex;gap:6px;margin-bottom:8px">
+          <input type="text" id="mt-ext-name" placeholder="Name" style="flex:1"/>
+          <input type="email" id="mt-ext-email" placeholder="email@company.com" style="flex:1.5"/>
+          <button class="btn btn-secondary btn-sm" onclick="mtAddExternal()" style="white-space:nowrap">+ Add</button>
+        </div>
+        <div id="mt-external-list" style="display:flex;flex-direction:column;gap:4px"></div>
+        <div id="mt-client-contacts" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px">
+          <span style="font-size:11px;color:var(--muted)">Select a client above to quick-add their contacts</span>
+        </div>
+      </div>
+
+      <div class="field"><label>Duration</label>
+        <select id="mt-duration">
+          <option>15 minutes</option>
+          <option>30 minutes</option>
+          <option selected>45 minutes</option>
+          <option>60 minutes</option>
+          <option>90 minutes</option>
+        </select>
+      </div>
+
+      <div class="field"><label>Date Range to Check</label>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="date" id="mt-date-from" style="flex:1" value="${today}"/>
+          <span style="color:var(--muted);font-size:13px">to</span>
+          <input type="date" id="mt-date-to" style="flex:1" value="${nextWeek}"/>
+        </div>
+      </div>
+
+      <div class="field"><label>Context / Agenda Notes</label>
+        <textarea id="mt-ctx" placeholder="What needs to be covered? Any prep needed? Blockers?"></textarea>
+      </div>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="generateMeetingPlan()">📅 Generate Plan</button>
+        <button class="btn btn-secondary" onclick="generateAvailability()">🕐 Availability Request</button>
+        <button class="btn btn-navy" onclick="fireMakeWebhook().catch(e=>console.warn('Sage: fireMakeWebhook error',e))">⚡ Send to Make.com</button>
+      </div>
+      <div id="mt-webhook-status" style="display:none;margin-top:8px;font-size:12px;padding:8px 12px;border-radius:6px"></div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div style="font-size:12px;font-weight:600;color:var(--muted)">ATTENDEES</div>
+          <span id="mt-attendee-count" style="font-size:11px;background:var(--navy);color:#fff;padding:2px 10px;border-radius:10px;font-weight:600">0 selected</span>
+        </div>
+        <div id="mt-attendee-preview" style="display:flex;flex-direction:column;gap:5px">
+          <div style="font-size:12px;color:var(--muted)">Check team members to build your attendee list.</div>
+        </div>
+        <div id="mt-payload-wrap" style="margin-top:12px;display:none">
+          <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">Make.com Payload</div>
+          <div id="mt-payload" style="font-size:11px;font-family:monospace;background:var(--bg);padding:8px;border-radius:6px;white-space:pre-wrap;line-height:1.5;color:var(--text)"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px">OUTPUT</div>
+        <div class="ai-output" id="mt-out" style="min-height:220px;white-space:pre-wrap"><span class="ai-thinking">Select attendees, fill in the form, and click Generate Plan...</span></div>
+        <div class="btn-group" style="margin-top:10px">
+          <button class="btn btn-secondary btn-sm" onclick="copyOut('mt-out')">Copy plan</button>
+          <button class="btn btn-secondary btn-sm" onclick="copyInviteText()">Copy invite</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── MEETING HELPER FUNCTIONS ─────────────────
+
+function mtToggleRow(key) {
+  const cb = document.getElementById('mt-cb-'+key);
+  const row = document.getElementById('mt-row-'+key);
+  if (!cb || !row) return;
+  row.style.background = cb.checked ? '#f0fdf4' : 'var(--surface)';
+}
+
+function mtSelectAll() {
+  KERR_TEAM.forEach(m => {
+    const cb = document.getElementById('mt-cb-'+m.key);
+    if (cb) cb.checked = true;
+    mtToggleRow(m.key);
+  });
+  mtUpdatePreview();
+}
+
+function mtClearAll() {
+  KERR_TEAM.forEach(m => {
+    const cb = document.getElementById('mt-cb-'+m.key);
+    if (cb) cb.checked = false;
+    mtToggleRow(m.key);
+  });
+  mtUpdatePreview();
+}
+
+function mtSuggestAttendees(purpose) {
+  const suggested = MEETING_SUGGESTIONS[purpose] || ['tarun'];
+  KERR_TEAM.forEach(m => {
+    const cb = document.getElementById('mt-cb-'+m.key);
+    if (cb) cb.checked = suggested.includes(m.key);
+    mtToggleRow(m.key);
+  });
+  mtUpdatePreview();
+}
+
+function mtAutoFillClient(id) {
+  if (!id || id === 'custom') {
+    document.getElementById('mt-client-contacts').innerHTML =
+      '<span style="font-size:11px;color:var(--muted)">Select a client above to quick-add their contacts</span>';
+    return;
+  }
+  const c = CLIENT_PROFILES.find(x => x.id === id);
+  if (!c) return;
+  const clientInput = document.getElementById('mt-client');
+  if (clientInput) clientInput.value = c.name + (c.contacts[0] ? ' — ' + c.contacts[0].name + ' (' + c.contacts[0].role + ')' : '');
+
+  // Auto-fill context from client profile
+  const ctx = document.getElementById('mt-ctx');
+  if (ctx && !ctx.value) ctx.value = 'Last touch: ' + c.lastTouch + '\nNext steps: ' + c.nextSteps;
+
+  // Show quick-add buttons for each contact
+  const cc = document.getElementById('mt-client-contacts');
+  if (cc) {
+    cc.innerHTML = '<div style="font-size:11px;font-weight:600;color:var(--muted);width:100%;margin-bottom:4px">Quick add:</div>' +
+      c.contacts.map(ct =>
+        `<button class="btn btn-secondary btn-sm" onclick="mtQuickAddContact('${ct.name.replace(/'/g,"\\'")}','${ct.email||''}')" style="font-size:11px">
+          + ${ct.name} <span style="color:var(--muted)">(${ct.role})</span>
+        </button>`
+      ).join('');
+  }
+}
+
+function mtQuickAddContact(name, email) {
+  if (!mtExtraAttendees.find(a => a.name === name)) {
+    mtExtraAttendees.push({name, email: email||'', source:'client'});
+    mtRenderExternalList();
+    mtUpdatePreview();
+  }
+}
+
+function mtAddExternal() {
+  const name = document.getElementById('mt-ext-name')?.value?.trim();
+  const email = document.getElementById('mt-ext-email')?.value?.trim();
+  if (!name) { alert('Please enter a name.'); return; }
+  if (mtExtraAttendees.find(a => a.name === name)) { alert(name + ' is already on the list.'); return; }
+  mtExtraAttendees.push({name, email, source:'manual'});
+  document.getElementById('mt-ext-name').value = '';
+  document.getElementById('mt-ext-email').value = '';
+  mtRenderExternalList();
+  mtUpdatePreview();
+}
+
+function mtRemoveExternal(index) {
+  mtExtraAttendees.splice(index, 1);
+  mtRenderExternalList();
+  mtUpdatePreview();
+}
+
+function mtRenderExternalList() {
+  const el = document.getElementById('mt-external-list');
+  if (!el) return;
+  if (mtExtraAttendees.length === 0) { el.innerHTML = ''; return; }
+  el.innerHTML = mtExtraAttendees.map((a,i) =>
+    `<div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--bg);border-radius:6px">
+      <div style="width:24px;height:24px;border-radius:50%;background:var(--muted);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">${a.name[0].toUpperCase()}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;font-weight:500">${a.name}</div>
+        ${a.email ? `<div style="font-size:11px;color:var(--muted)">${a.email}</div>` : ''}
+      </div>
+      <button onclick="mtRemoveExternal(${i})" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px;padding:0 4px;line-height:1">×</button>
+    </div>`
+  ).join('');
+}
+
+function mtGetAllAttendees() {
+  const internal = KERR_TEAM.filter(m => document.getElementById('mt-cb-'+m.key)?.checked)
+    .map(m => ({name:m.name, email:m.email, role:m.role, type:'internal'}));
+  const external = mtExtraAttendees.map(a => ({name:a.name, email:a.email, role:'External', type:'external'}));
+  return [...internal, ...external];
+}
+
+function mtUpdatePreview() {
+  const all = mtGetAllAttendees();
+  const countEl = document.getElementById('mt-attendee-count');
+  const previewEl = document.getElementById('mt-attendee-preview');
+  if (countEl) countEl.textContent = all.length + ' selected';
+
+  if (!previewEl) return;
+  if (all.length === 0) {
+    previewEl.innerHTML = '<div style="font-size:12px;color:var(--muted)">Check team members to build your attendee list.</div>';
+    document.getElementById('mt-payload-wrap').style.display = 'none';
+    return;
+  }
+
+  previewEl.innerHTML = all.map(a =>
+    `<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border)">
+      <div style="width:24px;height:24px;border-radius:50%;background:${a.type==='internal'?'var(--navy)':'var(--muted)'};color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0">${a.name.split(' ').map(n=>n[0]).join('').substring(0,2)}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.name} <span style="font-weight:400;color:var(--muted)">· ${a.role}</span></div>
+        ${a.email ? `<div style="font-size:11px;color:var(--muted)">${a.email}</div>` : ''}
+      </div>
+      <span style="font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;${a.type==='internal'?'background:#dbeafe;color:#1d4ed8':'background:#f3e8ff;color:#6b21a8'}">${a.type==='internal'?'KERR':'EXT'}</span>
+    </div>`
+  ).join('');
+
+  // Update Make.com payload preview
+  const payload = mtBuildPayload();
+  const payloadEl = document.getElementById('mt-payload');
+  const payloadWrap = document.getElementById('mt-payload-wrap');
+  if (payloadEl) payloadEl.textContent = JSON.stringify(payload, null, 2);
+  if (payloadWrap) payloadWrap.style.display = 'block';
+}
+
+function mtBuildPayload() {
+  const all = mtGetAllAttendees();
+  const client = document.getElementById('mt-client')?.value || '';
+  const purpose = document.getElementById('mt-purpose')?.value || '';
+  const duration = document.getElementById('mt-duration')?.value || '45 minutes';
+  const dateFrom = document.getElementById('mt-date-from')?.value || '';
+  const dateTo = document.getElementById('mt-date-to')?.value || '';
+  const ctx = document.getElementById('mt-ctx')?.value || '';
+  return {
+    meeting_purpose: purpose,
+    client: client,
+    duration: duration,
+    date_from: dateFrom,
+    date_to: dateTo,
+    context: ctx,
+    requested_by: currentUser?.name || 'Tarun',
+    attendees: all.map(a => ({name:a.name, email:a.email, type:a.type})),
+    internal_emails: all.filter(a=>a.type==='internal').map(a=>a.email),
+    external_emails: all.filter(a=>a.type==='external').map(a=>a.email),
+    timestamp: new Date().toISOString()
+  };
+}
+
+function generateMeetingPlan() {
+  const all = mtGetAllAttendees();
+  const client = document.getElementById('mt-client')?.value || 'the client';
+  const purpose = document.getElementById('mt-purpose')?.value || 'meeting';
+  const duration = document.getElementById('mt-duration')?.value || '45 minutes';
+  const ctx = document.getElementById('mt-ctx')?.value || '';
+  const internalNames = all.filter(a=>a.type==='internal').map(a=>a.name.split(' ')[0]);
+  const externalNames = all.filter(a=>a.type==='external').map(a=>a.name);
+
+  const agendaMap = {
+    'Implementation kickoff':['Welcome + introductions (5 min)','Review SOW and project scope (10 min)','Confirm Sage + Ramp access requirements (10 min)','Walk through implementation timeline (10 min)','Assign action items + set next meeting (10 min)'],
+    'Discovery call':['Intro and context (5 min)','Current ERP setup + pain points (15 min)','Ramp usage today (10 min)','Integration requirements (10 min)','Pricing overview + next steps (10 min)'],
+    'UAT review':['Walk through test transactions (15 min)','Validate GL mapping accuracy (10 min)','Review sync logs for errors (10 min)','Sign-off checklist (5 min)','Define go-live criteria (5 min)'],
+    'Go-live check-in':['Confirm production environment ready (10 min)','Final sync validation (15 min)','Go-live approval sign-off (10 min)','Post-launch support plan (10 min)'],
+    'QBR / status update':['Pipeline + project status (15 min)','Issues + blockers (10 min)','Upcoming milestones (10 min)','Questions + feedback (10 min)'],
+    'Custom dev scoping':['Review requirements (10 min)','Define custom development scope (15 min)','Technical Q&A (10 min)','Timeline + pricing estimate (10 min)'],
+    'Cross-sell discussion':['Current project status (5 min)','Identify additional needs (15 min)','Present relevant solutions (15 min)','Next steps + action items (10 min)'],
+    'Ramp partner review':['Partnership update (10 min)','Active client status (15 min)','Pipeline review (10 min)','Co-sell opportunities (10 min)','Next steps (5 min)'],
+    'Follow-up / next steps':['Recap last meeting (5 min)','Review open action items (15 min)','Confirm next steps + owners (15 min)','Set next meeting date (5 min)'],
+  };
+  const agenda = agendaMap[purpose] || agendaMap['Follow-up / next steps'];
+  const out = document.getElementById('mt-out');
+  if (!out) return;
+  out.style.fontStyle = 'normal';
+  out.textContent =
+`MEETING PLAN — ${purpose.toUpperCase()}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Client:       ${client}
+Duration:     ${duration}
+Kerr Team:    ${internalNames.length > 0 ? internalNames.join(', ') : 'TBD'}
+External:     ${externalNames.length > 0 ? externalNames.join(', ') : 'None added'}
+Total people: ${all.length}
+
+AGENDA:
+${agenda.map((item,i)=>`${i+1}. ${item}`).join('\n')}
+
+CONTEXT:
+${ctx || 'No additional context provided.'}
+
+PREP CHECKLIST:
+□ Review latest client notes before the call
+□ Send calendar invite to all ${all.length} attendees
+□ Confirm client will attend (send reminder 24hrs before)
+□ Prepare screen share / demo environment if needed
+□ Slack internal team: "Heads up — ${purpose.toLowerCase()} with ${client.split('—')[0].trim()} [DATE]. All confirmed?"
+
+SLACK TEAM MESSAGE:
+─────────────────────────────────────
+Hey ${internalNames.join(', ')} — heads up, we have a *${purpose.toLowerCase()}* with *${client.split('—')[0].trim()}* coming up. 
+Duration: ${duration}. Please confirm you can attend and review the client notes beforehand.
+${ctx ? '\nContext: ' + ctx.split('\n')[0] : ''}
+
+CALENDAR INVITE DRAFT:
+─────────────────────────────────────
+Subject: ${purpose} — ${client.split('—')[0].trim()} × Kerr Consulting
+
+Hi ${externalNames[0] || '[Client First Name]'},
+
+Looking forward to our ${purpose.toLowerCase()}. Here's a quick agenda:
+${agenda.slice(0,4).map(a=>'• '+a.replace(/\s*\(\d+ min\)/,'')).join('\n')}
+
+Please confirm this time works, or feel free to use my Calendly link to reschedule:
+${CALENDLY_LINKS[currentUser?.key||"tarun"]?.discovery || "https://calendly.com/kerr/discovery"}
+
+Talk soon,
+${currentUser?.name || 'Tarun'}
+Kerr Consulting | ramp.anywareapps.com`;
+}
+
+function generateAvailability() {
+  const all = mtGetAllAttendees();
+  const client = document.getElementById('mt-client')?.value || '[CLIENT]';
+  const purpose = document.getElementById('mt-purpose')?.value || 'a meeting';
+  const dateFrom = document.getElementById('mt-date-from')?.value || 'this week';
+  const dateTo = document.getElementById('mt-date-to')?.value || 'next week';
+  const internal = all.filter(a=>a.type==='internal');
+  const out = document.getElementById('mt-out');
+  if (!out) return;
+  out.style.fontStyle = 'normal';
+  out.textContent =
+`AVAILABILITY REQUEST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Post this in Slack (#general or #ramp-integrations):
+
+Hey team — scheduling a ${purpose.toLowerCase()} with ${client.split('—')[0].trim()}.
+Date window: ${dateFrom} → ${dateTo}
+
+Please reply with 2–3 open slots:
+
+${internal.map(a=>`• ${a.name.split(' ')[0]} —`).join('\n')}
+
+Once I have everyone's slots I'll send the invite. Thanks! 🙏
+
+──────────────────────────────────────
+EMAIL TO CLIENT (send separately):
+
+Hi [Client Name],
+
+We're looking to schedule our ${purpose.toLowerCase()} between ${dateFrom} and ${dateTo}.
+
+Could you share 2–3 times that work for you? Or feel free to book directly here:
+${CALENDLY_LINKS[currentUser?.key||"tarun"]?.discovery || "https://calendly.com/kerr/discovery"}
+
+Looking forward to it,
+${currentUser?.name || 'Tarun'}
+Kerr Consulting | ramp.anywareapps.com
+
+──────────────────────────────────────
+ATTENDEES THIS MAKE.COM WEBHOOK WILL INCLUDE (${all.length} people):
+${all.map(a=>`• ${a.name} <${a.email||'no email'}> [${a.type}]`).join('\n')}`;
+}
+
+async function fireMakeWebhook() {
+  const all = mtGetAllAttendees();
+  if (all.length === 0) { alert('Please select at least one attendee first.'); return; }
+  if (MAKE_WEBHOOK_URL_CALENDAR === 'YOUR_MAKE_CALENDAR_WEBHOOK_HERE') {
+    const status = document.getElementById('mt-webhook-status');
+    if (status) {
+      status.style.display = 'block';
+      status.style.background = '#fef3c7';
+      status.style.color = '#92400e';
+      status.textContent = '⚠️ Make.com webhook URL not configured yet. Once you have Make.com set up, paste your webhook URL into the MAKE_WEBHOOK_URL constant in the HTML. The payload is ready — see preview above.';
+    }
+    return;
+  }
+  const payload = mtBuildPayload();
+  const btn = document.getElementById('mt-webhook-btn');
+  const status = document.getElementById('mt-webhook-status');
+  if (btn) btn.textContent = '⏳ Sending...';
+  try {
+    const res = await fetch(MAKE_WEBHOOK_URL, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+    if (status) {
+      status.style.display = 'block';
+      status.style.background = res.ok ? '#dcfce7' : '#fee2e2';
+      status.style.color = res.ok ? '#15803d' : '#991b1b';
+      status.textContent = res.ok
+        ? `✓ Sent to Make.com! Checking availability for ${all.length} people. Results will appear in Slack.`
+        : `⚠️ Make.com returned an error (${res.status}). Check your webhook URL.`;
+    }
+  } catch(e) {
+    if (status) {
+      status.style.display = 'block';
+      status.style.background = '#fee2e2';
+      status.style.color = '#991b1b';
+      status.textContent = '⚠️ Could not reach Make.com. Check the webhook URL and try again.';
+    }
+  }
+  if (btn) btn.textContent = '⚡ Send to Make.com';
+}
+
+function copyInviteText() {
+  const out = document.getElementById('mt-out');
+  if (!out) return;
+  const text = out.textContent;
+  const inviteStart = text.indexOf('CALENDAR INVITE DRAFT');
+  const snippet = inviteStart > -1 ? text.substring(inviteStart + 25).trim() : text;
+  navigator.clipboard.writeText(snippet).then(()=>{
+    alert('Calendar invite text copied!');
+  }).catch(()=>{
+    const r = document.createRange();
+    r.selectNode(out);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(r);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+  });
+}
+
+function copySlackMessage() { copyInviteText(); }
+
+
+
+// ─── LIVE ANOMALY MONITOR ────────────────────
+function panelAnomaly() {
+  const today = new Date();
+  const anomalies = [];
+  const monthMap = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+
+  PIPELINE_DATA.forEach(d => {
+    if (d.stage === 'closed-won' || d.stage === 'closed-lost') return;
+    const m = d.close.match(/([A-Za-z]+)\s+(\d+)/);
+    if (m && monthMap[m[1]] !== undefined) {
+      const closeDate = new Date(today.getFullYear(), monthMap[m[1]], parseInt(m[2]));
+      if (closeDate < today) {
+        anomalies.push({level:'high',msg:d.company + ' — close date passed (' + d.close + ')',detail:'Deal value $' + d.value.toLocaleString() + '. Update stage or extend close date. Owner: ' + d.owner});
+      } else {
+        const daysLeft = Math.round((closeDate - today) / 86400000);
+        if (daysLeft <= 7) anomalies.push({level:'med',msg:d.company + ' — close date in ' + daysLeft + ' days',detail:'$' + d.value.toLocaleString() + ' · ' + d.stage + '. Owner: ' + d.owner + '. Is this on track?'});
+      }
+    }
+    if ((d.stage === 'prospect' || d.stage === 'qualified') && d.value > 30000) {
+      anomalies.push({level:'med',msg:d.company + ' — high-value deal in early stage',detail:'$' + d.value.toLocaleString() + ' still in ' + d.stage + '. Consider accelerating to proposal.'});
+    }
+  });
+
+  CLIENT_PROFILES.forEach(c => {
+    if (c.id === 'csj') anomalies.push({level:'high',msg:'CSJ Carondelet — profile incomplete + CFO transition',detail:'Industry, ERP, and scope missing. Patty (current CFO) signs; Linda takes over. Collect info ASAP.'});
+    if (c.id === 'mamalycha') anomalies.push({level:'med',msg:'Mama Lycha — credit card connector is PRIORITY',detail:'Must enable credit card connector BEFORE AP connector per client + Ramp request.'});
+    if (c.id === 'usis' && c.rampContact.includes('waiting')) anomalies.push({level:'low',msg:'USIS — Ramp AE (Sophie) status unconfirmed',detail:'Follow up with Sophie at Ramp re: USIS onboarding.'});
+  });
+
+  if (anomalies.length === 0) anomalies.push({level:'low',msg:'No anomalies detected','detail':'Pipeline and client profiles look healthy.'});
+
+  const dotClass = {high:'a-high',med:'a-med',low:'a-low'};
+  const high = anomalies.filter(a=>a.level==='high').length;
+  return `
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="stat"><div class="stat-label">Active Alerts</div><div class="stat-val" style="color:#dc2626">${anomalies.length}</div><div class="stat-change down">${high} high priority</div></div>
+    <div class="stat"><div class="stat-label">Scanning</div><div class="stat-val" style="font-size:18px">Live</div><div class="stat-change">Pipeline + Client Profiles</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Live Anomaly Feed</div>
+    <div class="card-sub">Real-time scan of pipeline deals and client profiles</div>
+    ${anomalies.map(a=>`<div class="anomaly-row"><div class="anomaly-dot ${dotClass[a.level]}"></div><div><div style="font-size:13px;font-weight:500">${a.msg}</div><div style="font-size:12px;color:var(--muted);margin-top:2px">${a.detail}</div></div></div>`).join('')}
+  </div>`;
+}
+
+// ─── LIVE DAN'S DASHBOARD ────────────────────
+function panelDanDash() {
+  const danDeals = PIPELINE_DATA.filter(d=>d.owner==='Dan'&&d.stage!=='closed-won'&&d.stage!=='closed-lost');
+  const danTotal = danDeals.reduce((s,d)=>s+d.value,0);
+  const danWon = PIPELINE_DATA.filter(d=>d.owner==='Dan'&&d.stage==='closed-won').reduce((s,d)=>s+d.value,0);
+  const stageMap = {prospect:'stage-prospect',qualified:'stage-qualified',proposal:'stage-proposal',negotiation:'stage-negotiation','closed-won':'stage-closed-won'};
+  const stageLabel = {prospect:'Prospect',qualified:'Qualified',proposal:'Proposal',negotiation:'Negotiation','closed-won':'Closed Won'};
+  const activeClients = CLIENT_PROFILES.filter(c=>c.status==='active');
+  return `
+  <div class="grid-3" style="margin-bottom:16px">
+    <div class="stat"><div class="stat-label">Dan's Open Pipeline</div><div class="stat-val">$${Math.round(danTotal/1000)}K</div><div class="stat-change up">${danDeals.length} open deals</div></div>
+    <div class="stat"><div class="stat-label">Closed Won</div><div class="stat-val">$${Math.round(danWon/1000)}K</div><div class="stat-change up">MTD</div></div>
+    <div class="stat"><div class="stat-label">Active Client Projects</div><div class="stat-val">${activeClients.length}</div><div class="stat-change">In progress</div></div>
+  </div>
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="card">
+      <div class="card-title">Dan's Deals</div>
+      <table class="tbl">
+        <thead><tr><th>Company</th><th>ERP</th><th>Stage</th><th>Value</th><th>Close</th></tr></thead>
+        <tbody>${danDeals.length>0?danDeals.map(d=>`<tr>
+          <td><strong>${d.company}</strong></td>
+          <td><span class="badge badge-blue" style="font-size:10px">${d.erp}</span></td>
+          <td><span class="stage-pill ${stageMap[d.stage]||''}">${stageLabel[d.stage]||d.stage}</span></td>
+          <td>$${d.value.toLocaleString()}</td>
+          <td>${d.close}</td>
+        </tr>`).join(''):'<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px">No deals assigned to Dan yet</td></tr>'}</tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">Active Client Projects</div>
+      ${activeClients.map(c=>`
+      <div style="padding:10px 0;border-bottom:1px solid var(--border)" onclick="showPanel('clients','Client Profiles');setTimeout(()=>showClientDetail('${c.id}'),100)" style="cursor:pointer">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <div style="font-size:13px;font-weight:600">${c.name}</div>
+            <div style="font-size:11px;color:var(--muted)">${c.erp} · PM: ${c.pm||'TBD'}</div>
+          </div>
+          <span class="badge badge-green">Active</span>
+        </div>
+        <div style="font-size:11px;color:var(--navy);margin-top:4px;font-weight:500">→ ${c.nextSteps.substring(0,80)}${c.nextSteps.length>80?'...':''}</div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+// ─── localStorage PERSISTENCE ─────────────────
+function saveState() {
+  try {
+    localStorage.setItem('ks_pipeline', JSON.stringify(PIPELINE_DATA));
+    localStorage.setItem('ks_contacts', JSON.stringify(CONTACTS_DATA));
+    localStorage.setItem('ks_captures', JSON.stringify(captureHistory));
+  } catch(e) {}
+}
+
+function loadState() {
+  try {
+    const p = localStorage.getItem('ks_pipeline');
+    if (p) { const d=JSON.parse(p); PIPELINE_DATA.length=0; d.forEach(x=>PIPELINE_DATA.push(x)); }
+    const c = localStorage.getItem('ks_contacts');
+    if (c) { const d=JSON.parse(c); CONTACTS_DATA.length=0; d.forEach(x=>CONTACTS_DATA.push(x)); }
+    const cap = localStorage.getItem('ks_captures');
+    if (cap) captureHistory = JSON.parse(cap);
+  } catch(e) {}
+}
+
+let captureHistory = [];
+
+// ─── CSV EXPORT ───────────────────────────────
+function exportCSV(type) {
+  let csv = '', filename = '';
+  if (type === 'pipeline') {
+    csv = 'Company,Contact,Title,ERP,Stage,Value,Owner,Commission,Close Date,Source\n';
+    csv += PIPELINE_DATA.map(d=>[d.company,d.contact,d.title,d.erp,d.stage,d.value,d.owner,d.comm?'Yes':'No',d.close,d.source].map(v=>'"'+(v||'')+'"').join(',')).join('\n');
+    filename = 'kerr-pipeline-' + new Date().toISOString().split('T')[0] + '.csv';
+  } else {
+    csv = 'Name,Company,Title,ERP,Email,Phone,Status\n';
+    csv += CONTACTS_DATA.map(d=>[d.name,d.company,d.title,d.erp,d.email,d.phone,d.status].map(v=>'"'+(v||'')+'"').join(',')).join('\n');
+    filename = 'kerr-contacts-' + new Date().toISOString().split('T')[0] + '.csv';
+  }
+  const blob = new Blob([csv],{type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download=filename; a.click();
+  URL.revokeObjectURL(url);
+}
+
+
+
+// ─── LIVE CONTEXT BUILDER ────────────────────
+// Called fresh on every AI request — injects current pipeline,
+// client profiles, and captures so Sage always has live data
+function buildLiveContext() {
+  // Pipeline snapshot
+  const openDeals = PIPELINE_DATA.filter(d => d.stage !== 'closed-won' && d.stage !== 'closed-lost');
+  const wonDeals  = PIPELINE_DATA.filter(d => d.stage === 'closed-won');
+  const pipelineTotal = openDeals.reduce((s,d) => s+d.value, 0);
+
+  const pipelineLines = PIPELINE_DATA.map(d =>
+    `- ${d.company} | ${d.contact} (${d.title}) | ${d.erp} | ${d.stage} | $${d.value.toLocaleString()} | Owner: ${d.owner} | Close: ${d.close} | Source: ${d.source} | Comm: ${d.comm ? 'Yes' : 'NO COMM'}`
+  ).join('\n');
+
+  // Client profiles snapshot
+  const clientLines = CLIENT_PROFILES.map(c =>
+    `- ${c.name} | ${c.erp} | Status: ${c.status} | PM: ${c.pm||'TBD'} | Last touch: ${c.lastTouch} | Next steps: ${c.nextSteps}${c.gotchas ? ' | GOTCHA: '+c.gotchas : ''}`
+  ).join('\n');
+
+  // Recent captures
+  const captureLines = captureHistory.length > 0
+    ? captureHistory.slice(0, 15).map(c => `- [${c.time}] ${c.who}: ${c.text} (${c.type})`).join('\n')
+    : 'No recent captures.';
+
+  // Who is logged in
+  const whoAmI = currentUser
+    ? `${currentUser.name} (${currentUser.role}) is logged in and asking this question.`
+    : 'Unknown user.';
+
+  return `
+=== LIVE DATA — Updated ${new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})} ===
+
+WHO IS ASKING: ${whoAmI}
+
+LIVE PIPELINE (${PIPELINE_DATA.length} deals, $${Math.round(pipelineTotal/1000)}K open):
+${pipelineLines}
+
+CLOSED WON: ${wonDeals.map(d => d.company + ' $' + d.value.toLocaleString()).join(', ') || 'None yet'}
+
+ACTIVE CLIENTS (${CLIENT_PROFILES.length} profiles):
+${clientLines}
+
+RECENT TEAM CAPTURES (${captureHistory.length} total):
+${captureLines}
+
+=== END LIVE DATA ===`;
+}
+
+function buildSystemPrompt() {
+  return SAGE_SYSTEM_PROMPT + buildLiveContext();
+}
+
+
+const SAGE_SYSTEM_PROMPT = `You are Sage, the AI sales and RevOps assistant for Kerr Consulting and AnyWare Apps. Kerr Consulting is a RevOps consultancy based in Houston, TX, affiliated with Cherry Bekaert, and a Platinum Ramp Partner and Sage Tech Partner.
+
+Your job is to help the Kerr sales team (Tarun, Ed, Dan) sell and deliver the AnyWare Apps Ramp + Sage ERP integration. You have deep knowledge of the product, pricing, technical details, and sales strategy. Always answer from this knowledge base first before using general knowledge.
+
+ALWAYS be direct, practical, and sales-ready. No fluff. When answering questions about pricing, features, or objections — use the exact numbers and facts below.
+
+=== COMPANY & PRODUCT ===
+AnyWare Apps (Cherry Bekaert affiliate) — Platinum Ramp Partner + Sage Tech Partner
+25510 McDonald Rd, The Woodlands, TX 77380
+Phone: (800) 352-4032
+Email: rampinfo@anywareapps.com | rampopps@anywareapps.com | rampsupport@anywareapps.com
+Website: ramp.anywareapps.com
+ROI Calculator: ramp.anywareapps.com/ramp-roi-calculator
+
+PRODUCT: The only live, supported integration between Ramp corporate cards and Sage ERP. Automates full sync of bills, payments, vendors, credit card transactions, GL accounts, employee reimbursements, and custom fields. Eliminates all manual entry and CSV imports.
+
+LIVE INTEGRATIONS: Sage 100, Sage 300, Sage 100 Contractor, Sage 300 CRE
+COMING SOON: Sage Intacct, Sage X3
+
+=== PRICING ===
+Sage 100 AND Sage 300 — Same pricing structure:
+- Tier 1: Up to 10,000 transactions/year → $6,000/year
+- Tier 2: Up to 20,000 transactions/year → $8,500/year
+- Tier 3: Up to 30,000 transactions/year → $11,000/year
+- Custom: Over 30,000 → Based on volume
+Auto-upgrade to next tier at prorated rate if volume exceeded.
+Setup + orientation included. Support warranty included. No extra fees.
+
+=== ROI DATA (USE THESE EXACT NUMBERS) ===
+- 20–40 hours saved per month (based on 400–800 transactions/month)
+- $50–$200 saved per error avoided
+- $12,000–$25,000 in annual labor cost savings (at $25–30/hr loaded rate)
+- 25–40% reduction in manual processing time
+- 50–90% fewer data entry errors
+- $50,000–$100,000 in annual savings (labor + process)
+- ROI achieved in 6–12 months
+- Ramp platform: 5% average savings on total company spend, close books 8x faster
+- 1–3% of annual revenue lost to data entry errors (eliminated by integration)
+- Scale without adding headcount: saves $60,000–$80,000 per hire avoided
+
+=== WHAT GETS SYNCED ===
+Sage 100 ↔ Ramp: AP Invoice ← Bills | Manual Check & Payments ← Payments | Vendors ↔ Vendors (bidirectional) | Transaction Journal Entries ← CC Transactions | GL Accounts → GL Accounts | User Defined Fields → Custom Fields | Reimbursements ← Reimbursements
+Sage 300 ↔ Ramp: Bills ← Bills | Payments ← Payments | Vendors ↔ Vendors | CC Transactions ← CC Transactions | GL Accounts → GL Accounts | Optional Fields → Custom Fields | Currency Conversion ↔ International Bills & Cards | Employee Reimbursements ← Reimbursements
+Receipts: Sage 100 — syncs in memo field. Sage 300 — NOT supported.
+
+=== IMPLEMENTATION TIMELINE ===
+Week 1: Requirements Gathering — goals, scope, contract
+Weeks 2–3: Testing & UAT — configure, validate Sage test ↔ Ramp sandbox
+Week 4: Deployment & Go-Live — production
+Weeks 5–8: Post-Go-Live Support — direct dev team access
+Total: 4–6 weeks standard | 6–10 weeks with custom development
+Technical requirements: Sage 100 or 300 version 2018+, admin access, Ramp account with admin privileges
+
+=== KEY TECHNICAL FACTS ===
+- Connector installed on customer's Sage application server (NOT in cloud)
+- Sage 300: uses Web Screens and Sage APIs. Sage 100: uses API-based access (no CSV/VI)
+- OAuth in production; manually generated keys in sandbox
+- All batches created by Ramp must be reviewed and posted manually in Sage
+- Sage remains system of record for accounting, reporting, close, and audit
+- Sync errors surfaced in Ramp interface (not Sage)
+- Failed transactions flagged individually — successful ones NOT rolled back (prevents duplicates)
+- Integration is version-agnostic for Sage (2018+) — no re-implementation on upgrades
+- All Ramp cards flow into single Ramp liability GL account; categorization in Ramp
+- Ramp supports both cash and accrual basis accounting
+- Standard ACH: 2–5 business days. Same-day ACH available via Ramp treasury
+- Ramp eliminates need for Positive Pay — checks issued from Ramp FBO account
+- Multi-currency: Sage 100 NO. Sage 300 partial (converts to USD on sync)
+- PO support and 3-way match: under development, NOT in production as of 11/21/25
+- Sage 100 and Sage 100 Contractor are COMPLETELY DIFFERENT SYSTEMS — no correlation
+
+=== COMMON OBJECTIONS & RESPONSES ===
+"We already do CSV exports" → That's exactly who we built this for. You're doing the work twice. Our connector posts directly to Sage GL with validation — no CSV step ever again.
+"How much does it cost?" → Starts at $6,000/year for up to 10,000 transactions. Most clients recover that in the first quarter. Run the ROI calc: ramp.anywareapps.com/ramp-roi-calculator
+"Which Sage version do you support?" → Sage 100 and Sage 300, version 2018 and newer, both live. Intacct and X3 coming soon.
+"How long does it take?" → 4–6 weeks standard. Our team handles configuration — your Sage admin doesn't have to do heavy lifting.
+"What if something breaks?" → Warranty covers all bugs and version-change issues for life of subscription at no extra cost.
+"We don't have Ramp yet" → As Platinum Ramp Partner we get exclusive pricing on Ramp onboarding. Many clients sign up for both at the same time.
+"Does it support multi-entity?" → Yes, fully compatible with Ramp's multi-entity. Each Sage company maps to a Ramp entity.
+"Does it support POs / 3-way match?" → Not yet in production. Under active development. Custom solutions available for this — contact rampopps@anywareapps.com.
+
+=== ICP — IDEAL CUSTOMER PROFILE ===
+ERP: Sage 100 or Sage 300 (primary targets)
+Size: 50–500 employees (sweet spot 100–249)
+Geography: Houston/Texas first, then national
+Industries: Construction, Professional Services, Distribution & Logistics, Energy/Oil & Gas, Manufacturing
+Pain: Manual reconciliation, CSV exports, slow month-end close
+Buyers: CFO, Controller, VP Finance, Finance Director, Accounting Manager
+Technographic sources: Apollo.io (Technology filter: "Sage 100" OR "Sage 300"), TheirStack.com (110K+ Sage users), job postings mentioning "Sage 100 administrator"
+
+=== RAMP PLATFORM FEATURES ===
+Corporate cards: Unlimited physical + virtual Visa cards, no annual fee, no personal guarantee, no personal credit check, 1.5% cashback, up to 5% total savings, approved in <48 hours, $25K min bank balance required
+Expense management: Receipt capture via SMS/Slack/Teams/photo, auto-categorization, policy enforcement before spend, reimbursements in 1–2 business days, eliminates expense reports
+Bill Pay: AI invoice extraction (OCR), configurable approval workflows, fraud detection, pay by ACH/check/wire/card, standard ACH $0.59/transaction effective June 2026
+Accounting: Integrates with 30+ ERPs (NetSuite, QuickBooks, Xero, Sage), 5-minute setup, real-time sync, multi-entity + multi-currency
+AI features: Policy Agent reviews 100% of expenses automatically, natural language spend queries, duplicate payment detection, AI invoice coding, SMS chatbot for employees
+Pricing: Ramp Free (core features), Ramp Plus $15/user/month (multi-entity, advanced ERP integrations), Enterprise (custom)
+
+=== KERR CONSULTING SALES FRAMEWORKS ===
+Team: Tarun Jakkaraju (Admin/Owner), Ed Hosey (AE), Dan Krishman (Practice Director)
+Sales approach uses: Vanessa Van Edwards (connection first), Robert Cialdini (influence principles), Dale Carnegie (relationship selling), Daniel Kahneman (loss aversion framing), Daniel Pink (timing/motivation), Joe Navarro (non-verbal signals)
+Key angles: ERP-specific hook → pain identification → time/cost proof → differentiation → low-friction CTA (ROI calc, not "book a call")
+
+=== BLOG CONTENT (PUBLISHED) ===
+Blog 1 (Saving Benefits): ROI stats — 600 hours/year/employee saved, $20K–$30K labor savings, 90% error reduction, 3–5 day faster close, $50K–$100K annual savings
+Blog 2 (API Integration): API-driven integrations eliminate manual ERP handoffs, real-time sync, enterprise efficiency for mid-market
+Blog 3 (Sage 300 Accounting Logic): AnyWare Apps translates Ramp data to align with Sage 300 subledgers, batches, posting periods, tax engines — automation reinforces accounting discipline
+Blog 4 (Sage 300 CRE): Job cost integrity — transactions must map to correct job/cost code/cost type before posting. Affects WIP schedules, over/under billings, phase profitability
+Blog 5 (Sage 100 Contractor): Credit card clearing account workflows must be preserved — each transaction posts to clearing, reconciled against statement, then payment reduces balance
+Blog 6 (Tax Savings): Ramp metadata (receipts, merchant info, categorization) flows through AnyWare Apps → Sage = audit-ready documentation year-round
+
+=== CLIENT NOTES ===
+Lakeview Glass Mirror (Sage 100): Contact: Julio Fuentes + Karen Sandlin. Uses GL, Job Costing, AP, AR. Upgraded to Sage 2024.1. Paper-based expense mgmt (low volume). Known payables glitch — duplicate entry numbers, workaround: delete and re-enter. Strong Kerr relationship.
+Cima Services LP (Sage Intacct): Contact: Alejandra Villarreal. Using Intacct Construction + AnyWare Workflow + Pacific Crew Timesheets. New investor = increased scrutiny. Pain: custom dev needed frequently, AR aging lacks job-level detail, Power BI/P&L reporting needs work. Ramp opportunity: per diem/expense workflows.
+
+=== CONTRACT TEMPLATES AVAILABLE ===
+Use pre-built templates — do NOT recreate them:
+- Sage_100_Ramp_Implementation_Template_v2.docx — standard Sage 100 SOW
+- Sage_300_Ramp_Implementation_Template_v2.docx — standard Sage 300 SOW
+- Sage_100_Ramp_Implementation_and_Custom_Development_Template_v2.docx
+- Sage_300_Ramp_Implementation_and_Custom_Development_Template_v2.docx
+- Optimization_Contract_Template_v1.docx — Ramp optimization engagement
+- Custom_Development_Contract_Template_v1.docx — custom dev only
+- Intacct_Contract_Template_v1.docx | Intacct_Contract_GL_Template_v1.docx | Intacct_Contract_Allocation_Template_v1.docx
+- Template_Anyware_Apps_CR__Client___CR__.docx — Change Order
+Key merge fields: [Client Name], [Client Company Name], [ERP], [credit card transactions], [expense reimbursement], [AP], [Custom Work Scope Summary], [#] weeks, [$Price]
+
+Always respond as Sage — knowledgeable, confident, practical. Never make up numbers or facts not in this knowledge base. If unsure, say "check with Sheila at rampopps@anywareapps.com" or "confirm with Ramp directly."`;
+
+// ═══════════════════════════════════════════
+// AI CALLS
+// ═══════════════════════════════════════════
+async function callSage(prompt, outId) {
+  const el = document.getElementById(outId);
+  if (!el) return;
+  el.innerHTML = '<span class="ai-thinking">Sage is thinking...</span>';
+  if (!ANTHROPIC_API_KEY || ANTHROPIC_API_KEY.length < 20) {
+    el.innerHTML = '<span class="ai-thinking">⚠️ API key not set — paste your Anthropic key into the HTML to activate Sage.</span>';
+    return;
+  }
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key': ANTHROPIC_API_KEY.trim(),
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({
+        model:'claude-sonnet-4-5',
+        max_tokens:1200,
+        system: buildSystemPrompt(),
+      })
+    });
+    const data = await res.json();
+    if (data.error) {
+      el.innerHTML = `<span class="ai-thinking">Error: ${data.error.message}</span>`;
+      return;
+    }
+    const text = data.content?.map(b=>b.text||'').join('') || 'No response.';
+    el.textContent = text;
+  } catch(e) {
+    el.innerHTML = '<span class="ai-thinking">Connection error — check your API key and try again.</span>';
+  }
+}
+
+function runWriting() {
+  const type = document.getElementById('wtype')?.value;
+  const prospect = document.getElementById('wprospect')?.value;
+  const erp = document.getElementById('w-erp')?.value;
+  const context = document.getElementById('wcontext')?.value;
+  const tone = document.getElementById('wtone')?.value;
+  const user = currentUser?.name || 'the rep';
+  const erpHook = erp ? `The prospect is running ${erp}. Reference their specific ERP version naturally in the email — this shows you did your research.` : '';
+  callSage(`Write a ${type} for Kerr Consulting / AnyWare Apps.
+Prospect/company: ${prospect || 'a Sage ERP user'}.
+${erpHook}
+Tone: ${tone}.
+Context: ${context || 'general follow-up about the Ramp + Sage integration'}.
+Rep name: ${user}.
+Use exact ROI numbers and pricing from your knowledge base where relevant. Write only the email — no preamble or explanation. Sound like a real person who knows their product cold.`, 'writing-out');
+}
+
+// ═══════════════════════════════════════════
+// DARK MODE
+// ═══════════════════════════════════════════
+function toggleDark() {
+  document.body.classList.toggle('dark');
+  const btn = document.getElementById('dark-btn');
+  if (btn) btn.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+}
+
+
+function runClarifier() {
+  const msg = document.getElementById('clf-in')?.value;
+  if (!msg?.trim()) { document.getElementById('clf-out').textContent='Please paste a client message first.'; return; }
+  callSage(`A client sent this message to Kerr Consulting / AnyWare Apps:
+
+"${msg}"
+
+Using your knowledge base about the Ramp + Sage integration, break down:
+1. What they actually want (plain English)
+2. What's unclear or ambiguous — flag any technical details that need clarification (e.g. which Sage version, transaction volume, existing Ramp setup)
+3. The 2–3 most important clarifying questions to ask
+4. Recommended next step (demo, ROI calc, custom dev quote, etc.)
+5. Which contract template would apply if this moves forward
+
+Be concise and actionable.`, 'clf-out');
+}
+
+function runSecretary() {
+  const who = document.getElementById('sec-who')?.value;
+  const type = document.getElementById('sec-type')?.value;
+  const ctx = document.getElementById('sec-ctx')?.value;
+  const user = currentUser?.name || 'the rep';
+  const mode = secCurrentMode || 'prep';
+
+  const modePrompts = {
+    prep: `Prepare ${user} for a ${type} with ${who || 'a prospect'}.
+Context: ${ctx || 'Ramp + Sage ERP integration discussion'}.
+Generate:
+1. Pre-call research checklist (what to look up before the call)
+2. 5 smart discovery questions tailored to this meeting type and context
+3. Suggested agenda with timing (total 30 or 60 min)
+4. Key objections likely to come up and exact responses from the knowledge base
+5. Recommended next step to propose at end of meeting`,
+
+    agenda: `Build a meeting agenda for ${user}'s ${type} with ${who || 'a prospect'}.
+Context: ${ctx || 'Ramp + Sage ERP integration'}.
+Format as a clean agenda with time slots, owner, and goal for each section. Include an icebreaker, value prop moment, discovery questions, and clear next step close.`,
+
+    recap: `Write a meeting recap for a ${type} with ${who || 'a client'}.
+Notes from the meeting: ${ctx || '(no notes provided — generate a template)'}
+Format: Executive summary (2 sentences), Key points discussed, Action items with owners and deadlines, Next meeting / follow-up. Keep it tight and professional.`,
+
+    objections: `Prepare ${user} for objection handling in a ${type} with ${who || 'a prospect'}.
+Context: ${ctx || 'Ramp + Sage ERP integration sales conversation'}.
+List the top 5 most likely objections for this scenario, and for each one provide: the objection verbatim as a prospect might say it, the ideal response using our KB data, and a follow-up question to keep the conversation moving.`
+  };
+
+  callSage(modePrompts[mode] || modePrompts.prep, 'sec-out');
+}
+
+function runHouston() {
+  const q = document.getElementById('hou-q')?.value;
+  if (!q?.trim()) return;
+  callSage(`Houston business intelligence request for Kerr Consulting: "${q}"
+Focus on: who are the right contacts, what Houston networks or events are relevant, any connection to Sage ERP users or Ramp prospects, and the best approach for a B2B sales rep. Be specific to Houston/Texas market.`, 'hou-out');
+}
+
+function runTemplate() {
+  const type     = document.getElementById('tpl-type')?.value;
+  const ctx      = document.getElementById('tpl-ctx')?.value;
+  const prospect = document.getElementById('tpl-prospect')?.value;
+  const erp      = document.getElementById('tpl-erp')?.value;
+  const isEd     = currentUser?.key === 'ed';
+  const voicePrompt = isEd
+    ? `Write a ${type} email in Ed Hosey's voice. Ed is an Account Executive at Kerr Consulting — direct, data-forward, slightly formal. He leads with numbers and ROI. He is concise and respects the prospect's time.`
+    : `Write a ${type} email in Tarun Jakkaraju's voice. Tarun is the owner of Kerr Consulting — confident, warm, relationship-first. Houston-based RevOps consultant and Platinum Ramp Partner. He leads with context and trust.`;
+  const erpLine = erp ? `The prospect is running ${erp}. Reference this naturally — use the specific sync maps and details for ${erp} from your knowledge base.` : '';
+  const prospectLine = prospect ? `Prospect/company: ${prospect}.` : '';
+  callSage(`${voicePrompt}
+${prospectLine}
+${erpLine}
+Context: ${ctx || 'Ramp + Sage ERP integration outreach'}.
+Use exact ROI numbers and pricing from your knowledge base. Write only the email — no preamble. Sound like a real person who knows their product cold.`, 'tpl-out');
+}
+
+function runWinWire() {
+  const client = document.getElementById('ww-client')?.value;
+  const val = document.getElementById('ww-val')?.value;
+  const pkg = document.getElementById('ww-pkg')?.value;
+  const notes = document.getElementById('ww-notes')?.value;
+  callSage(`Write a win wire announcement for the Kerr Consulting / AnyWare Apps Slack #wins channel.
+Client: ${client || 'a new client'}
+Deal value: ${val || 'undisclosed'}
+Package: ${pkg || 'Ramp + Sage integration'}
+Details: ${notes || 'new integration deal closed'}
+Format: Short, punchy, celebratory. Include deal value, client, what was won, and one line about what tipped the deal. End with a team cheer. Keep it under 150 words.`, 'ww-out');
+}
+
+function runContentBrief() {
+  const topic = document.getElementById('cw-topic')?.value;
+  if (!topic?.trim()) return;
+  callSage(`Create a content brief for AnyWare Apps / Kerr Consulting on: "${topic}".
+Use the knowledge base for accurate product details, pricing, ROI stats, and positioning.
+Include: objective, target audience (ICP), key messages (3), suggested outline (5 sections), differentiating angle, and recommended CTA.
+Keep it to one tight page. No generic AI content — use our actual numbers and value props.`, 'cw-out');
+}
+
+// ═══════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════
+function calcQuote() {
+  const base = parseInt(document.getElementById('pkg-sel')?.value || 0);
+  const erp = document.getElementById('erp-sel')?.value || 'Sage ERP';
+  const ao2 = document.getElementById('ao2')?.checked ? 2500 : 0;
+  const ao3 = document.getElementById('ao3')?.checked ? 1500 : 0;
+  const ao1 = document.getElementById('ao1')?.checked;
+  const total = base + ao2 + ao3;
+  const el = document.getElementById('quote-total');
+  const elErp = document.getElementById('quote-erp');
+  if (el) {
+    if (base === 0) {
+      el.textContent = 'Custom';
+    } else {
+      el.textContent = '$' + (total).toLocaleString() + (ao1 ? ' + custom dev' : '');
+    }
+  }
+  if (elErp) {
+    const tierMap = {'6000':'Tier 1','8500':'Tier 2','11000':'Tier 3','0':'Custom'};
+    elErp.textContent = erp + ' · ' + (tierMap[String(base)] || 'Custom');
+  }
+}
+
+function copyOut(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    const btns = document.querySelectorAll(`[onclick="copyOut('${id}')"]`);
+    btns.forEach(btn => {
+      const orig = btn.textContent;
+      btn.textContent = '✓ Copied!';
+      btn.style.color = 'var(--green)';
+      setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 2000);
+    });
+  }).catch(() => {
+    const range = document.createRange();
+    range.selectNode(el);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+  });
+}
+
+async function submitLead() {
+  const co    = document.getElementById('rl-co')?.value?.trim();
+  if (!co) { alert('Please enter a company name.'); return; }
+  const cn    = document.getElementById('rl-cn')?.value?.trim() || '';
+  const title = document.getElementById('rl-title')?.value?.trim() || '';
+  const email = document.getElementById('rl-email')?.value?.trim() || '';
+  const phone = document.getElementById('rl-phone')?.value?.trim() || '';
+  const erp   = document.getElementById('rl-erp')?.value || 'Unknown';
+  const src   = document.getElementById('rl-src')?.value || '';
+  const valStr = document.getElementById('rl-val')?.value || '';
+  const notes = document.getElementById('rl-notes')?.value?.trim() || '';
+  const rep   = currentUser?.name || 'Tarun';
+
+  const valMap = {'Tier 1 — $6,000':6000,'Tier 2 — $8,500':8500,'Tier 3 — $11,000':11000,'Custom / TBD':0};
+  const dealVal = valMap[valStr] || 0;
+  const valLabel = valStr || 'TBD';
+
+  // Add to pipeline
+  PIPELINE_DATA.unshift({
+    company:co, contact:cn, title, erp,
+    stage:'prospect', value:dealVal,
+    owner: rep.split(' ')[0], close:'TBD', source:src, comm:true
+  });
+
+  // Add to contacts
+  if (email && !CONTACTS_DATA.find(c=>c.email===email)) {
+    CONTACTS_DATA.unshift({name:cn||co, company:co, title, erp, email, phone, status:'prospect'});
+  }
+
+  saveState();
+
+  // Show optimistic confirm
+  const conf = document.getElementById('rl-confirm');
+  if (conf) {
+    conf.innerHTML = `⏳ Registering <strong>${co}</strong> — notifying Kerr &amp; Ramp Slack...`;
+    conf.style.display = 'block';
+    conf.style.background = '#fef3c7';
+    conf.style.color = '#92400e';
+  }
+
+  // Fire both Slack workspaces
+  const slackData = { company:co, contact:cn, title, erp, value:valLabel, source:src, notes, rep };
+  const results = await notifySlack('lead_registered', slackData);
+
+  // Fire Make.com lead webhook (logs to Google Sheets)
+  await fireLeadToMake({
+    event:'lead_registered', company:co, contact:cn, title, email, phone,
+    erp, source:src, value:valLabel, notes, rep,
+    timestamp: new Date().toISOString()
+  });
+
+  // Update confirm with real status
+  const kerrStatus = KERR_SLACK_WEBHOOK === 'YOUR_KERR_SLACK_WEBHOOK_HERE'
+    ? '⚠️ Kerr Slack (webhook not set)'
+    : (results.kerr ? '✅ Kerr Slack' : '⚠️ Kerr Slack (error)');
+  const rampStatus = RAMP_SLACK_WEBHOOK === 'YOUR_RAMP_SLACK_WEBHOOK_HERE'
+    ? '⚠️ Ramp Slack (waiting for Eric/Jamie\'s webhook)'
+    : (results.ramp ? '✅ Ramp Slack (Eric + Jamie notified)' : '⚠️ Ramp Slack (error)');
+
+  if (conf) {
+    conf.innerHTML = `
+      ✓ <strong>${co}</strong> added to Pipeline &amp; Contacts<br/>
+      <span style="font-size:11px">${kerrStatus} &nbsp;·&nbsp; ${rampStatus}</span>`;
+    conf.style.background = '#dcfce7';
+    conf.style.color = '#15803d';
+    setTimeout(()=>{ conf.style.display='none'; }, 7000);
+  }
+
+  // Clear form
+  ['rl-co','rl-cn','rl-title','rl-email','rl-phone','rl-notes'].forEach(id=>{
+    const el = document.getElementById(id); if (el) el.value='';
+  });
+}
+
+function submitCapture() {
+  const txt = document.getElementById('qc-text')?.value?.trim();
+  const type = document.getElementById('qc-type')?.value || 'Note';
+  if (!txt) { alert('Please enter something to capture.'); return; }
+
+  const entry = {
+    text: txt, type: type,
+    who: currentUser?.name?.split(' ')[0]||'Rep',
+    time: new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})
+  };
+  captureHistory.unshift(entry);
+  if (captureHistory.length > 50) captureHistory = captureHistory.slice(0,50);
+  saveState();
+
+  const conf = document.getElementById('qc-confirm');
+  if (conf) {
+    conf.innerHTML = `⚡ Captured: <strong>${type}</strong> — saved to your feed`;
+    conf.style.display = 'block';
+    setTimeout(()=>{ conf.style.display='none'; }, 3000);
+  }
+  document.getElementById('qc-text').value = '';
+  renderCaptureHistory();
+}
+
+function renderCaptureHistory() {
+  const feed = document.getElementById('capture-feed');
+  if (!feed) return;
+  if (captureHistory.length === 0) {
+    feed.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:8px 0">No captures yet — type something above and hit Send.</div>';
+    return;
+  }
+  feed.innerHTML = captureHistory.slice(0,10).map(c=>`
+    <div class="anomaly-row">
+      <div class="anomaly-dot a-low" style="margin-top:4px"></div>
+      <div>
+        <div style="font-size:13px">${c.text}</div>
+        <div style="font-size:11px;color:var(--muted)">${c.time} · ${c.type} · ${c.who}</div>
+      </div>
+    </div>`).join('');
+}
+
+function submitDevReq() {
+  const req = document.getElementById('cd-req')?.value?.trim();
+  if (!req) { alert('Please describe what you need built.'); return; }
+  const pri = document.getElementById('cd-pri')?.value || '';
+  const tools = document.getElementById('cd-tools')?.value || '';
+  alert(`✓ Request submitted!\n\nPriority: ${pri}\nTool: ${tools}\n\nTarun and Sheila will be notified via Slack. Expect a response within 1 business day for important/urgent requests.`);
+  document.getElementById('cd-req').value = '';
+}
+
+async function postSlack() {
+  const txt = document.getElementById('ww-out')?.textContent?.trim();
+  if (!txt || txt.includes('appear here')) { alert('Generate a win wire first, then post to Slack.'); return; }
+  const btn = document.getElementById('ww-post-btn');
+  if (btn) btn.textContent = '⏳ Posting...';
+
+  // Post full win wire text to Kerr Slack #wins
+  let kerrOk = false;
+  if (KERR_SLACK_WEBHOOK && KERR_SLACK_WEBHOOK !== 'YOUR_KERR_SLACK_WEBHOOK_HERE') {
+    try {
+      const r = await fetch(KERR_SLACK_WEBHOOK, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ text: '🏆 *Win Wire*\n\n' + txt })
+      });
+      kerrOk = r.ok;
+    } catch(e) {}
+  }
+
+  // Notify Ramp Slack (deal closed event)
+  const company = document.getElementById('ww-client')?.value || 'a client';
+  const value   = document.getElementById('ww-val')?.value   || 'undisclosed';
+  const rep     = currentUser?.name || 'Tarun';
+  await notifySlack('deal_closed', { company, value, erp:'Sage ERP', comm:true, rep });
+
+  const kerrStatus = KERR_SLACK_WEBHOOK === 'YOUR_KERR_SLACK_WEBHOOK_HERE'
+    ? '⚠️ Kerr Slack webhook not configured yet'
+    : (kerrOk ? '✅ Posted to Kerr #wins' : '⚠️ Kerr Slack error');
+  const rampStatus = RAMP_SLACK_WEBHOOK === 'YOUR_RAMP_SLACK_WEBHOOK_HERE'
+    ? '⚠️ Ramp Slack webhook not set — ask Eric/Jamie to create it'
+    : '✅ Eric + Jamie notified in Ramp Slack';
+
+  alert(kerrStatus + '\n' + rampStatus);
+  if (btn) btn.textContent = '🚀 Post to Slack #wins';
+}
+
+let secCurrentMode = 'prep';
+function secTab(mode) {
+  secCurrentMode = mode;
+  const modes = {
+    'prep': 'MEETING PREP',
+    'agenda': 'AGENDA BUILDER',
+    'recap': 'MEETING RECAP',
+    'objections': 'OBJECTION PREP'
+  };
+  const lbl = document.getElementById('sec-mode-label');
+  if (lbl) lbl.textContent = 'MODE: ' + (modes[mode] || mode.toUpperCase());
+
+  // Update button styles
+  ['prep','agenda','recap','objections'].forEach(m => {
+    const btn = document.getElementById('sec-tab-' + m);
+    if (btn) {
+      btn.className = m === mode ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm';
+    }
+  });
+}
+</script>
+</body>
+</html>
